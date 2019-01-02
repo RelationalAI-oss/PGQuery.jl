@@ -1,0 +1,7 @@
+authors = ["Mohammad Dashti <mdashti@gmail.com>"]
+name = "PGQuery"
+uuid = "7f052e32-0ea7-11e9-3eef-4d657cb60d2b"
+version = "0.1.0"
+
+[deps]
+BinDeps = "9e28174c-4ba2-5203-b857-d8d62c4213ee"

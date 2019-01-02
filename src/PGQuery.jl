@@ -1,0 +1,3 @@
+module PGQuery
+
+end # module
