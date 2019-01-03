@@ -61,4 +61,4 @@ provides(BuildProcess,
     end
   end), deps)
 
-@BinDeps.install Dict([(:pg_query, :_l_pg_query)])
+@BinDeps.install Dict([(:pg_query, :libpg_query)])
