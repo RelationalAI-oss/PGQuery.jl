@@ -16,7 +16,7 @@ make
 # you need to first add Clang.jl package
 using Clang
 # LIBCLANG_HEADERS are those headers to be wrapped.
-const LIBCLANG_INCLUDE = joinpath("/Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src")
+const LIBCLANG_INCLUDE = joinpath(@__DIR__, "src")
 const LIBCLANG_HEADERS = [joinpath(LIBCLANG_INCLUDE, header) for header in readdir(LIBCLANG_INCLUDE) if endswith(header, ".h")]
 push!(LIBCLANG_HEADERS, "$(@__DIR__)/pg_query.h")
 wc = init(; headers = LIBCLANG_HEADERS,
