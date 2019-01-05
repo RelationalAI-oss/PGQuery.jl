@@ -444,7 +444,15 @@ const STDERR_BUFFER_LEN = 4096
 )
 
 struct ListCell
-    data::union ListCell::(anonymous at /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/pg_list.h:55:2)
+    #=
+    union
+    {
+        void       *ptr_value;
+        int         int_value;
+        Oid         oid_value;
+    }           data;
+    =#
+    data::Ptr{Cvoid} # Union{Ptr{List}, Cint, Oid=Cint}
     next::Ptr{ListCell}
 end
 
@@ -669,7 +677,7 @@ const CURSOR_OPT_FAST_PLAN = 0x0020
 const CURSOR_OPT_GENERIC_PLAN = 0x0040
 const CURSOR_OPT_CUSTOM_PLAN = 0x0080
 const CURSOR_OPT_PARALLEL_OK = 0x0100
-const FETCH_ALL = LONG_MAX
+# const FETCH_ALL = LONG_MAX
 const REINDEXOPT_VERBOSE = 1 << 0
 
 @cenum(OverridingKind,
@@ -810,7 +818,14 @@ end
 
 struct Value
     type::NodeTag
-    val::ValUnion
+    #=
+    union ValUnion
+    {
+        long        ival;       /* machine integer */
+        char       *str;        /* string */
+    }           val;
+    =#
+    val::Ptr{UInt8}
 end
 
 struct A_Const
@@ -3610,10 +3625,10 @@ struct ParamPathInfo
     ppi_clauses::Ptr{List}
 end
 
-struct Path
+struct PathGeneric{RI}
     type::NodeTag
     pathtype::NodeTag
-    parent::Ptr{RelOptInfo}
+    parent::Ptr{RI}
     pathtarget::Ptr{PathTarget}
     param_info::Ptr{ParamPathInfo}
     parallel_aware::Cint
@@ -3625,71 +3640,21 @@ struct Path
     pathkeys::Ptr{List}
 end
 
-struct RelOptInfo
-    type::NodeTag
-    reloptkind::RelOptKind
-    relids::Relids
-    rows::Cdouble
-    consider_startup::Cint
-    consider_param_startup::Cint
-    consider_parallel::Cint
-    reltarget::Ptr{PathTarget}
-    pathlist::Ptr{List}
-    ppilist::Ptr{List}
-    partial_pathlist::Ptr{List}
-    cheapest_startup_path::Ptr{Path}
-    cheapest_total_path::Ptr{Path}
-    cheapest_unique_path::Ptr{Path}
-    cheapest_parameterized_paths::Ptr{List}
-    direct_lateral_relids::Relids
-    lateral_relids::Relids
-    relid::Cint
-    reltablespace::Cint
-    rtekind::RTEKind
-    min_attr::Cint
-    max_attr::Cint
-    attr_needed::Ptr{Relids}
-    attr_widths::Ptr{Cint}
-    lateral_vars::Ptr{List}
-    lateral_referencers::Relids
-    indexlist::Ptr{List}
-    statlist::Ptr{List}
-    pages::Cint
-    tuples::Cdouble
-    allvisfrac::Cdouble
-    subroot::Ptr{PlannerInfo}
-    subplan_params::Ptr{List}
-    rel_parallel_workers::Cint
-    serverid::Cint
-    userid::Cint
-    useridiscurrent::Cint
-    fdwroutine::Ptr{FdwRoutine}
-    fdw_private::Ptr{Cvoid}
-    unique_for_rels::Ptr{List}
-    non_unique_for_rels::Ptr{List}
-    baserestrictinfo::Ptr{List}
-    baserestrictcost::QualCost
-    baserestrict_min_security::Cint
-    joininfo::Ptr{List}
-    has_eclass_joins::Cint
-    top_parent_relids::Relids
-end
-
-struct PlannerInfo
+struct PlannerInfoGeneric{RI}
     type::NodeTag
     parse::Ptr{Query}
     glob::Ptr{PlannerGlobal}
     query_level::Cint
-    parent_root::Ptr{PlannerInfo}
+    parent_root::Ptr{PlannerInfoGeneric{RI}}
     plan_params::Ptr{List}
     outer_params::Ptr{Bitmapset}
-    simple_rel_array::Ptr{Ptr{RelOptInfo}}
+    simple_rel_array::Ptr{Ptr{RI}}
     simple_rel_array_size::Cint
     simple_rte_array::Ptr{Ptr{RangeTblEntry}}
     all_baserels::Relids
     nullable_baserels::Relids
     join_rel_list::Ptr{List}
-    join_rel_hash::Ptr{HTAB}
+    join_rel_hash::Ptr{Cint} #Ptr{HTAB}
     join_rel_level::Ptr{Ptr{List}}
     join_cur_level::Cint
     init_plans::Ptr{List}
@@ -3730,11 +3695,64 @@ struct PlannerInfo
     hasPseudoConstantQuals::Cint
     hasRecursion::Cint
     wt_param_id::Cint
-    non_recursive_path::Ptr{Path}
+    non_recursive_path::Ptr{PathGeneric{RI}}
     curOuterRels::Relids
     curOuterParams::Ptr{List}
     join_search_private::Ptr{Cvoid}
 end
+
+struct RelOptInfo
+    type::NodeTag
+    reloptkind::RelOptKind
+    relids::Relids
+    rows::Cdouble
+    consider_startup::Cint
+    consider_param_startup::Cint
+    consider_parallel::Cint
+    reltarget::Ptr{PathTarget}
+    pathlist::Ptr{List}
+    ppilist::Ptr{List}
+    partial_pathlist::Ptr{List}
+    cheapest_startup_path::Ptr{PathGeneric{RelOptInfo}}
+    cheapest_total_path::Ptr{PathGeneric{RelOptInfo}}
+    cheapest_unique_path::Ptr{PathGeneric{RelOptInfo}}
+    cheapest_parameterized_paths::Ptr{List}
+    direct_lateral_relids::Relids
+    lateral_relids::Relids
+    relid::Cint
+    reltablespace::Cint
+    rtekind::RTEKind
+    min_attr::Cint
+    max_attr::Cint
+    attr_needed::Ptr{Relids}
+    attr_widths::Ptr{Cint}
+    lateral_vars::Ptr{List}
+    lateral_referencers::Relids
+    indexlist::Ptr{List}
+    statlist::Ptr{List}
+    pages::Cint
+    tuples::Cdouble
+    allvisfrac::Cdouble
+    subroot::Ptr{PlannerInfoGeneric{RelOptInfo}}
+    subplan_params::Ptr{List}
+    rel_parallel_workers::Cint
+    serverid::Cint
+    userid::Cint
+    useridiscurrent::Cint
+    fdwroutine::Ptr{Cvoid} #Ptr{FdwRoutine}
+    fdw_private::Ptr{Cvoid}
+    unique_for_rels::Ptr{List}
+    non_unique_for_rels::Ptr{List}
+    baserestrictinfo::Ptr{List}
+    baserestrictcost::QualCost
+    baserestrict_min_security::Cint
+    joininfo::Ptr{List}
+    has_eclass_joins::Cint
+    top_parent_relids::Relids
+end
+
+const Path = PathGeneric{RelOptInfo}
+const PlannerInfo = PlannerInfoGeneric{RelOptInfo}
 
 struct IndexOptInfo
     type::NodeTag
