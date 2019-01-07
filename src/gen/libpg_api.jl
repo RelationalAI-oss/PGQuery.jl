@@ -56,12 +56,12 @@ function pg_query_free_error(error)
     ccall((:pg_query_free_error, libpg_query), Cvoid, (Ptr{Cint},), error)
 end
 
-function pg_query_enter_memory_context()
-    ccall((:pg_query_enter_memory_context, libpg_query), Cint, ())
+function pg_query_enter_memory_context(ctx_name)
+    ccall((:pg_query_enter_memory_context, libpg_query), Ptr{UInt8}, (Cstring,), ctx_name)
 end
 
 function pg_query_exit_memory_context(ctx)
-    ccall((:pg_query_exit_memory_context, libpg_query), Cvoid, (Cint,), ctx)
+    ccall((:pg_query_exit_memory_context, libpg_query), Cvoid, (Ptr{UInt8},), ctx)
 end
 # Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/pg_query_json.h
 # Automatically generated using Clang.jl wrap_c
