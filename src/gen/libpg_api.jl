@@ -41,8 +41,8 @@ end
 # Automatically generated using Clang.jl
 
 
-function pg_query_fingerprint_with_opts(input, printTokens)
-    ccall((:pg_query_fingerprint_with_opts, libpg_query), PgQueryFingerprintResult, (Cstring, Bool), input, printTokens)
+function pg_query_fingerprint_with_opts()
+    ccall((:pg_query_fingerprint_with_opts, libpg_query), Cint, ())
 end
 # Julia wrapper for header: pg_query_internal.h
 # Automatically generated using Clang.jl
@@ -53,7 +53,7 @@ function pg_query_raw_parse(input)
 end
 
 function pg_query_free_error(error)
-    ccall((:pg_query_free_error, libpg_query), Cvoid, (Ptr{PgQueryError},), error)
+    ccall((:pg_query_free_error, libpg_query), Cvoid, (Ptr{Cint},), error)
 end
 
 function pg_query_enter_memory_context(ctx_name)
@@ -755,6 +755,10 @@ end
 # Julia wrapper for header: relation.h
 # Automatically generated using Clang.jl
 
+
+function is_dummy_rel()
+    ccall((:is_dummy_rel, libpg_query), Cint, ())
+end
 # Julia wrapper for header: tidbitmap.h
 # Automatically generated using Clang.jl
 

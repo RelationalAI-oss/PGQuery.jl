@@ -1,9 +1,9 @@
 # Automatically generated using Clang.jl
 
 
-const PG_VERSION = "10.5"
+const PG_VERSION = "10.15"
 const PG_MAJORVERSION = "10"
-const PG_VERSION_NUM = 100005
+const PG_VERSION_NUM = 100015
 
 struct PgQueryError
     message::Cstring
@@ -463,7 +463,7 @@ end
 struct PgQueryInternalParsetreeAndError
     tree::Ptr{List}
     stderr_buffer::Cstring
-    error::Ptr{PgQueryError}
+    error::Ptr{Cint}
 end
 
 const BITS_PER_BITMAPWORD = 32
@@ -589,6 +589,7 @@ const QTW_IGNORE_JOINALIASES = 0x04
 const QTW_IGNORE_RANGE_TABLE = 0x08
 const QTW_EXAMINE_RTES = 0x10
 const QTW_DONT_COPY_QUERY = 0x20
+const QTW_EXAMINE_SORTGROUP = 0x80
 
 # Skipping Typedef: CXType_FunctionProto bool
 
@@ -3678,8 +3679,8 @@ end
 # Skipping MacroDefinition: EC_MUST_BE_REDUNDANT ( eclass ) ( ( eclass ) -> ec_has_const && ! ( eclass ) -> ec_below_outer_join )
 # Skipping MacroDefinition: get_pathtarget_sortgroupref ( target , colno ) ( ( target ) -> sortgrouprefs ? ( target ) -> sortgrouprefs [ colno ] : ( Index ) 0 )
 # Skipping MacroDefinition: PATH_REQ_OUTER ( path ) ( ( path ) -> param_info ? ( path ) -> param_info -> ppi_req_outer : ( Relids ) NULL )
-# Skipping MacroDefinition: IS_DUMMY_PATH ( p ) ( IsA ( ( p ) , AppendPath ) && ( ( AppendPath * ) ( p ) ) -> subpaths == NIL )
-# Skipping MacroDefinition: IS_DUMMY_REL ( r ) ( ( r ) -> cheapest_total_path != NULL && IS_DUMMY_PATH ( ( r ) -> cheapest_total_path ) )
+# Skipping MacroDefinition: IS_DUMMY_APPEND ( p ) ( IsA ( ( p ) , AppendPath ) && ( ( AppendPath * ) ( p ) ) -> subpaths == NIL )
+# Skipping MacroDefinition: IS_DUMMY_REL ( r ) is_dummy_rel ( r )
 # Skipping MacroDefinition: RINFO_IS_PUSHED_DOWN ( rinfo , joinrelids ) ( ( rinfo ) -> is_pushed_down || ! bms_is_subset ( ( rinfo ) -> required_relids , joinrelids ) )
 
 const Relids = Ptr{Bitmapset}
