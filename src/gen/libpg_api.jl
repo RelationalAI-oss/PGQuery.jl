@@ -757,7 +757,7 @@ end
 
 
 function is_dummy_rel()
-    ccall((:is_dummy_rel, libpg_query), Cint, ())
+    ccall((:is_dummy_rel, libpg_query), bool, ())
 end
 # Julia wrapper for header: tidbitmap.h
 # Automatically generated using Clang.jl
@@ -843,4 +843,3 @@ function makeBitString(str)
 end
 # Julia wrapper for header: sdir.h
 # Automatically generated using Clang.jl
-

@@ -81,12 +81,12 @@ for enum_name in target_node_tag_enum_names
         tp = eval(Meta.parse("PGQuery.$tp_name"))
         tp == Nothing && continue
         local printnode_body = quote
-            @assert x.type == $enum_name
+            hasfield($tp, :type) && $(enum_name != :T_Expr) && @assert x.type == $enum_name "x.type is $(x.type), but expected to be $($enum_name)"
             Base.print(io, $tp_name_str)
             Base.print(io, "(")
         end
         local children_body = quote
-            @assert x.type == $enum_name
+            hasfield($tp, :type) && $(enum_name != :T_Expr) && @assert x.type == $enum_name "x.type is $(x.type), but expected to be $($enum_name)"
             children = []
         end
         for (i, (fld, fld_tp)) in enumerate(zip(fieldnames(tp), tp.types))
@@ -130,15 +130,18 @@ end
 
 function convert_to_node_type(::Val{T}) where T
     str_name = string(T)
-    index1 = findfirst(isequal('_'), str_name) + 1
-    index2 = findfirst(isequal('('), str_name) - 1
-    type_name = SubString(str_name, index1, index2)
+    @assert startswith(str_name, "T_")
+    type_name = SubString(str_name, 3)
     return eval(Meta.parse("PGQuery.$type_name"))
 end
 
 function AbstractTrees.printnode(io::IO, x::List)
     @assert x.type == T_List
     Base.print(io, string("List(length=",x.length,")"))
+end
+
+function convert_to_node_type(::Val{T_List})
+    return List
 end
 
 function AbstractTrees.children(x::List)

@@ -571,13 +571,13 @@ end
 
 struct MemoryContextData
     type::NodeTag
-    isReset::Cint
-    allowInCritSection::Cint
+    isReset::bool
+    allowInCritSection::bool
     methods::Ptr{MemoryContextMethods}
-    parent::Cint
-    firstchild::Cint
-    prevchild::Cint
-    nextchild::Cint
+    parent::MemoryContext
+    firstchild::MemoryContext
+    prevchild::MemoryContext
+    nextchild::MemoryContext
     name::Cstring
     reset_cbs::Ptr{Cint}
 end
@@ -682,7 +682,7 @@ const ParseState = Cvoid
 
 struct ParamExternData
     value::Cint
-    isnull::Cint
+    isnull::bool
     pflags::Cint
     ptype::Cint
 end
@@ -705,7 +705,7 @@ const ParamListInfo = Ptr{ParamListInfoData}
 struct ParamExecData
     execPlan::Ptr{Cvoid}
     value::Cint
-    isnull::Cint
+    isnull::bool
 end
 
 const ACL_INSERT = 1 << 0
@@ -821,18 +821,18 @@ struct Query
     commandType::CmdType
     querySource::QuerySource
     queryId::Cint
-    canSetTag::Cint
+    canSetTag::bool
     utilityStmt::Ptr{Node}
     resultRelation::Cint
-    hasAggs::Cint
-    hasWindowFuncs::Cint
-    hasTargetSRFs::Cint
-    hasSubLinks::Cint
-    hasDistinctOn::Cint
-    hasRecursive::Cint
-    hasModifyingCTE::Cint
-    hasForUpdate::Cint
-    hasRowSecurity::Cint
+    hasAggs::bool
+    hasWindowFuncs::bool
+    hasTargetSRFs::bool
+    hasSubLinks::bool
+    hasDistinctOn::bool
+    hasRecursive::bool
+    hasModifyingCTE::bool
+    hasForUpdate::bool
+    hasRowSecurity::bool
     cteList::Ptr{List}
     rtable::Ptr{List}
     jointree::Ptr{FromExpr}
@@ -860,8 +860,8 @@ struct TypeName
     type::NodeTag
     names::Ptr{List}
     typeOid::Cint
-    setof::Cint
-    pct_type::Cint
+    setof::bool
+    pct_type::bool
     typmods::Ptr{List}
     typemod::Cint
     arrayBounds::Ptr{List}
@@ -967,10 +967,10 @@ struct FuncCall
     args::Ptr{List}
     agg_order::Ptr{List}
     agg_filter::Ptr{Node}
-    agg_within_group::Cint
-    agg_star::Cint
-    agg_distinct::Cint
-    func_variadic::Cint
+    agg_within_group::bool
+    agg_star::bool
+    agg_distinct::bool
+    func_variadic::bool
     over::Ptr{WindowDef}
     location::Cint
 end
@@ -981,7 +981,7 @@ end
 
 struct A_Indices
     type::NodeTag
-    is_slice::Cint
+    is_slice::bool
     lidx::Ptr{Node}
     uidx::Ptr{Node}
 end
@@ -1030,16 +1030,16 @@ end
 
 struct RangeSubselect
     type::NodeTag
-    lateral::Cint
+    lateral::bool
     subquery::Ptr{Node}
     alias::Ptr{Alias}
 end
 
 struct RangeFunction
     type::NodeTag
-    lateral::Cint
-    ordinality::Cint
-    is_rowsfrom::Cint
+    lateral::bool
+    ordinality::bool
+    is_rowsfrom::bool
     functions::Ptr{List}
     alias::Ptr{Alias}
     coldeflist::Ptr{List}
@@ -1047,7 +1047,7 @@ end
 
 struct RangeTableFunc
     type::NodeTag
-    lateral::Cint
+    lateral::bool
     docexpr::Ptr{Node}
     rowexpr::Ptr{Node}
     namespaces::Ptr{List}
@@ -1060,8 +1060,8 @@ struct RangeTableFuncCol
     type::NodeTag
     colname::Cstring
     typeName::Ptr{TypeName}
-    for_ordinality::Cint
-    is_not_null::Cint
+    for_ordinality::bool
+    is_not_null::bool
     colexpr::Ptr{Node}
     coldefexpr::Ptr{Node}
     location::Cint
@@ -1081,7 +1081,7 @@ struct RangeVar
     catalogname::Cstring
     schemaname::Cstring
     relname::Cstring
-    inh::Cint
+    inh::bool
     relpersistence::UInt8
     alias::Ptr{Alias}
     location::Cint
@@ -1092,10 +1092,10 @@ struct ColumnDef
     colname::Cstring
     typeName::Ptr{TypeName}
     inhcount::Cint
-    is_local::Cint
-    is_not_null::Cint
-    is_from_type::Cint
-    is_from_parent::Cint
+    is_local::bool
+    is_not_null::bool
+    is_from_type::bool
+    is_from_parent::bool
     storage::UInt8
     raw_default::Ptr{Node}
     cooked_default::Ptr{Node}
@@ -1267,16 +1267,16 @@ struct RangeTblEntry
     relkind::UInt8
     tablesample::Ptr{TableSampleClause}
     subquery::Ptr{Query}
-    security_barrier::Cint
+    security_barrier::bool
     jointype::JoinType
     joinaliasvars::Ptr{List}
     functions::Ptr{List}
-    funcordinality::Cint
+    funcordinality::bool
     tablefunc::Ptr{TableFunc}
     values_lists::Ptr{List}
     ctename::Cstring
     ctelevelsup::Cint
-    self_reference::Cint
+    self_reference::bool
     coltypes::Ptr{List}
     coltypmods::Ptr{List}
     colcollations::Ptr{List}
@@ -1284,9 +1284,9 @@ struct RangeTblEntry
     enrtuples::Cdouble
     alias::Ptr{Alias}
     eref::Ptr{Alias}
-    lateral::Cint
-    inh::Cint
-    inFromCl::Cint
+    lateral::bool
+    inh::bool
+    inFromCl::bool
     requiredPerms::AclMode
     checkAsUser::Cint
     selectedCols::Ptr{Bitmapset}
@@ -1320,7 +1320,7 @@ struct WithCheckOption
     relname::Cstring
     polname::Cstring
     qual::Ptr{Node}
-    cascaded::Cint
+    cascaded::bool
 end
 
 struct SortGroupClause
@@ -1328,8 +1328,8 @@ struct SortGroupClause
     tleSortGroupRef::Cint
     eqop::Cint
     sortop::Cint
-    nulls_first::Cint
-    hashable::Cint
+    nulls_first::bool
+    hashable::bool
 end
 
 @cenum GroupingSetKind::UInt32 begin
@@ -1358,7 +1358,7 @@ struct WindowClause
     startOffset::Ptr{Node}
     endOffset::Ptr{Node}
     winref::Cint
-    copiedOrder::Cint
+    copiedOrder::bool
 end
 
 struct RowMarkClause
@@ -1366,13 +1366,13 @@ struct RowMarkClause
     rti::Cint
     strength::LockClauseStrength
     waitPolicy::LockWaitPolicy
-    pushedDown::Cint
+    pushedDown::bool
 end
 
 struct WithClause
     type::NodeTag
     ctes::Ptr{List}
-    recursive::Cint
+    recursive::bool
     location::Cint
 end
 
@@ -1399,7 +1399,7 @@ struct CommonTableExpr
     aliascolnames::Ptr{List}
     ctequery::Ptr{Node}
     location::Cint
-    cterecursive::Cint
+    cterecursive::bool
     cterefcount::Cint
     ctecolnames::Ptr{List}
     ctecoltypes::Ptr{List}
@@ -1410,8 +1410,8 @@ end
 struct TriggerTransition
     type::NodeTag
     name::Cstring
-    isNew::Cint
-    isTable::Cint
+    isNew::bool
+    isTable::bool
 end
 
 struct RawStmt
@@ -1474,7 +1474,7 @@ struct IntoClause
     onCommit::OnCommitAction
     tableSpaceName::Cstring
     viewQuery::Ptr{Node}
-    skipData::Cint
+    skipData::bool
 end
 
 struct SelectStmt
@@ -1494,7 +1494,7 @@ struct SelectStmt
     lockingClause::Ptr{List}
     withClause::Ptr{WithClause}
     op::SetOperation
-    all::Cint
+    all::bool
     larg::Ptr{SelectStmt}
     rarg::Ptr{SelectStmt}
 end
@@ -1502,7 +1502,7 @@ end
 struct SetOperationStmt
     type::NodeTag
     op::SetOperation
-    all::Cint
+    all::bool
     larg::Ptr{Node}
     rarg::Ptr{Node}
     colTypes::Ptr{List}
@@ -1568,7 +1568,7 @@ struct CreateSchemaStmt
     schemaname::Cstring
     authrole::Ptr{RoleSpec}
     schemaElts::Ptr{List}
-    if_not_exists::Cint
+    if_not_exists::bool
 end
 
 @cenum DropBehavior::UInt32 begin
@@ -1582,7 +1582,7 @@ struct AlterTableStmt
     relation::Ptr{RangeVar}
     cmds::Ptr{List}
     relkind::ObjectType
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 @cenum AlterTableType::UInt32 begin
@@ -1668,7 +1668,7 @@ struct AlterTableCmd
     newowner::Ptr{RoleSpec}
     def::Ptr{Node}
     behavior::DropBehavior
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 struct AlterCollationStmt
@@ -1683,7 +1683,7 @@ struct AlterDomainStmt
     name::Cstring
     def::Ptr{Node}
     behavior::DropBehavior
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 @cenum GrantTargetType::UInt32 begin
@@ -1711,13 +1711,13 @@ end
 
 struct GrantStmt
     type::NodeTag
-    is_grant::Cint
+    is_grant::bool
     targtype::GrantTargetType
     objtype::GrantObjectType
     objects::Ptr{List}
     privileges::Ptr{List}
     grantees::Ptr{List}
-    grant_option::Cint
+    grant_option::bool
     behavior::DropBehavior
 end
 
@@ -1725,7 +1725,7 @@ struct ObjectWithArgs
     type::NodeTag
     objname::Ptr{List}
     objargs::Ptr{List}
-    args_unspecified::Cint
+    args_unspecified::bool
 end
 
 struct AccessPriv
@@ -1738,8 +1738,8 @@ struct GrantRoleStmt
     type::NodeTag
     granted_roles::Ptr{List}
     grantee_roles::Ptr{List}
-    is_grant::Cint
-    admin_opt::Cint
+    is_grant::bool
+    admin_opt::bool
     grantor::Ptr{RoleSpec}
     behavior::DropBehavior
 end
@@ -1755,8 +1755,8 @@ struct CopyStmt
     relation::Ptr{RangeVar}
     query::Ptr{Node}
     attlist::Ptr{List}
-    is_from::Cint
-    is_program::Cint
+    is_from::bool
+    is_program::bool
     filename::Cstring
     options::Ptr{List}
 end
@@ -1776,7 +1776,7 @@ struct VariableSetStmt
     kind::VariableSetKind
     name::Cstring
     args::Ptr{List}
-    is_local::Cint
+    is_local::bool
 end
 
 struct VariableShowStmt
@@ -1796,7 +1796,7 @@ struct CreateStmt
     options::Ptr{List}
     oncommit::OnCommitAction
     tablespacename::Cstring
-    if_not_exists::Cint
+    if_not_exists::bool
 end
 
 @cenum ConstrType::UInt32 begin
@@ -1820,10 +1820,10 @@ struct Constraint
     type::NodeTag
     contype::ConstrType
     conname::Cstring
-    deferrable::Cint
-    initdeferred::Cint
+    deferrable::bool
+    initdeferred::bool
     location::Cint
-    is_no_inherit::Cint
+    is_no_inherit::bool
     raw_expr::Ptr{Node}
     cooked_expr::Cstring
     generated_when::UInt8
@@ -1842,8 +1842,8 @@ struct Constraint
     fk_del_action::UInt8
     old_conpfeqop::Ptr{List}
     old_pktable_oid::Cint
-    skip_validation::Cint
-    initially_valid::Cint
+    skip_validation::bool
+    initially_valid::bool
 end
 
 struct CreateTableSpaceStmt
@@ -1857,14 +1857,14 @@ end
 struct DropTableSpaceStmt
     type::NodeTag
     tablespacename::Cstring
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 struct AlterTableSpaceOptionsStmt
     type::NodeTag
     tablespacename::Cstring
     options::Ptr{List}
-    isReset::Cint
+    isReset::bool
 end
 
 struct AlterTableMoveAllStmt
@@ -1873,13 +1873,13 @@ struct AlterTableMoveAllStmt
     objtype::ObjectType
     roles::Ptr{List}
     new_tablespacename::Cstring
-    nowait::Cint
+    nowait::bool
 end
 
 struct CreateExtensionStmt
     type::NodeTag
     extname::Cstring
-    if_not_exists::Cint
+    if_not_exists::bool
     options::Ptr{List}
 end
 
@@ -1917,7 +1917,7 @@ struct CreateForeignServerStmt
     servertype::Cstring
     version::Cstring
     fdwname::Cstring
-    if_not_exists::Cint
+    if_not_exists::bool
     options::Ptr{List}
 end
 
@@ -1926,7 +1926,7 @@ struct AlterForeignServerStmt
     servername::Cstring
     version::Cstring
     options::Ptr{List}
-    has_version::Cint
+    has_version::bool
 end
 
 struct CreateForeignTableStmt
@@ -1939,7 +1939,7 @@ struct CreateUserMappingStmt
     type::NodeTag
     user::Ptr{RoleSpec}
     servername::Cstring
-    if_not_exists::Cint
+    if_not_exists::bool
     options::Ptr{List}
 end
 
@@ -1954,7 +1954,7 @@ struct DropUserMappingStmt
     type::NodeTag
     user::Ptr{RoleSpec}
     servername::Cstring
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 @cenum ImportForeignSchemaType::UInt32 begin
@@ -1979,7 +1979,7 @@ struct CreatePolicyStmt
     policy_name::Cstring
     table::Ptr{RangeVar}
     cmd_name::Cstring
-    permissive::Cint
+    permissive::bool
     roles::Ptr{List}
     qual::Ptr{Node}
     with_check::Ptr{Node}
@@ -2007,15 +2007,15 @@ struct CreateTrigStmt
     relation::Ptr{RangeVar}
     funcname::Ptr{List}
     args::Ptr{List}
-    row::Cint
+    row::bool
     timing::Cint
     events::Cint
     columns::Ptr{List}
     whenClause::Ptr{Node}
-    isconstraint::Cint
+    isconstraint::bool
     transitionRels::Ptr{List}
-    deferrable::Cint
-    initdeferred::Cint
+    deferrable::bool
+    initdeferred::bool
     constrrel::Ptr{RangeVar}
 end
 
@@ -2035,12 +2035,12 @@ end
 
 struct CreatePLangStmt
     type::NodeTag
-    replace::Cint
+    replace::bool
     plname::Cstring
     plhandler::Ptr{List}
     plinline::Ptr{List}
     plvalidator::Ptr{List}
-    pltrusted::Cint
+    pltrusted::bool
 end
 
 @cenum RoleStmtType::UInt32 begin
@@ -2074,7 +2074,7 @@ end
 struct DropRoleStmt
     type::NodeTag
     roles::Ptr{List}
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 struct CreateSeqStmt
@@ -2082,16 +2082,16 @@ struct CreateSeqStmt
     sequence::Ptr{RangeVar}
     options::Ptr{List}
     ownerId::Cint
-    for_identity::Cint
-    if_not_exists::Cint
+    for_identity::bool
+    if_not_exists::bool
 end
 
 struct AlterSeqStmt
     type::NodeTag
     sequence::Ptr{RangeVar}
     options::Ptr{List}
-    for_identity::Cint
-    missing_ok::Cint
+    for_identity::bool
+    missing_ok::bool
 end
 
 struct DefineStmt
@@ -2101,7 +2101,7 @@ struct DefineStmt
     defnames::Ptr{List}
     args::Ptr{List}
     definition::Ptr{List}
-    if_not_exists::Cint
+    if_not_exists::bool
 end
 
 struct CreateDomainStmt
@@ -2119,7 +2119,7 @@ struct CreateOpClassStmt
     amname::Cstring
     datatype::Ptr{TypeName}
     items::Ptr{List}
-    isDefault::Cint
+    isDefault::bool
 end
 
 struct CreateOpClassItem
@@ -2142,7 +2142,7 @@ struct AlterOpFamilyStmt
     type::NodeTag
     opfamilyname::Ptr{List}
     amname::Cstring
-    isDrop::Cint
+    isDrop::bool
     items::Ptr{List}
 end
 
@@ -2151,14 +2151,14 @@ struct DropStmt
     objects::Ptr{List}
     removeType::ObjectType
     behavior::DropBehavior
-    missing_ok::Cint
-    concurrent::Cint
+    missing_ok::bool
+    concurrent::bool
 end
 
 struct TruncateStmt
     type::NodeTag
     relations::Ptr{List}
-    restart_seqs::Cint
+    restart_seqs::bool
     behavior::DropBehavior
 end
 
@@ -2202,7 +2202,7 @@ struct FetchStmt
     direction::FetchDirection
     howMany::Clong
     portalname::Cstring
-    ismove::Cint
+    ismove::bool
 end
 
 struct IndexStmt
@@ -2218,14 +2218,14 @@ struct IndexStmt
     idxcomment::Cstring
     indexOid::Cint
     oldNode::Cint
-    unique::Cint
-    primary::Cint
-    isconstraint::Cint
-    deferrable::Cint
-    initdeferred::Cint
-    transformed::Cint
-    concurrent::Cint
-    if_not_exists::Cint
+    unique::bool
+    primary::bool
+    isconstraint::bool
+    deferrable::bool
+    initdeferred::bool
+    transformed::bool
+    concurrent::bool
+    if_not_exists::bool
 end
 
 struct CreateStatsStmt
@@ -2234,12 +2234,12 @@ struct CreateStatsStmt
     stat_types::Ptr{List}
     exprs::Ptr{List}
     relations::Ptr{List}
-    if_not_exists::Cint
+    if_not_exists::bool
 end
 
 struct CreateFunctionStmt
     type::NodeTag
-    replace::Cint
+    replace::bool
     funcname::Ptr{List}
     parameters::Ptr{List}
     returnType::Ptr{TypeName}
@@ -2279,7 +2279,7 @@ struct InlineCodeBlock
     type::NodeTag
     source_text::Cstring
     langOid::Cint
-    langIsTrusted::Cint
+    langIsTrusted::bool
 end
 
 struct RenameStmt
@@ -2291,7 +2291,7 @@ struct RenameStmt
     subname::Cstring
     newname::Cstring
     behavior::DropBehavior
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 struct AlterObjectDependsStmt
@@ -2308,7 +2308,7 @@ struct AlterObjectSchemaStmt
     relation::Ptr{RangeVar}
     object::Ptr{Node}
     newschema::Cstring
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 struct AlterOwnerStmt
@@ -2331,9 +2331,9 @@ struct RuleStmt
     rulename::Cstring
     whereClause::Ptr{Node}
     event::CmdType
-    instead::Cint
+    instead::bool
     actions::Ptr{List}
-    replace::Cint
+    replace::bool
 end
 
 struct NotifyStmt
@@ -2397,8 +2397,8 @@ struct AlterEnumStmt
     oldVal::Cstring
     newVal::Cstring
     newValNeighbor::Cstring
-    newValIsAfter::Cint
-    skipIfNewValExists::Cint
+    newValIsAfter::bool
+    skipIfNewValExists::bool
 end
 
 @cenum ViewCheckOption::UInt32 begin
@@ -2413,7 +2413,7 @@ struct ViewStmt
     view::Ptr{RangeVar}
     aliases::Ptr{List}
     query::Ptr{Node}
-    replace::Cint
+    replace::bool
     options::Ptr{List}
     withCheckOption::ViewCheckOption
 end
@@ -2444,7 +2444,7 @@ end
 struct DropdbStmt
     type::NodeTag
     dbname::Cstring
-    missing_ok::Cint
+    missing_ok::bool
 end
 
 struct AlterSystemStmt
@@ -2456,7 +2456,7 @@ struct ClusterStmt
     type::NodeTag
     relation::Ptr{RangeVar}
     indexname::Cstring
-    verbose::Cint
+    verbose::bool
 end
 
 @cenum VacuumOption::UInt32 begin
@@ -2489,14 +2489,14 @@ struct CreateTableAsStmt
     query::Ptr{Node}
     into::Ptr{IntoClause}
     relkind::ObjectType
-    is_select_into::Cint
-    if_not_exists::Cint
+    is_select_into::bool
+    if_not_exists::bool
 end
 
 struct RefreshMatViewStmt
     type::NodeTag
-    concurrent::Cint
-    skipData::Cint
+    concurrent::bool
+    skipData::bool
     relation::Ptr{RangeVar}
 end
 
@@ -2521,13 +2521,13 @@ struct LockStmt
     type::NodeTag
     relations::Ptr{List}
     mode::Cint
-    nowait::Cint
+    nowait::bool
 end
 
 struct ConstraintsSetStmt
     type::NodeTag
     constraints::Ptr{List}
-    deferred::Cint
+    deferred::bool
 end
 
 @cenum ReindexObjectType::UInt32 begin
@@ -2553,7 +2553,7 @@ struct CreateConversionStmt
     for_encoding_name::Cstring
     to_encoding_name::Cstring
     func_name::Ptr{List}
-    def::Cint
+    def::bool
 end
 
 @cenum CoercionContext::UInt32 begin
@@ -2569,12 +2569,12 @@ struct CreateCastStmt
     targettype::Ptr{TypeName}
     func::Ptr{ObjectWithArgs}
     context::CoercionContext
-    inout::Cint
+    inout::bool
 end
 
 struct CreateTransformStmt
     type::NodeTag
-    replace::Cint
+    replace::bool
     type_name::Ptr{TypeName}
     lang::Cstring
     fromsql::Ptr{ObjectWithArgs}
@@ -2632,9 +2632,9 @@ struct AlterTSConfigurationStmt
     cfgname::Ptr{List}
     tokentype::Ptr{List}
     dicts::Ptr{List}
-    override::Cint
-    replace::Cint
-    missing_ok::Cint
+    override::bool
+    replace::bool
+    missing_ok::bool
 end
 
 struct CreatePublicationStmt
@@ -2642,7 +2642,7 @@ struct CreatePublicationStmt
     pubname::Cstring
     options::Ptr{List}
     tables::Ptr{List}
-    for_all_tables::Cint
+    for_all_tables::bool
 end
 
 struct AlterPublicationStmt
@@ -2650,7 +2650,7 @@ struct AlterPublicationStmt
     pubname::Cstring
     options::Ptr{List}
     tables::Ptr{List}
-    for_all_tables::Cint
+    for_all_tables::bool
     tableAction::DefElemAction
 end
 
@@ -2683,7 +2683,7 @@ end
 struct DropSubscriptionStmt
     type::NodeTag
     subname::Cstring
-    missing_ok::Cint
+    missing_ok::bool
     behavior::DropBehavior
 end
 
@@ -2750,8 +2750,8 @@ struct Plan
     total_cost::Cost
     plan_rows::Cdouble
     plan_width::Cint
-    parallel_aware::Cint
-    parallel_safe::Cint
+    parallel_aware::bool
+    parallel_safe::bool
     plan_node_id::Cint
     targetlist::Ptr{List}
     qual::Ptr{List}
@@ -2766,12 +2766,12 @@ struct PlannedStmt
     type::NodeTag
     commandType::CmdType
     queryId::Cint
-    hasReturning::Cint
-    hasModifyingCTE::Cint
-    canSetTag::Cint
-    transientPlan::Cint
-    dependsOnRole::Cint
-    parallelModeNeeded::Cint
+    hasReturning::bool
+    hasModifyingCTE::bool
+    canSetTag::bool
+    transientPlan::bool
+    dependsOnRole::bool
+    parallelModeNeeded::bool
     planTree::Ptr{Plan}
     rtable::Ptr{List}
     resultRelations::Ptr{List}
@@ -2800,7 +2800,7 @@ end
 struct ModifyTable
     plan::Plan
     operation::CmdType
-    canSetTag::Cint
+    canSetTag::bool
     nominalRelation::Cint
     partitioned_rels::Ptr{List}
     resultRelations::Ptr{List}
@@ -2835,7 +2835,7 @@ struct MergeAppend
     sortColIdx::Ptr{AttrNumber}
     sortOperators::Ptr{Cint}
     collations::Ptr{Cint}
-    nullsFirst::Ptr{Cint}
+    nullsFirst::Ptr{bool}
 end
 
 struct RecursiveUnion
@@ -2854,7 +2854,7 @@ end
 
 struct BitmapOr
     plan::Plan
-    isshared::Cint
+    isshared::bool
     bitmapplans::Ptr{List}
 end
 
@@ -2900,7 +2900,7 @@ end
 struct BitmapIndexScan
     scan::Scan
     indexid::Cint
-    isshared::Cint
+    isshared::bool
     indexqual::Ptr{List}
     indexqualorig::Ptr{List}
 end
@@ -2923,7 +2923,7 @@ end
 struct FunctionScan
     scan::Scan
     functions::Ptr{List}
-    funcordinality::Cint
+    funcordinality::bool
 end
 
 struct ValuesScan
@@ -2961,7 +2961,7 @@ struct ForeignScan
     fdw_scan_tlist::Ptr{List}
     fdw_recheck_quals::Ptr{List}
     fs_relids::Ptr{Bitmapset}
-    fsSystemCol::Cint
+    fsSystemCol::bool
 end
 
 struct CustomScan
@@ -2978,7 +2978,7 @@ end
 struct Join
     plan::Plan
     jointype::JoinType
-    inner_unique::Cint
+    inner_unique::bool
     joinqual::Ptr{List}
 end
 
@@ -3008,12 +3008,12 @@ end
 
 struct MergeJoin
     join::Join
-    skip_mark_restore::Cint
+    skip_mark_restore::bool
     mergeclauses::Ptr{List}
     mergeFamilies::Ptr{Cint}
     mergeCollations::Ptr{Cint}
     mergeStrategies::Ptr{Cint}
-    mergeNullsFirst::Ptr{Cint}
+    mergeNullsFirst::Ptr{bool}
 end
 
 struct HashJoin
@@ -3031,7 +3031,7 @@ struct Sort
     sortColIdx::Ptr{AttrNumber}
     sortOperators::Ptr{Cint}
     collations::Ptr{Cint}
-    nullsFirst::Ptr{Cint}
+    nullsFirst::Ptr{bool}
 end
 
 struct Group
@@ -3079,8 +3079,8 @@ struct Gather
     plan::Plan
     num_workers::Cint
     rescan_param::Cint
-    single_copy::Cint
-    invisible::Cint
+    single_copy::bool
+    invisible::bool
 end
 
 struct GatherMerge
@@ -3091,14 +3091,14 @@ struct GatherMerge
     sortColIdx::Ptr{AttrNumber}
     sortOperators::Ptr{Cint}
     collations::Ptr{Cint}
-    nullsFirst::Ptr{Cint}
+    nullsFirst::Ptr{bool}
 end
 
 struct Hash
     plan::Plan
     skewTable::Cint
     skewColumn::AttrNumber
-    skewInherit::Cint
+    skewInherit::bool
 end
 
 struct SetOp
@@ -3144,7 +3144,7 @@ struct PlanRowMark
     allMarkTypes::Cint
     strength::LockClauseStrength
     waitPolicy::LockWaitPolicy
-    isParent::Cint
+    isParent::bool
 end
 
 struct PlanInvalItem
@@ -3169,8 +3169,8 @@ struct Const
     constcollid::Cint
     constlen::Cint
     constvalue::Cint
-    constisnull::Cint
-    constbyval::Cint
+    constisnull::bool
+    constbyval::bool
     location::Cint
 end
 
@@ -3205,8 +3205,8 @@ struct Aggref
     aggorder::Ptr{List}
     aggdistinct::Ptr{List}
     aggfilter::Ptr{Expr}
-    aggstar::Cint
-    aggvariadic::Cint
+    aggstar::bool
+    aggvariadic::bool
     aggkind::UInt8
     agglevelsup::Cint
     aggsplit::AggSplit
@@ -3230,8 +3230,8 @@ struct WindowFunc
     inputcollid::Cint
     args::Ptr{List}
     aggfilter::Ptr{Expr}
-    winref::Cint
-    winstar::Cint
+    winref::bool
+    winstar::bool
     winagg::Cint
     location::Cint
 end
@@ -3259,8 +3259,8 @@ struct FuncExpr
     xpr::Expr
     funcid::Cint
     funcresulttype::Cint
-    funcretset::Cint
-    funcvariadic::Cint
+    funcretset::bool
+    funcvariadic::bool
     funcformat::CoercionForm
     funccollid::Cint
     inputcollid::Cint
@@ -3281,7 +3281,7 @@ struct OpExpr
     opno::Cint
     opfuncid::Cint
     opresulttype::Cint
-    opretset::Cint
+    opretset::bool
     opcollid::Cint
     inputcollid::Cint
     args::Ptr{List}
@@ -3295,7 +3295,7 @@ struct ScalarArrayOpExpr
     xpr::Expr
     opno::Cint
     opfuncid::Cint
-    useOr::Cint
+    useOr::bool
     inputcollid::Cint
     args::Ptr{List}
     location::Cint
@@ -3347,9 +3347,9 @@ struct SubPlan
     firstColType::Cint
     firstColTypmod::Cint
     firstColCollation::Cint
-    useHashTable::Cint
-    unknownEqFalse::Cint
-    parallel_safe::Cint
+    useHashTable::bool
+    unknownEqFalse::bool
+    parallel_safe::bool
     setParam::Ptr{List}
     parParam::Ptr{List}
     args::Ptr{List}
@@ -3405,7 +3405,7 @@ struct ArrayCoerceExpr
     resulttype::Cint
     resulttypmod::Cint
     resultcollid::Cint
-    isExplicit::Cint
+    isExplicit::bool
     coerceformat::CoercionForm
     location::Cint
 end
@@ -3455,7 +3455,7 @@ struct ArrayExpr
     array_collid::Cint
     element_typeid::Cint
     elements::Ptr{List}
-    multidims::Cint
+    multidims::bool
     location::Cint
 end
 
@@ -3574,7 +3574,7 @@ struct NullTest
     xpr::Expr
     arg::Ptr{Expr}
     nulltesttype::NullTestType
-    argisrow::Cint
+    argisrow::bool
     location::Cint
 end
 
@@ -3649,7 +3649,7 @@ struct TargetEntry
     ressortgroupref::Cint
     resorigtbl::Cint
     resorigcol::AttrNumber
-    resjunk::Cint
+    resjunk::bool
 end
 
 struct RangeTblRef
@@ -3660,7 +3660,7 @@ end
 struct JoinExpr
     type::NodeTag
     jointype::JoinType
-    isNatural::Cint
+    isNatural::bool
     larg::Ptr{Node}
     rarg::Ptr{Node}
     usingClause::Ptr{List}
@@ -3699,8 +3699,8 @@ end
 struct AggClauseCosts
     numAggs::Cint
     numOrderedAggs::Cint
-    hasNonPartial::Cint
-    hasNonSerial::Cint
+    hasNonPartial::bool
+    hasNonSerial::bool
     transCost::QualCost
     finalCost::Cost
     transitionSpace::Cint
@@ -3733,10 +3733,10 @@ struct PlannerGlobal
     lastPHId::Cint
     lastRowMarkId::Cint
     lastPlanNodeId::Cint
-    transientPlan::Cint
-    dependsOnRole::Cint
-    parallelModeOK::Cint
-    parallelModeNeeded::Cint
+    transientPlan::bool
+    dependsOnRole::bool
+    parallelModeOK::bool
+    parallelModeNeeded::bool
     maxParallelHazard::UInt8
 end
 
@@ -3770,8 +3770,8 @@ struct PathGeneric{REL_OPT_INFO}
     parent::Ptr{REL_OPT_INFO}
     pathtarget::Ptr{PathTarget}
     param_info::Ptr{ParamPathInfo}
-    parallel_aware::Cint
-    parallel_safe::Cint
+    parallel_aware::bool
+    parallel_safe::bool
     parallel_workers::Cint
     rows::Cdouble
     startup_cost::Cost
@@ -3784,9 +3784,9 @@ struct RelOptInfoGeneric{PLANNER_INFO}
     reloptkind::RelOptKind
     relids::Relids
     rows::Cdouble
-    consider_startup::Cint
-    consider_param_startup::Cint
-    consider_parallel::Cint
+    consider_startup::bool
+    consider_param_startup::bool
+    consider_parallel::bool
     reltarget::Ptr{PathTarget}
     pathlist::Ptr{List}
     ppilist::Ptr{List}
@@ -3816,7 +3816,7 @@ struct RelOptInfoGeneric{PLANNER_INFO}
     rel_parallel_workers::Cint
     serverid::Cint
     userid::Cint
-    useridiscurrent::Cint
+    useridiscurrent::bool
     fdwroutine::Ptr{FdwRoutine}
     fdw_private::Ptr{Cvoid}
     unique_for_rels::Ptr{List}
@@ -3825,7 +3825,7 @@ struct RelOptInfoGeneric{PLANNER_INFO}
     baserestrictcost::QualCost
     baserestrict_min_security::Cint
     joininfo::Ptr{List}
-    has_eclass_joins::Cint
+    has_eclass_joins::bool
     top_parent_relids::Relids
 end
 
@@ -3876,13 +3876,13 @@ struct PlannerInfo
     tuple_fraction::Cdouble
     limit_tuples::Cdouble
     qual_security_level::Cint
-    hasInheritedTarget::Cint
-    hasJoinRTEs::Cint
-    hasLateralRTEs::Cint
-    hasDeletedRTEs::Cint
-    hasHavingQual::Cint
-    hasPseudoConstantQuals::Cint
-    hasRecursion::Cint
+    hasInheritedTarget::bool
+    hasJoinRTEs::bool
+    hasLateralRTEs::bool
+    hasDeletedRTEs::bool
+    hasHavingQual::bool
+    hasPseudoConstantQuals::bool
+    hasRecursion::bool
     wt_param_id::Cint
     non_recursive_path::Ptr{PathGeneric{RelOptInfoGeneric{PlannerInfo}}}
     curOuterRels::Relids
@@ -3907,25 +3907,25 @@ struct IndexOptInfo
     opfamily::Ptr{Cint}
     opcintype::Ptr{Cint}
     sortopfamily::Ptr{Cint}
-    reverse_sort::Ptr{Cint}
-    nulls_first::Ptr{Cint}
-    canreturn::Ptr{Cint}
+    reverse_sort::Ptr{bool}
+    nulls_first::Ptr{bool}
+    canreturn::Ptr{bool}
     relam::Cint
     indexprs::Ptr{List}
     indpred::Ptr{List}
     indextlist::Ptr{List}
     indrestrictinfo::Ptr{List}
-    predOK::Cint
-    unique::Cint
-    immediate::Cint
-    hypothetical::Cint
-    amcanorderbyop::Cint
-    amoptionalkey::Cint
-    amsearcharray::Cint
-    amsearchnulls::Cint
-    amhasgettuple::Cint
-    amhasgetbitmap::Cint
-    amcanparallel::Cint
+    predOK::bool
+    unique::bool
+    immediate::bool
+    hypothetical::bool
+    amcanorderbyop::bool
+    amoptionalkey::bool
+    amsearcharray::bool
+    amsearchnulls::bool
+    amhasgettuple::bool
+    amhasgetbitmap::bool
+    amcanparallel::bool
     amcostestimate::Ptr{Cvoid}
 end
 
@@ -3937,10 +3937,10 @@ struct EquivalenceClass
     ec_sources::Ptr{List}
     ec_derives::Ptr{List}
     ec_relids::Relids
-    ec_has_const::Cint
-    ec_has_volatile::Cint
-    ec_below_outer_join::Cint
-    ec_broken::Cint
+    ec_has_const::bool
+    ec_has_volatile::bool
+    ec_below_outer_join::bool
+    ec_broken::bool
     ec_sortref::Cint
     ec_min_security::Cint
     ec_max_security::Cint
@@ -3975,8 +3975,8 @@ struct EquivalenceMember
     em_expr::Ptr{Expr}
     em_relids::Relids
     em_nullable_relids::Relids
-    em_is_const::Cint
-    em_is_child::Cint
+    em_is_const::bool
+    em_is_child::bool
     em_datatype::Cint
 end
 
@@ -3985,7 +3985,7 @@ struct PathKey
     pk_eclass::Ptr{EquivalenceClass}
     pk_opfamily::Cint
     pk_strategy::Cint
-    pk_nulls_first::Cint
+    pk_nulls_first::bool
 end
 
 struct IndexPath
@@ -4083,7 +4083,7 @@ end
 struct GatherPath
     path::Path
     subpath::Ptr{Path}
-    single_copy::Cint
+    single_copy::bool
     num_workers::Cint
 end
 
@@ -4096,7 +4096,7 @@ end
 struct JoinPath
     path::Path
     jointype::JoinType
-    inner_unique::Cint
+    inner_unique::bool
     outerjoinpath::Ptr{Path}
     innerjoinpath::Ptr{Path}
     joinrestrictinfo::Ptr{List}
@@ -4109,8 +4109,8 @@ struct MergePath
     path_mergeclauses::Ptr{List}
     outersortkeys::Ptr{List}
     innersortkeys::Ptr{List}
-    skip_mark_restore::Cint
-    materialize_inner::Cint
+    skip_mark_restore::bool
+    materialize_inner::bool
 end
 
 struct HashPath
@@ -4122,7 +4122,7 @@ end
 struct ProjectionPath
     path::Path
     subpath::Ptr{Path}
-    dummypp::Cint
+    dummypp::bool
 end
 
 struct ProjectSetPath
@@ -4170,8 +4170,8 @@ struct RollupData
     gsets::Ptr{List}
     gsets_data::Ptr{List}
     numGroups::Cdouble
-    hashable::Cint
-    is_hashed::Cint
+    hashable::bool
+    is_hashed::bool
 end
 
 struct GroupingSetsPath
@@ -4225,7 +4225,7 @@ end
 struct ModifyTablePath
     path::Path
     operation::CmdType
-    canSetTag::Cint
+    canSetTag::bool
     nominalRelation::Cint
     partitioned_rels::Ptr{List}
     resultRelations::Ptr{List}
@@ -4248,11 +4248,11 @@ end
 struct RestrictInfo
     type::NodeTag
     clause::Ptr{Expr}
-    is_pushed_down::Cint
-    outerjoin_delayed::Cint
-    can_join::Cint
-    pseudoconstant::Cint
-    leakproof::Cint
+    is_pushed_down::bool
+    outerjoin_delayed::bool
+    can_join::bool
+    pseudoconstant::bool
+    leakproof::bool
     security_level::Cint
     clause_relids::Relids
     required_relids::Relids
@@ -4271,7 +4271,7 @@ struct RestrictInfo
     left_em::Ptr{EquivalenceMember}
     right_em::Ptr{EquivalenceMember}
     scansel_cache::Ptr{List}
-    outer_is_left::Cint
+    outer_is_left::bool
     hashjoinoperator::Cint
     left_bucketsize::Selectivity
     right_bucketsize::Selectivity
@@ -4281,7 +4281,7 @@ struct MergeScanSelCache
     opfamily::Cint
     collation::Cint
     strategy::Cint
-    nulls_first::Cint
+    nulls_first::bool
     leftstartsel::Selectivity
     leftendsel::Selectivity
     rightstartsel::Selectivity
@@ -4303,10 +4303,10 @@ struct SpecialJoinInfo
     syn_lefthand::Relids
     syn_righthand::Relids
     jointype::JoinType
-    lhs_strict::Cint
-    delay_upper_joins::Cint
-    semi_can_btree::Cint
-    semi_can_hash::Cint
+    lhs_strict::bool
+    delay_upper_joins::bool
+    semi_can_btree::bool
+    semi_can_hash::bool
     semi_operators::Ptr{List}
     semi_rhs_exprs::Ptr{List}
 end
@@ -4362,7 +4362,7 @@ end
 struct JoinPathExtraData
     restrictlist::Ptr{List}
     mergeclause_list::Ptr{List}
-    inner_unique::Cint
+    inner_unique::bool
     sjinfo::Ptr{SpecialJoinInfo}
     semifactors::SemiAntiJoinFactors
     param_source_rels::Relids
@@ -4389,7 +4389,7 @@ const TBMSharedIterator = Cvoid
 struct TBMIterateResult
     blockno::BlockNumber
     ntuples::Cint
-    recheck::Cint
+    recheck::bool
     offsets::OffsetNumber
 end
 
