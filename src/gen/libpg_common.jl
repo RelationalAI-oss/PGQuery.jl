@@ -1,4 +1,4 @@
-# Automatically generated using Clang.jl wrap_c
+# Automatically generated using Clang.jl
 
 
 const PG_VERSION = "10.5"
@@ -38,421 +38,418 @@ end
 
 const STDERR_BUFFER_LEN = 4096
 
-@cenum(NodeTag,
-    T_Invalid = 0,
-    T_IndexInfo = 1,
-    T_ExprContext = 2,
-    T_ProjectionInfo = 3,
-    T_JunkFilter = 4,
-    T_ResultRelInfo = 5,
-    T_EState = 6,
-    T_TupleTableSlot = 7,
-    T_Plan = 8,
-    T_Result = 9,
-    T_ProjectSet = 10,
-    T_ModifyTable = 11,
-    T_Append = 12,
-    T_MergeAppend = 13,
-    T_RecursiveUnion = 14,
-    T_BitmapAnd = 15,
-    T_BitmapOr = 16,
-    T_Scan = 17,
-    T_SeqScan = 18,
-    T_SampleScan = 19,
-    T_IndexScan = 20,
-    T_IndexOnlyScan = 21,
-    T_BitmapIndexScan = 22,
-    T_BitmapHeapScan = 23,
-    T_TidScan = 24,
-    T_SubqueryScan = 25,
-    T_FunctionScan = 26,
-    T_ValuesScan = 27,
-    T_TableFuncScan = 28,
-    T_CteScan = 29,
-    T_NamedTuplestoreScan = 30,
-    T_WorkTableScan = 31,
-    T_ForeignScan = 32,
-    T_CustomScan = 33,
-    T_Join = 34,
-    T_NestLoop = 35,
-    T_MergeJoin = 36,
-    T_HashJoin = 37,
-    T_Material = 38,
-    T_Sort = 39,
-    T_Group = 40,
-    T_Agg = 41,
-    T_WindowAgg = 42,
-    T_Unique = 43,
-    T_Gather = 44,
-    T_GatherMerge = 45,
-    T_Hash = 46,
-    T_SetOp = 47,
-    T_LockRows = 48,
-    T_Limit = 49,
-    T_NestLoopParam = 50,
-    T_PlanRowMark = 51,
-    T_PlanInvalItem = 52,
-    T_PlanState = 53,
-    T_ResultState = 54,
-    T_ProjectSetState = 55,
-    T_ModifyTableState = 56,
-    T_AppendState = 57,
-    T_MergeAppendState = 58,
-    T_RecursiveUnionState = 59,
-    T_BitmapAndState = 60,
-    T_BitmapOrState = 61,
-    T_ScanState = 62,
-    T_SeqScanState = 63,
-    T_SampleScanState = 64,
-    T_IndexScanState = 65,
-    T_IndexOnlyScanState = 66,
-    T_BitmapIndexScanState = 67,
-    T_BitmapHeapScanState = 68,
-    T_TidScanState = 69,
-    T_SubqueryScanState = 70,
-    T_FunctionScanState = 71,
-    T_TableFuncScanState = 72,
-    T_ValuesScanState = 73,
-    T_CteScanState = 74,
-    T_NamedTuplestoreScanState = 75,
-    T_WorkTableScanState = 76,
-    T_ForeignScanState = 77,
-    T_CustomScanState = 78,
-    T_JoinState = 79,
-    T_NestLoopState = 80,
-    T_MergeJoinState = 81,
-    T_HashJoinState = 82,
-    T_MaterialState = 83,
-    T_SortState = 84,
-    T_GroupState = 85,
-    T_AggState = 86,
-    T_WindowAggState = 87,
-    T_UniqueState = 88,
-    T_GatherState = 89,
-    T_GatherMergeState = 90,
-    T_HashState = 91,
-    T_SetOpState = 92,
-    T_LockRowsState = 93,
-    T_LimitState = 94,
-    T_Alias = 95,
-    T_RangeVar = 96,
-    T_TableFunc = 97,
-    T_Expr = 98,
-    T_Var = 99,
-    T_Const = 100,
-    T_Param = 101,
-    T_Aggref = 102,
-    T_GroupingFunc = 103,
-    T_WindowFunc = 104,
-    T_ArrayRef = 105,
-    T_FuncExpr = 106,
-    T_NamedArgExpr = 107,
-    T_OpExpr = 108,
-    T_DistinctExpr = 109,
-    T_NullIfExpr = 110,
-    T_ScalarArrayOpExpr = 111,
-    T_BoolExpr = 112,
-    T_SubLink = 113,
-    T_SubPlan = 114,
-    T_AlternativeSubPlan = 115,
-    T_FieldSelect = 116,
-    T_FieldStore = 117,
-    T_RelabelType = 118,
-    T_CoerceViaIO = 119,
-    T_ArrayCoerceExpr = 120,
-    T_ConvertRowtypeExpr = 121,
-    T_CollateExpr = 122,
-    T_CaseExpr = 123,
-    T_CaseWhen = 124,
-    T_CaseTestExpr = 125,
-    T_ArrayExpr = 126,
-    T_RowExpr = 127,
-    T_RowCompareExpr = 128,
-    T_CoalesceExpr = 129,
-    T_MinMaxExpr = 130,
-    T_SQLValueFunction = 131,
-    T_XmlExpr = 132,
-    T_NullTest = 133,
-    T_BooleanTest = 134,
-    T_CoerceToDomain = 135,
-    T_CoerceToDomainValue = 136,
-    T_SetToDefault = 137,
-    T_CurrentOfExpr = 138,
-    T_NextValueExpr = 139,
-    T_InferenceElem = 140,
-    T_TargetEntry = 141,
-    T_RangeTblRef = 142,
-    T_JoinExpr = 143,
-    T_FromExpr = 144,
-    T_OnConflictExpr = 145,
-    T_IntoClause = 146,
-    T_ExprState = 147,
-    T_AggrefExprState = 148,
-    T_WindowFuncExprState = 149,
-    T_SetExprState = 150,
-    T_SubPlanState = 151,
-    T_AlternativeSubPlanState = 152,
-    T_DomainConstraintState = 153,
-    T_PlannerInfo = 154,
-    T_PlannerGlobal = 155,
-    T_RelOptInfo = 156,
-    T_IndexOptInfo = 157,
-    T_ForeignKeyOptInfo = 158,
-    T_ParamPathInfo = 159,
-    T_Path = 160,
-    T_IndexPath = 161,
-    T_BitmapHeapPath = 162,
-    T_BitmapAndPath = 163,
-    T_BitmapOrPath = 164,
-    T_TidPath = 165,
-    T_SubqueryScanPath = 166,
-    T_ForeignPath = 167,
-    T_CustomPath = 168,
-    T_NestPath = 169,
-    T_MergePath = 170,
-    T_HashPath = 171,
-    T_AppendPath = 172,
-    T_MergeAppendPath = 173,
-    T_ResultPath = 174,
-    T_MaterialPath = 175,
-    T_UniquePath = 176,
-    T_GatherPath = 177,
-    T_GatherMergePath = 178,
-    T_ProjectionPath = 179,
-    T_ProjectSetPath = 180,
-    T_SortPath = 181,
-    T_GroupPath = 182,
-    T_UpperUniquePath = 183,
-    T_AggPath = 184,
-    T_GroupingSetsPath = 185,
-    T_MinMaxAggPath = 186,
-    T_WindowAggPath = 187,
-    T_SetOpPath = 188,
-    T_RecursiveUnionPath = 189,
-    T_LockRowsPath = 190,
-    T_ModifyTablePath = 191,
-    T_LimitPath = 192,
-    T_EquivalenceClass = 193,
-    T_EquivalenceMember = 194,
-    T_PathKey = 195,
-    T_PathTarget = 196,
-    T_RestrictInfo = 197,
-    T_PlaceHolderVar = 198,
-    T_SpecialJoinInfo = 199,
-    T_AppendRelInfo = 200,
-    T_PartitionedChildRelInfo = 201,
-    T_PlaceHolderInfo = 202,
-    T_MinMaxAggInfo = 203,
-    T_PlannerParamItem = 204,
-    T_RollupData = 205,
-    T_GroupingSetData = 206,
-    T_StatisticExtInfo = 207,
-    T_MemoryContext = 208,
-    T_AllocSetContext = 209,
-    T_SlabContext = 210,
-    T_Value = 211,
-    T_Integer = 212,
-    T_Float = 213,
-    T_String = 214,
-    T_BitString = 215,
-    T_Null = 216,
-    T_List = 217,
-    T_IntList = 218,
-    T_OidList = 219,
-    T_ExtensibleNode = 220,
-    T_RawStmt = 221,
-    T_Query = 222,
-    T_PlannedStmt = 223,
-    T_InsertStmt = 224,
-    T_DeleteStmt = 225,
-    T_UpdateStmt = 226,
-    T_SelectStmt = 227,
-    T_AlterTableStmt = 228,
-    T_AlterTableCmd = 229,
-    T_AlterDomainStmt = 230,
-    T_SetOperationStmt = 231,
-    T_GrantStmt = 232,
-    T_GrantRoleStmt = 233,
-    T_AlterDefaultPrivilegesStmt = 234,
-    T_ClosePortalStmt = 235,
-    T_ClusterStmt = 236,
-    T_CopyStmt = 237,
-    T_CreateStmt = 238,
-    T_DefineStmt = 239,
-    T_DropStmt = 240,
-    T_TruncateStmt = 241,
-    T_CommentStmt = 242,
-    T_FetchStmt = 243,
-    T_IndexStmt = 244,
-    T_CreateFunctionStmt = 245,
-    T_AlterFunctionStmt = 246,
-    T_DoStmt = 247,
-    T_RenameStmt = 248,
-    T_RuleStmt = 249,
-    T_NotifyStmt = 250,
-    T_ListenStmt = 251,
-    T_UnlistenStmt = 252,
-    T_TransactionStmt = 253,
-    T_ViewStmt = 254,
-    T_LoadStmt = 255,
-    T_CreateDomainStmt = 256,
-    T_CreatedbStmt = 257,
-    T_DropdbStmt = 258,
-    T_VacuumStmt = 259,
-    T_ExplainStmt = 260,
-    T_CreateTableAsStmt = 261,
-    T_CreateSeqStmt = 262,
-    T_AlterSeqStmt = 263,
-    T_VariableSetStmt = 264,
-    T_VariableShowStmt = 265,
-    T_DiscardStmt = 266,
-    T_CreateTrigStmt = 267,
-    T_CreatePLangStmt = 268,
-    T_CreateRoleStmt = 269,
-    T_AlterRoleStmt = 270,
-    T_DropRoleStmt = 271,
-    T_LockStmt = 272,
-    T_ConstraintsSetStmt = 273,
-    T_ReindexStmt = 274,
-    T_CheckPointStmt = 275,
-    T_CreateSchemaStmt = 276,
-    T_AlterDatabaseStmt = 277,
-    T_AlterDatabaseSetStmt = 278,
-    T_AlterRoleSetStmt = 279,
-    T_CreateConversionStmt = 280,
-    T_CreateCastStmt = 281,
-    T_CreateOpClassStmt = 282,
-    T_CreateOpFamilyStmt = 283,
-    T_AlterOpFamilyStmt = 284,
-    T_PrepareStmt = 285,
-    T_ExecuteStmt = 286,
-    T_DeallocateStmt = 287,
-    T_DeclareCursorStmt = 288,
-    T_CreateTableSpaceStmt = 289,
-    T_DropTableSpaceStmt = 290,
-    T_AlterObjectDependsStmt = 291,
-    T_AlterObjectSchemaStmt = 292,
-    T_AlterOwnerStmt = 293,
-    T_AlterOperatorStmt = 294,
-    T_DropOwnedStmt = 295,
-    T_ReassignOwnedStmt = 296,
-    T_CompositeTypeStmt = 297,
-    T_CreateEnumStmt = 298,
-    T_CreateRangeStmt = 299,
-    T_AlterEnumStmt = 300,
-    T_AlterTSDictionaryStmt = 301,
-    T_AlterTSConfigurationStmt = 302,
-    T_CreateFdwStmt = 303,
-    T_AlterFdwStmt = 304,
-    T_CreateForeignServerStmt = 305,
-    T_AlterForeignServerStmt = 306,
-    T_CreateUserMappingStmt = 307,
-    T_AlterUserMappingStmt = 308,
-    T_DropUserMappingStmt = 309,
-    T_AlterTableSpaceOptionsStmt = 310,
-    T_AlterTableMoveAllStmt = 311,
-    T_SecLabelStmt = 312,
-    T_CreateForeignTableStmt = 313,
-    T_ImportForeignSchemaStmt = 314,
-    T_CreateExtensionStmt = 315,
-    T_AlterExtensionStmt = 316,
-    T_AlterExtensionContentsStmt = 317,
-    T_CreateEventTrigStmt = 318,
-    T_AlterEventTrigStmt = 319,
-    T_RefreshMatViewStmt = 320,
-    T_ReplicaIdentityStmt = 321,
-    T_AlterSystemStmt = 322,
-    T_CreatePolicyStmt = 323,
-    T_AlterPolicyStmt = 324,
-    T_CreateTransformStmt = 325,
-    T_CreateAmStmt = 326,
-    T_CreatePublicationStmt = 327,
-    T_AlterPublicationStmt = 328,
-    T_CreateSubscriptionStmt = 329,
-    T_AlterSubscriptionStmt = 330,
-    T_DropSubscriptionStmt = 331,
-    T_CreateStatsStmt = 332,
-    T_AlterCollationStmt = 333,
-    T_A_Expr = 334,
-    T_ColumnRef = 335,
-    T_ParamRef = 336,
-    T_A_Const = 337,
-    T_FuncCall = 338,
-    T_A_Star = 339,
-    T_A_Indices = 340,
-    T_A_Indirection = 341,
-    T_A_ArrayExpr = 342,
-    T_ResTarget = 343,
-    T_MultiAssignRef = 344,
-    T_TypeCast = 345,
-    T_CollateClause = 346,
-    T_SortBy = 347,
-    T_WindowDef = 348,
-    T_RangeSubselect = 349,
-    T_RangeFunction = 350,
-    T_RangeTableSample = 351,
-    T_RangeTableFunc = 352,
-    T_RangeTableFuncCol = 353,
-    T_TypeName = 354,
-    T_ColumnDef = 355,
-    T_IndexElem = 356,
-    T_Constraint = 357,
-    T_DefElem = 358,
-    T_RangeTblEntry = 359,
-    T_RangeTblFunction = 360,
-    T_TableSampleClause = 361,
-    T_WithCheckOption = 362,
-    T_SortGroupClause = 363,
-    T_GroupingSet = 364,
-    T_WindowClause = 365,
-    T_ObjectWithArgs = 366,
-    T_AccessPriv = 367,
-    T_CreateOpClassItem = 368,
-    T_TableLikeClause = 369,
-    T_FunctionParameter = 370,
-    T_LockingClause = 371,
-    T_RowMarkClause = 372,
-    T_XmlSerialize = 373,
-    T_WithClause = 374,
-    T_InferClause = 375,
-    T_OnConflictClause = 376,
-    T_CommonTableExpr = 377,
-    T_RoleSpec = 378,
-    T_TriggerTransition = 379,
-    T_PartitionElem = 380,
-    T_PartitionSpec = 381,
-    T_PartitionBoundSpec = 382,
-    T_PartitionRangeDatum = 383,
-    T_PartitionCmd = 384,
-    T_IdentifySystemCmd = 385,
-    T_BaseBackupCmd = 386,
-    T_CreateReplicationSlotCmd = 387,
-    T_DropReplicationSlotCmd = 388,
-    T_StartReplicationCmd = 389,
-    T_TimeLineHistoryCmd = 390,
-    T_SQLCmd = 391,
-    T_TriggerData = 392,
-    T_EventTriggerData = 393,
-    T_ReturnSetInfo = 394,
-    T_WindowObjectData = 395,
-    T_TIDBitmap = 396,
-    T_InlineCodeBlock = 397,
-    T_FdwRoutine = 398,
-    T_IndexAmRoutine = 399,
-    T_TsmRoutine = 400,
-    T_ForeignKeyCacheInfo = 401,
-)
+@cenum NodeTag::UInt32 begin
+    T_Invalid = 0
+    T_IndexInfo = 1
+    T_ExprContext = 2
+    T_ProjectionInfo = 3
+    T_JunkFilter = 4
+    T_ResultRelInfo = 5
+    T_EState = 6
+    T_TupleTableSlot = 7
+    T_Plan = 8
+    T_Result = 9
+    T_ProjectSet = 10
+    T_ModifyTable = 11
+    T_Append = 12
+    T_MergeAppend = 13
+    T_RecursiveUnion = 14
+    T_BitmapAnd = 15
+    T_BitmapOr = 16
+    T_Scan = 17
+    T_SeqScan = 18
+    T_SampleScan = 19
+    T_IndexScan = 20
+    T_IndexOnlyScan = 21
+    T_BitmapIndexScan = 22
+    T_BitmapHeapScan = 23
+    T_TidScan = 24
+    T_SubqueryScan = 25
+    T_FunctionScan = 26
+    T_ValuesScan = 27
+    T_TableFuncScan = 28
+    T_CteScan = 29
+    T_NamedTuplestoreScan = 30
+    T_WorkTableScan = 31
+    T_ForeignScan = 32
+    T_CustomScan = 33
+    T_Join = 34
+    T_NestLoop = 35
+    T_MergeJoin = 36
+    T_HashJoin = 37
+    T_Material = 38
+    T_Sort = 39
+    T_Group = 40
+    T_Agg = 41
+    T_WindowAgg = 42
+    T_Unique = 43
+    T_Gather = 44
+    T_GatherMerge = 45
+    T_Hash = 46
+    T_SetOp = 47
+    T_LockRows = 48
+    T_Limit = 49
+    T_NestLoopParam = 50
+    T_PlanRowMark = 51
+    T_PlanInvalItem = 52
+    T_PlanState = 53
+    T_ResultState = 54
+    T_ProjectSetState = 55
+    T_ModifyTableState = 56
+    T_AppendState = 57
+    T_MergeAppendState = 58
+    T_RecursiveUnionState = 59
+    T_BitmapAndState = 60
+    T_BitmapOrState = 61
+    T_ScanState = 62
+    T_SeqScanState = 63
+    T_SampleScanState = 64
+    T_IndexScanState = 65
+    T_IndexOnlyScanState = 66
+    T_BitmapIndexScanState = 67
+    T_BitmapHeapScanState = 68
+    T_TidScanState = 69
+    T_SubqueryScanState = 70
+    T_FunctionScanState = 71
+    T_TableFuncScanState = 72
+    T_ValuesScanState = 73
+    T_CteScanState = 74
+    T_NamedTuplestoreScanState = 75
+    T_WorkTableScanState = 76
+    T_ForeignScanState = 77
+    T_CustomScanState = 78
+    T_JoinState = 79
+    T_NestLoopState = 80
+    T_MergeJoinState = 81
+    T_HashJoinState = 82
+    T_MaterialState = 83
+    T_SortState = 84
+    T_GroupState = 85
+    T_AggState = 86
+    T_WindowAggState = 87
+    T_UniqueState = 88
+    T_GatherState = 89
+    T_GatherMergeState = 90
+    T_HashState = 91
+    T_SetOpState = 92
+    T_LockRowsState = 93
+    T_LimitState = 94
+    T_Alias = 95
+    T_RangeVar = 96
+    T_TableFunc = 97
+    T_Expr = 98
+    T_Var = 99
+    T_Const = 100
+    T_Param = 101
+    T_Aggref = 102
+    T_GroupingFunc = 103
+    T_WindowFunc = 104
+    T_ArrayRef = 105
+    T_FuncExpr = 106
+    T_NamedArgExpr = 107
+    T_OpExpr = 108
+    T_DistinctExpr = 109
+    T_NullIfExpr = 110
+    T_ScalarArrayOpExpr = 111
+    T_BoolExpr = 112
+    T_SubLink = 113
+    T_SubPlan = 114
+    T_AlternativeSubPlan = 115
+    T_FieldSelect = 116
+    T_FieldStore = 117
+    T_RelabelType = 118
+    T_CoerceViaIO = 119
+    T_ArrayCoerceExpr = 120
+    T_ConvertRowtypeExpr = 121
+    T_CollateExpr = 122
+    T_CaseExpr = 123
+    T_CaseWhen = 124
+    T_CaseTestExpr = 125
+    T_ArrayExpr = 126
+    T_RowExpr = 127
+    T_RowCompareExpr = 128
+    T_CoalesceExpr = 129
+    T_MinMaxExpr = 130
+    T_SQLValueFunction = 131
+    T_XmlExpr = 132
+    T_NullTest = 133
+    T_BooleanTest = 134
+    T_CoerceToDomain = 135
+    T_CoerceToDomainValue = 136
+    T_SetToDefault = 137
+    T_CurrentOfExpr = 138
+    T_NextValueExpr = 139
+    T_InferenceElem = 140
+    T_TargetEntry = 141
+    T_RangeTblRef = 142
+    T_JoinExpr = 143
+    T_FromExpr = 144
+    T_OnConflictExpr = 145
+    T_IntoClause = 146
+    T_ExprState = 147
+    T_AggrefExprState = 148
+    T_WindowFuncExprState = 149
+    T_SetExprState = 150
+    T_SubPlanState = 151
+    T_AlternativeSubPlanState = 152
+    T_DomainConstraintState = 153
+    T_PlannerInfo = 154
+    T_PlannerGlobal = 155
+    T_RelOptInfo = 156
+    T_IndexOptInfo = 157
+    T_ForeignKeyOptInfo = 158
+    T_ParamPathInfo = 159
+    T_Path = 160
+    T_IndexPath = 161
+    T_BitmapHeapPath = 162
+    T_BitmapAndPath = 163
+    T_BitmapOrPath = 164
+    T_TidPath = 165
+    T_SubqueryScanPath = 166
+    T_ForeignPath = 167
+    T_CustomPath = 168
+    T_NestPath = 169
+    T_MergePath = 170
+    T_HashPath = 171
+    T_AppendPath = 172
+    T_MergeAppendPath = 173
+    T_ResultPath = 174
+    T_MaterialPath = 175
+    T_UniquePath = 176
+    T_GatherPath = 177
+    T_GatherMergePath = 178
+    T_ProjectionPath = 179
+    T_ProjectSetPath = 180
+    T_SortPath = 181
+    T_GroupPath = 182
+    T_UpperUniquePath = 183
+    T_AggPath = 184
+    T_GroupingSetsPath = 185
+    T_MinMaxAggPath = 186
+    T_WindowAggPath = 187
+    T_SetOpPath = 188
+    T_RecursiveUnionPath = 189
+    T_LockRowsPath = 190
+    T_ModifyTablePath = 191
+    T_LimitPath = 192
+    T_EquivalenceClass = 193
+    T_EquivalenceMember = 194
+    T_PathKey = 195
+    T_PathTarget = 196
+    T_RestrictInfo = 197
+    T_PlaceHolderVar = 198
+    T_SpecialJoinInfo = 199
+    T_AppendRelInfo = 200
+    T_PartitionedChildRelInfo = 201
+    T_PlaceHolderInfo = 202
+    T_MinMaxAggInfo = 203
+    T_PlannerParamItem = 204
+    T_RollupData = 205
+    T_GroupingSetData = 206
+    T_StatisticExtInfo = 207
+    T_MemoryContext = 208
+    T_AllocSetContext = 209
+    T_SlabContext = 210
+    T_Value = 211
+    T_Integer = 212
+    T_Float = 213
+    T_String = 214
+    T_BitString = 215
+    T_Null = 216
+    T_List = 217
+    T_IntList = 218
+    T_OidList = 219
+    T_ExtensibleNode = 220
+    T_RawStmt = 221
+    T_Query = 222
+    T_PlannedStmt = 223
+    T_InsertStmt = 224
+    T_DeleteStmt = 225
+    T_UpdateStmt = 226
+    T_SelectStmt = 227
+    T_AlterTableStmt = 228
+    T_AlterTableCmd = 229
+    T_AlterDomainStmt = 230
+    T_SetOperationStmt = 231
+    T_GrantStmt = 232
+    T_GrantRoleStmt = 233
+    T_AlterDefaultPrivilegesStmt = 234
+    T_ClosePortalStmt = 235
+    T_ClusterStmt = 236
+    T_CopyStmt = 237
+    T_CreateStmt = 238
+    T_DefineStmt = 239
+    T_DropStmt = 240
+    T_TruncateStmt = 241
+    T_CommentStmt = 242
+    T_FetchStmt = 243
+    T_IndexStmt = 244
+    T_CreateFunctionStmt = 245
+    T_AlterFunctionStmt = 246
+    T_DoStmt = 247
+    T_RenameStmt = 248
+    T_RuleStmt = 249
+    T_NotifyStmt = 250
+    T_ListenStmt = 251
+    T_UnlistenStmt = 252
+    T_TransactionStmt = 253
+    T_ViewStmt = 254
+    T_LoadStmt = 255
+    T_CreateDomainStmt = 256
+    T_CreatedbStmt = 257
+    T_DropdbStmt = 258
+    T_VacuumStmt = 259
+    T_ExplainStmt = 260
+    T_CreateTableAsStmt = 261
+    T_CreateSeqStmt = 262
+    T_AlterSeqStmt = 263
+    T_VariableSetStmt = 264
+    T_VariableShowStmt = 265
+    T_DiscardStmt = 266
+    T_CreateTrigStmt = 267
+    T_CreatePLangStmt = 268
+    T_CreateRoleStmt = 269
+    T_AlterRoleStmt = 270
+    T_DropRoleStmt = 271
+    T_LockStmt = 272
+    T_ConstraintsSetStmt = 273
+    T_ReindexStmt = 274
+    T_CheckPointStmt = 275
+    T_CreateSchemaStmt = 276
+    T_AlterDatabaseStmt = 277
+    T_AlterDatabaseSetStmt = 278
+    T_AlterRoleSetStmt = 279
+    T_CreateConversionStmt = 280
+    T_CreateCastStmt = 281
+    T_CreateOpClassStmt = 282
+    T_CreateOpFamilyStmt = 283
+    T_AlterOpFamilyStmt = 284
+    T_PrepareStmt = 285
+    T_ExecuteStmt = 286
+    T_DeallocateStmt = 287
+    T_DeclareCursorStmt = 288
+    T_CreateTableSpaceStmt = 289
+    T_DropTableSpaceStmt = 290
+    T_AlterObjectDependsStmt = 291
+    T_AlterObjectSchemaStmt = 292
+    T_AlterOwnerStmt = 293
+    T_AlterOperatorStmt = 294
+    T_DropOwnedStmt = 295
+    T_ReassignOwnedStmt = 296
+    T_CompositeTypeStmt = 297
+    T_CreateEnumStmt = 298
+    T_CreateRangeStmt = 299
+    T_AlterEnumStmt = 300
+    T_AlterTSDictionaryStmt = 301
+    T_AlterTSConfigurationStmt = 302
+    T_CreateFdwStmt = 303
+    T_AlterFdwStmt = 304
+    T_CreateForeignServerStmt = 305
+    T_AlterForeignServerStmt = 306
+    T_CreateUserMappingStmt = 307
+    T_AlterUserMappingStmt = 308
+    T_DropUserMappingStmt = 309
+    T_AlterTableSpaceOptionsStmt = 310
+    T_AlterTableMoveAllStmt = 311
+    T_SecLabelStmt = 312
+    T_CreateForeignTableStmt = 313
+    T_ImportForeignSchemaStmt = 314
+    T_CreateExtensionStmt = 315
+    T_AlterExtensionStmt = 316
+    T_AlterExtensionContentsStmt = 317
+    T_CreateEventTrigStmt = 318
+    T_AlterEventTrigStmt = 319
+    T_RefreshMatViewStmt = 320
+    T_ReplicaIdentityStmt = 321
+    T_AlterSystemStmt = 322
+    T_CreatePolicyStmt = 323
+    T_AlterPolicyStmt = 324
+    T_CreateTransformStmt = 325
+    T_CreateAmStmt = 326
+    T_CreatePublicationStmt = 327
+    T_AlterPublicationStmt = 328
+    T_CreateSubscriptionStmt = 329
+    T_AlterSubscriptionStmt = 330
+    T_DropSubscriptionStmt = 331
+    T_CreateStatsStmt = 332
+    T_AlterCollationStmt = 333
+    T_A_Expr = 334
+    T_ColumnRef = 335
+    T_ParamRef = 336
+    T_A_Const = 337
+    T_FuncCall = 338
+    T_A_Star = 339
+    T_A_Indices = 340
+    T_A_Indirection = 341
+    T_A_ArrayExpr = 342
+    T_ResTarget = 343
+    T_MultiAssignRef = 344
+    T_TypeCast = 345
+    T_CollateClause = 346
+    T_SortBy = 347
+    T_WindowDef = 348
+    T_RangeSubselect = 349
+    T_RangeFunction = 350
+    T_RangeTableSample = 351
+    T_RangeTableFunc = 352
+    T_RangeTableFuncCol = 353
+    T_TypeName = 354
+    T_ColumnDef = 355
+    T_IndexElem = 356
+    T_Constraint = 357
+    T_DefElem = 358
+    T_RangeTblEntry = 359
+    T_RangeTblFunction = 360
+    T_TableSampleClause = 361
+    T_WithCheckOption = 362
+    T_SortGroupClause = 363
+    T_GroupingSet = 364
+    T_WindowClause = 365
+    T_ObjectWithArgs = 366
+    T_AccessPriv = 367
+    T_CreateOpClassItem = 368
+    T_TableLikeClause = 369
+    T_FunctionParameter = 370
+    T_LockingClause = 371
+    T_RowMarkClause = 372
+    T_XmlSerialize = 373
+    T_WithClause = 374
+    T_InferClause = 375
+    T_OnConflictClause = 376
+    T_CommonTableExpr = 377
+    T_RoleSpec = 378
+    T_TriggerTransition = 379
+    T_PartitionElem = 380
+    T_PartitionSpec = 381
+    T_PartitionBoundSpec = 382
+    T_PartitionRangeDatum = 383
+    T_PartitionCmd = 384
+    T_IdentifySystemCmd = 385
+    T_BaseBackupCmd = 386
+    T_CreateReplicationSlotCmd = 387
+    T_DropReplicationSlotCmd = 388
+    T_StartReplicationCmd = 389
+    T_TimeLineHistoryCmd = 390
+    T_SQLCmd = 391
+    T_TriggerData = 392
+    T_EventTriggerData = 393
+    T_ReturnSetInfo = 394
+    T_WindowObjectData = 395
+    T_TIDBitmap = 396
+    T_InlineCodeBlock = 397
+    T_FdwRoutine = 398
+    T_IndexAmRoutine = 399
+    T_TsmRoutine = 400
+    T_ForeignKeyCacheInfo = 401
+end
+
+
+struct ANONYMOUS1_data
+    ptr_value::Ptr{Cvoid}
+end
 
 struct ListCell
-    #=
-    union
-    {
-        void       *ptr_value;
-        int         int_value;
-        Oid         oid_value;
-    }           data;
-    =#
-    data::Ptr{Cvoid} # Union{Ptr{List}, Cint, Oid=Cint}
+    data::ANONYMOUS1_data
     next::Ptr{ListCell}
 end
 
@@ -466,7 +463,7 @@ end
 struct PgQueryInternalParsetreeAndError
     tree::Ptr{List}
     stderr_buffer::Cstring
-    error::Ptr{Cint}
+    error::Ptr{PgQueryError}
 end
 
 const BITS_PER_BITMAPWORD = 32
@@ -478,29 +475,112 @@ struct Bitmapset
     words::bitmapword
 end
 
-@cenum(BMS_Comparison,
-    BMS_EQUAL = 0,
-    BMS_SUBSET1 = 1,
-    BMS_SUBSET2 = 2,
-    BMS_DIFFERENT = 3,
-)
-@cenum(BMS_Membership,
-    BMS_EMPTY_SET = 0,
-    BMS_SINGLETON = 1,
-    BMS_MULTIPLE = 2,
-)
-@cenum(LockClauseStrength,
-    LCS_NONE = 0,
-    LCS_FORKEYSHARE = 1,
-    LCS_FORSHARE = 2,
-    LCS_FORNOKEYUPDATE = 3,
-    LCS_FORUPDATE = 4,
-)
-@cenum(LockWaitPolicy,
-    LockWaitBlock = 0,
-    LockWaitSkip = 1,
-    LockWaitError = 2,
-)
+@cenum BMS_Comparison::UInt32 begin
+    BMS_EQUAL = 0
+    BMS_SUBSET1 = 1
+    BMS_SUBSET2 = 2
+    BMS_DIFFERENT = 3
+end
+
+@cenum BMS_Membership::UInt32 begin
+    BMS_EMPTY_SET = 0
+    BMS_SINGLETON = 1
+    BMS_MULTIPLE = 2
+end
+
+
+const EXTNODENAME_MAX_LEN = 64
+const CUSTOMPATH_SUPPORT_BACKWARD_SCAN = 0x0001
+const CUSTOMPATH_SUPPORT_MARK_RESTORE = 0x0002
+
+struct ExtensibleNode
+    type::NodeTag
+    extnodename::Cstring
+end
+
+struct ExtensibleNodeMethods
+    extnodename::Cstring
+    node_size::Cint
+    nodeCopy::Ptr{Cvoid}
+    nodeEqual::Ptr{Cvoid}
+    nodeOut::Ptr{Cvoid}
+    nodeRead::Ptr{Cvoid}
+end
+
+struct CustomPathMethods
+    CustomName::Cstring
+    PlanCustomPath::Ptr{Cvoid}
+end
+
+struct CustomScanMethods
+    CustomName::Cstring
+    CreateCustomScanState::Ptr{Cvoid}
+end
+
+struct CustomExecMethods
+    CustomName::Cstring
+    BeginCustomScan::Ptr{Cvoid}
+    ExecCustomScan::Ptr{Cvoid}
+    EndCustomScan::Ptr{Cvoid}
+    ReScanCustomScan::Ptr{Cvoid}
+    MarkPosCustomScan::Ptr{Cvoid}
+    RestrPosCustomScan::Ptr{Cvoid}
+    Size::Cvoid
+    InitializeDSMCustomScan::Ptr{Cvoid}
+    ReInitializeDSMCustomScan::Ptr{Cvoid}
+    InitializeWorkerCustomScan::Ptr{Cvoid}
+    ShutdownCustomScan::Ptr{Cvoid}
+    ExplainCustomScan::Ptr{Cvoid}
+end
+
+@cenum LockClauseStrength::UInt32 begin
+    LCS_NONE = 0
+    LCS_FORKEYSHARE = 1
+    LCS_FORSHARE = 2
+    LCS_FORNOKEYUPDATE = 3
+    LCS_FORUPDATE = 4
+end
+
+@cenum LockWaitPolicy::UInt32 begin
+    LockWaitBlock = 0
+    LockWaitSkip = 1
+    LockWaitError = 2
+end
+
+
+# Skipping MacroDefinition: MemoryContextIsValid ( context ) ( ( context ) != NULL && ( IsA ( ( context ) , AllocSetContext ) || IsA ( ( context ) , SlabContext ) ) )
+
+struct MemoryContextCounters
+    nblocks::Cint
+    freechunks::Cint
+    totalspace::Cint
+    freespace::Cint
+end
+
+struct MemoryContextMethods
+    alloc::Ptr{Cvoid}
+    free_p::Ptr{Cvoid}
+    realloc::Ptr{Cvoid}
+    init::Ptr{Cvoid}
+    reset::Ptr{Cvoid}
+    delete_context::Ptr{Cvoid}
+    Size::Cvoid
+    bool::Cvoid
+    stats::Ptr{Cvoid}
+end
+
+struct MemoryContextData
+    type::NodeTag
+    isReset::Cint
+    allowInCritSection::Cint
+    methods::Ptr{MemoryContextMethods}
+    parent::Cint
+    firstchild::Cint
+    prevchild::Cint
+    nextchild::Cint
+    name::Cstring
+    reset_cbs::Ptr{Cint}
+end
 
 const QTW_IGNORE_RT_SUBQUERIES = 0x01
 const QTW_IGNORE_CTE_SUBQUERIES = 0x02
@@ -543,51 +623,58 @@ const StringInfoData = Cvoid
 const Selectivity = Cdouble
 const Cost = Cdouble
 
-@cenum(CmdType,
-    CMD_UNKNOWN = 0,
-    CMD_SELECT = 1,
-    CMD_UPDATE = 2,
-    CMD_INSERT = 3,
-    CMD_DELETE = 4,
-    CMD_UTILITY = 5,
-    CMD_NOTHING = 6,
-)
-@cenum(JoinType,
-    JOIN_INNER = 0,
-    JOIN_LEFT = 1,
-    JOIN_FULL = 2,
-    JOIN_RIGHT = 3,
-    JOIN_SEMI = 4,
-    JOIN_ANTI = 5,
-    JOIN_UNIQUE_OUTER = 6,
-    JOIN_UNIQUE_INNER = 7,
-)
-@cenum(AggStrategy,
-    AGG_PLAIN = 0,
-    AGG_SORTED = 1,
-    AGG_HASHED = 2,
-    AGG_MIXED = 3,
-)
-@cenum(AggSplit,
-    AGGSPLIT_SIMPLE = 0,
-    AGGSPLIT_INITIAL_SERIAL = 6,
-    AGGSPLIT_FINAL_DESERIAL = 9,
-)
-@cenum(SetOpCmd,
-    SETOPCMD_INTERSECT = 0,
-    SETOPCMD_INTERSECT_ALL = 1,
-    SETOPCMD_EXCEPT = 2,
-    SETOPCMD_EXCEPT_ALL = 3,
-)
-@cenum(SetOpStrategy,
-    SETOP_SORTED = 0,
-    SETOP_HASHED = 1,
-)
-@cenum(OnConflictAction,
-    ONCONFLICT_NONE = 0,
-    ONCONFLICT_NOTHING = 1,
-    ONCONFLICT_UPDATE = 2,
-)
+@cenum CmdType::UInt32 begin
+    CMD_UNKNOWN = 0
+    CMD_SELECT = 1
+    CMD_UPDATE = 2
+    CMD_INSERT = 3
+    CMD_DELETE = 4
+    CMD_UTILITY = 5
+    CMD_NOTHING = 6
+end
+
+@cenum JoinType::UInt32 begin
+    JOIN_INNER = 0
+    JOIN_LEFT = 1
+    JOIN_FULL = 2
+    JOIN_RIGHT = 3
+    JOIN_SEMI = 4
+    JOIN_ANTI = 5
+    JOIN_UNIQUE_OUTER = 6
+    JOIN_UNIQUE_INNER = 7
+end
+
+@cenum AggStrategy::UInt32 begin
+    AGG_PLAIN = 0
+    AGG_SORTED = 1
+    AGG_HASHED = 2
+    AGG_MIXED = 3
+end
+
+@cenum AggSplit::UInt32 begin
+    AGGSPLIT_SIMPLE = 0
+    AGGSPLIT_INITIAL_SERIAL = 6
+    AGGSPLIT_FINAL_DESERIAL = 9
+end
+
+@cenum SetOpCmd::UInt32 begin
+    SETOPCMD_INTERSECT = 0
+    SETOPCMD_INTERSECT_ALL = 1
+    SETOPCMD_EXCEPT = 2
+    SETOPCMD_EXCEPT_ALL = 3
+end
+
+@cenum SetOpStrategy::UInt32 begin
+    SETOP_SORTED = 0
+    SETOP_HASHED = 1
+end
+
+@cenum OnConflictAction::UInt32 begin
+    ONCONFLICT_NONE = 0
+    ONCONFLICT_NOTHING = 1
+    ONCONFLICT_UPDATE = 2
+end
+
 
 const PARAM_FLAG_CONST = 0x0001
 const ParseState = Cvoid
@@ -677,32 +764,36 @@ const CURSOR_OPT_FAST_PLAN = 0x0020
 const CURSOR_OPT_GENERIC_PLAN = 0x0040
 const CURSOR_OPT_CUSTOM_PLAN = 0x0080
 const CURSOR_OPT_PARALLEL_OK = 0x0100
-# const FETCH_ALL = LONG_MAX
+const FETCH_ALL = LONG_MAX
 const REINDEXOPT_VERBOSE = 1 << 0
 
-@cenum(OverridingKind,
-    OVERRIDING_NOT_SET = 0,
-    OVERRIDING_USER_VALUE = 1,
-    OVERRIDING_SYSTEM_VALUE = 2,
-)
-@cenum(QuerySource,
-    QSRC_ORIGINAL = 0,
-    QSRC_PARSER = 1,
-    QSRC_INSTEAD_RULE = 2,
-    QSRC_QUAL_INSTEAD_RULE = 3,
-    QSRC_NON_INSTEAD_RULE = 4,
-)
-@cenum(SortByDir,
-    SORTBY_DEFAULT = 0,
-    SORTBY_ASC = 1,
-    SORTBY_DESC = 2,
-    SORTBY_USING = 3,
-)
-@cenum(SortByNulls,
-    SORTBY_NULLS_DEFAULT = 0,
-    SORTBY_NULLS_FIRST = 1,
-    SORTBY_NULLS_LAST = 2,
-)
+@cenum OverridingKind::UInt32 begin
+    OVERRIDING_NOT_SET = 0
+    OVERRIDING_USER_VALUE = 1
+    OVERRIDING_SYSTEM_VALUE = 2
+end
+
+@cenum QuerySource::UInt32 begin
+    QSRC_ORIGINAL = 0
+    QSRC_PARSER = 1
+    QSRC_INSTEAD_RULE = 2
+    QSRC_QUAL_INSTEAD_RULE = 3
+    QSRC_NON_INSTEAD_RULE = 4
+end
+
+@cenum SortByDir::UInt32 begin
+    SORTBY_DEFAULT = 0
+    SORTBY_ASC = 1
+    SORTBY_DESC = 2
+    SORTBY_USING = 3
+end
+
+@cenum SortByNulls::UInt32 begin
+    SORTBY_NULLS_DEFAULT = 0
+    SORTBY_NULLS_FIRST = 1
+    SORTBY_NULLS_LAST = 2
+end
+
 
 const AclMode = Cint
 
@@ -788,24 +879,25 @@ struct ParamRef
     location::Cint
 end
 
-@cenum(A_Expr_Kind,
-    AEXPR_OP = 0,
-    AEXPR_OP_ANY = 1,
-    AEXPR_OP_ALL = 2,
-    AEXPR_DISTINCT = 3,
-    AEXPR_NOT_DISTINCT = 4,
-    AEXPR_NULLIF = 5,
-    AEXPR_OF = 6,
-    AEXPR_IN = 7,
-    AEXPR_LIKE = 8,
-    AEXPR_ILIKE = 9,
-    AEXPR_SIMILAR = 10,
-    AEXPR_BETWEEN = 11,
-    AEXPR_NOT_BETWEEN = 12,
-    AEXPR_BETWEEN_SYM = 13,
-    AEXPR_NOT_BETWEEN_SYM = 14,
-    AEXPR_PAREN = 15,
-)
+@cenum A_Expr_Kind::UInt32 begin
+    AEXPR_OP = 0
+    AEXPR_OP_ANY = 1
+    AEXPR_OP_ALL = 2
+    AEXPR_DISTINCT = 3
+    AEXPR_NOT_DISTINCT = 4
+    AEXPR_NULLIF = 5
+    AEXPR_OF = 6
+    AEXPR_IN = 7
+    AEXPR_LIKE = 8
+    AEXPR_ILIKE = 9
+    AEXPR_SIMILAR = 10
+    AEXPR_BETWEEN = 11
+    AEXPR_NOT_BETWEEN = 12
+    AEXPR_BETWEEN_SYM = 13
+    AEXPR_NOT_BETWEEN_SYM = 14
+    AEXPR_PAREN = 15
+end
+
 
 struct A_Expr
     type::NodeTag
@@ -818,14 +910,7 @@ end
 
 struct Value
     type::NodeTag
-    #=
-    union ValUnion
-    {
-        long        ival;       /* machine integer */
-        char       *str;        /* string */
-    }           val;
-    =#
-    val::Ptr{UInt8}
+    val::ValUnion
 end
 
 struct A_Const
@@ -848,12 +933,13 @@ struct CollateClause
     location::Cint
 end
 
-@cenum(RoleSpecType,
-    ROLESPEC_CSTRING = 0,
-    ROLESPEC_CURRENT_USER = 1,
-    ROLESPEC_SESSION_USER = 2,
-    ROLESPEC_PUBLIC = 3,
-)
+@cenum RoleSpecType::UInt32 begin
+    ROLESPEC_CSTRING = 0
+    ROLESPEC_CURRENT_USER = 1
+    ROLESPEC_SESSION_USER = 2
+    ROLESPEC_PUBLIC = 3
+end
+
 
 struct RoleSpec
     type::NodeTag
@@ -1027,16 +1113,17 @@ struct TableLikeClause
     options::Cint
 end
 
-@cenum(TableLikeOption,
-    CREATE_TABLE_LIKE_DEFAULTS = 1,
-    CREATE_TABLE_LIKE_CONSTRAINTS = 2,
-    CREATE_TABLE_LIKE_IDENTITY = 4,
-    CREATE_TABLE_LIKE_INDEXES = 8,
-    CREATE_TABLE_LIKE_STORAGE = 16,
-    CREATE_TABLE_LIKE_COMMENTS = 32,
-    CREATE_TABLE_LIKE_STATISTICS = 64,
-    CREATE_TABLE_LIKE_ALL = 65,
-)
+@cenum TableLikeOption::UInt32 begin
+    CREATE_TABLE_LIKE_DEFAULTS = 1
+    CREATE_TABLE_LIKE_CONSTRAINTS = 2
+    CREATE_TABLE_LIKE_IDENTITY = 4
+    CREATE_TABLE_LIKE_INDEXES = 8
+    CREATE_TABLE_LIKE_STORAGE = 16
+    CREATE_TABLE_LIKE_COMMENTS = 32
+    CREATE_TABLE_LIKE_STATISTICS = 64
+    CREATE_TABLE_LIKE_ALL = 65
+end
+
 
 struct IndexElem
     type::NodeTag
@@ -1049,12 +1136,13 @@ struct IndexElem
     nulls_ordering::SortByNulls
 end
 
-@cenum(DefElemAction,
-    DEFELEM_UNSPEC = 0,
-    DEFELEM_SET = 1,
-    DEFELEM_ADD = 2,
-    DEFELEM_DROP = 3,
-)
+@cenum DefElemAction::UInt32 begin
+    DEFELEM_UNSPEC = 0
+    DEFELEM_SET = 1
+    DEFELEM_ADD = 2
+    DEFELEM_DROP = 3
+end
+
 
 struct DefElem
     type::NodeTag
@@ -1072,10 +1160,11 @@ struct LockingClause
     waitPolicy::LockWaitPolicy
 end
 
-@cenum(XmlOptionType,
-    XMLOPTION_DOCUMENT = 0,
-    XMLOPTION_CONTENT = 1,
-)
+@cenum XmlOptionType::UInt32 begin
+    XMLOPTION_DOCUMENT = 0
+    XMLOPTION_CONTENT = 1
+end
+
 
 struct XmlSerialize
     type::NodeTag
@@ -1110,11 +1199,12 @@ struct PartitionBoundSpec
     location::Cint
 end
 
-@cenum(PartitionRangeDatumKind{Int32},
-    PARTITION_RANGE_DATUM_MINVALUE = -1,
-    PARTITION_RANGE_DATUM_VALUE = 0,
-    PARTITION_RANGE_DATUM_MAXVALUE = 1,
-)
+@cenum PartitionRangeDatumKind::Int32 begin
+    PARTITION_RANGE_DATUM_MINVALUE = -1
+    PARTITION_RANGE_DATUM_VALUE = 0
+    PARTITION_RANGE_DATUM_MAXVALUE = 1
+end
+
 
 struct PartitionRangeDatum
     type::NodeTag
@@ -1129,16 +1219,17 @@ struct PartitionCmd
     bound::Ptr{PartitionBoundSpec}
 end
 
-@cenum(RTEKind,
-    RTE_RELATION = 0,
-    RTE_SUBQUERY = 1,
-    RTE_JOIN = 2,
-    RTE_FUNCTION = 3,
-    RTE_TABLEFUNC = 4,
-    RTE_VALUES = 5,
-    RTE_CTE = 6,
-    RTE_NAMEDTUPLESTORE = 7,
-)
+@cenum RTEKind::UInt32 begin
+    RTE_RELATION = 0
+    RTE_SUBQUERY = 1
+    RTE_JOIN = 2
+    RTE_FUNCTION = 3
+    RTE_TABLEFUNC = 4
+    RTE_VALUES = 5
+    RTE_CTE = 6
+    RTE_NAMEDTUPLESTORE = 7
+end
+
 
 struct Expr
     type::NodeTag
@@ -1214,12 +1305,13 @@ struct RangeTblFunction
     funcparams::Ptr{Bitmapset}
 end
 
-@cenum(WCOKind,
-    WCO_VIEW_CHECK = 0,
-    WCO_RLS_INSERT_CHECK = 1,
-    WCO_RLS_UPDATE_CHECK = 2,
-    WCO_RLS_CONFLICT_CHECK = 3,
-)
+@cenum WCOKind::UInt32 begin
+    WCO_VIEW_CHECK = 0
+    WCO_RLS_INSERT_CHECK = 1
+    WCO_RLS_UPDATE_CHECK = 2
+    WCO_RLS_CONFLICT_CHECK = 3
+end
+
 
 struct WithCheckOption
     type::NodeTag
@@ -1239,13 +1331,14 @@ struct SortGroupClause
     hashable::Cint
 end
 
-@cenum(GroupingSetKind,
-    GROUPING_SET_EMPTY = 0,
-    GROUPING_SET_SIMPLE = 1,
-    GROUPING_SET_ROLLUP = 2,
-    GROUPING_SET_CUBE = 3,
-    GROUPING_SET_SETS = 4,
-)
+@cenum GroupingSetKind::UInt32 begin
+    GROUPING_SET_EMPTY = 0
+    GROUPING_SET_SIMPLE = 1
+    GROUPING_SET_ROLLUP = 2
+    GROUPING_SET_CUBE = 3
+    GROUPING_SET_SETS = 4
+end
+
 
 struct GroupingSet
     type::NodeTag
@@ -1357,18 +1450,20 @@ struct UpdateStmt
     withClause::Ptr{WithClause}
 end
 
-@cenum(SetOperation,
-    SETOP_NONE = 0,
-    SETOP_UNION = 1,
-    SETOP_INTERSECT = 2,
-    SETOP_EXCEPT = 3,
-)
-@cenum(OnCommitAction,
-    ONCOMMIT_NOOP = 0,
-    ONCOMMIT_PRESERVE_ROWS = 1,
-    ONCOMMIT_DELETE_ROWS = 2,
-    ONCOMMIT_DROP = 3,
-)
+@cenum SetOperation::UInt32 begin
+    SETOP_NONE = 0
+    SETOP_UNION = 1
+    SETOP_INTERSECT = 2
+    SETOP_EXCEPT = 3
+end
+
+@cenum OnCommitAction::UInt32 begin
+    ONCOMMIT_NOOP = 0
+    ONCOMMIT_PRESERVE_ROWS = 1
+    ONCOMMIT_DELETE_ROWS = 2
+    ONCOMMIT_DROP = 3
+end
+
 
 struct IntoClause
     type::NodeTag
@@ -1415,56 +1510,57 @@ struct SetOperationStmt
     groupClauses::Ptr{List}
 end
 
-@cenum(ObjectType,
-    OBJECT_ACCESS_METHOD = 0,
-    OBJECT_AGGREGATE = 1,
-    OBJECT_AMOP = 2,
-    OBJECT_AMPROC = 3,
-    OBJECT_ATTRIBUTE = 4,
-    OBJECT_CAST = 5,
-    OBJECT_COLUMN = 6,
-    OBJECT_COLLATION = 7,
-    OBJECT_CONVERSION = 8,
-    OBJECT_DATABASE = 9,
-    OBJECT_DEFAULT = 10,
-    OBJECT_DEFACL = 11,
-    OBJECT_DOMAIN = 12,
-    OBJECT_DOMCONSTRAINT = 13,
-    OBJECT_EVENT_TRIGGER = 14,
-    OBJECT_EXTENSION = 15,
-    OBJECT_FDW = 16,
-    OBJECT_FOREIGN_SERVER = 17,
-    OBJECT_FOREIGN_TABLE = 18,
-    OBJECT_FUNCTION = 19,
-    OBJECT_INDEX = 20,
-    OBJECT_LANGUAGE = 21,
-    OBJECT_LARGEOBJECT = 22,
-    OBJECT_MATVIEW = 23,
-    OBJECT_OPCLASS = 24,
-    OBJECT_OPERATOR = 25,
-    OBJECT_OPFAMILY = 26,
-    OBJECT_POLICY = 27,
-    OBJECT_PUBLICATION = 28,
-    OBJECT_PUBLICATION_REL = 29,
-    OBJECT_ROLE = 30,
-    OBJECT_RULE = 31,
-    OBJECT_SCHEMA = 32,
-    OBJECT_SEQUENCE = 33,
-    OBJECT_SUBSCRIPTION = 34,
-    OBJECT_STATISTIC_EXT = 35,
-    OBJECT_TABCONSTRAINT = 36,
-    OBJECT_TABLE = 37,
-    OBJECT_TABLESPACE = 38,
-    OBJECT_TRANSFORM = 39,
-    OBJECT_TRIGGER = 40,
-    OBJECT_TSCONFIGURATION = 41,
-    OBJECT_TSDICTIONARY = 42,
-    OBJECT_TSPARSER = 43,
-    OBJECT_TSTEMPLATE = 44,
-    OBJECT_TYPE = 45,
-    OBJECT_USER_MAPPING = 46,
-    OBJECT_VIEW = 47,
-)
+@cenum ObjectType::UInt32 begin
+    OBJECT_ACCESS_METHOD = 0
+    OBJECT_AGGREGATE = 1
+    OBJECT_AMOP = 2
+    OBJECT_AMPROC = 3
+    OBJECT_ATTRIBUTE = 4
+    OBJECT_CAST = 5
+    OBJECT_COLUMN = 6
+    OBJECT_COLLATION = 7
+    OBJECT_CONVERSION = 8
+    OBJECT_DATABASE = 9
+    OBJECT_DEFAULT = 10
+    OBJECT_DEFACL = 11
+    OBJECT_DOMAIN = 12
+    OBJECT_DOMCONSTRAINT = 13
+    OBJECT_EVENT_TRIGGER = 14
+    OBJECT_EXTENSION = 15
+    OBJECT_FDW = 16
+    OBJECT_FOREIGN_SERVER = 17
+    OBJECT_FOREIGN_TABLE = 18
+    OBJECT_FUNCTION = 19
+    OBJECT_INDEX = 20
+    OBJECT_LANGUAGE = 21
+    OBJECT_LARGEOBJECT = 22
+    OBJECT_MATVIEW = 23
+    OBJECT_OPCLASS = 24
+    OBJECT_OPERATOR = 25
+    OBJECT_OPFAMILY = 26
+    OBJECT_POLICY = 27
+    OBJECT_PUBLICATION = 28
+    OBJECT_PUBLICATION_REL = 29
+    OBJECT_ROLE = 30
+    OBJECT_RULE = 31
+    OBJECT_SCHEMA = 32
+    OBJECT_SEQUENCE = 33
+    OBJECT_SUBSCRIPTION = 34
+    OBJECT_STATISTIC_EXT = 35
+    OBJECT_TABCONSTRAINT = 36
+    OBJECT_TABLE = 37
+    OBJECT_TABLESPACE = 38
+    OBJECT_TRANSFORM = 39
+    OBJECT_TRIGGER = 40
+    OBJECT_TSCONFIGURATION = 41
+    OBJECT_TSDICTIONARY = 42
+    OBJECT_TSPARSER = 43
+    OBJECT_TSTEMPLATE = 44
+    OBJECT_TYPE = 45
+    OBJECT_USER_MAPPING = 46
+    OBJECT_VIEW = 47
+end
+
 
 struct CreateSchemaStmt
     type::NodeTag
@@ -1474,10 +1570,11 @@ struct CreateSchemaStmt
     if_not_exists::Cint
 end
 
-@cenum(DropBehavior,
-    DROP_RESTRICT = 0,
-    DROP_CASCADE = 1,
-)
+@cenum DropBehavior::UInt32 begin
+    DROP_RESTRICT = 0
+    DROP_CASCADE = 1
+end
+
 
 struct AlterTableStmt
     type::NodeTag
@@ -1487,74 +1584,75 @@ struct AlterTableStmt
     missing_ok::Cint
 end
 
-@cenum(AlterTableType,
-    AT_AddColumn = 0,
-    AT_AddColumnRecurse = 1,
-    AT_AddColumnToView = 2,
-    AT_ColumnDefault = 3,
-    AT_DropNotNull = 4,
-    AT_SetNotNull = 5,
-    AT_SetStatistics = 6,
-    AT_SetOptions = 7,
-    AT_ResetOptions = 8,
-    AT_SetStorage = 9,
-    AT_DropColumn = 10,
-    AT_DropColumnRecurse = 11,
-    AT_AddIndex = 12,
-    AT_ReAddIndex = 13,
-    AT_AddConstraint = 14,
-    AT_AddConstraintRecurse = 15,
-    AT_ReAddConstraint = 16,
-    AT_AlterConstraint = 17,
-    AT_ValidateConstraint = 18,
-    AT_ValidateConstraintRecurse = 19,
-    AT_ProcessedConstraint = 20,
-    AT_AddIndexConstraint = 21,
-    AT_DropConstraint = 22,
-    AT_DropConstraintRecurse = 23,
-    AT_ReAddComment = 24,
-    AT_AlterColumnType = 25,
-    AT_AlterColumnGenericOptions = 26,
-    AT_ChangeOwner = 27,
-    AT_ClusterOn = 28,
-    AT_DropCluster = 29,
-    AT_SetLogged = 30,
-    AT_SetUnLogged = 31,
-    AT_AddOids = 32,
-    AT_AddOidsRecurse = 33,
-    AT_DropOids = 34,
-    AT_SetTableSpace = 35,
-    AT_SetRelOptions = 36,
-    AT_ResetRelOptions = 37,
-    AT_ReplaceRelOptions = 38,
-    AT_EnableTrig = 39,
-    AT_EnableAlwaysTrig = 40,
-    AT_EnableReplicaTrig = 41,
-    AT_DisableTrig = 42,
-    AT_EnableTrigAll = 43,
-    AT_DisableTrigAll = 44,
-    AT_EnableTrigUser = 45,
-    AT_DisableTrigUser = 46,
-    AT_EnableRule = 47,
-    AT_EnableAlwaysRule = 48,
-    AT_EnableReplicaRule = 49,
-    AT_DisableRule = 50,
-    AT_AddInherit = 51,
-    AT_DropInherit = 52,
-    AT_AddOf = 53,
-    AT_DropOf = 54,
-    AT_ReplicaIdentity = 55,
-    AT_EnableRowSecurity = 56,
-    AT_DisableRowSecurity = 57,
-    AT_ForceRowSecurity = 58,
-    AT_NoForceRowSecurity = 59,
-    AT_GenericOptions = 60,
-    AT_AttachPartition = 61,
-    AT_DetachPartition = 62,
-    AT_AddIdentity = 63,
-    AT_SetIdentity = 64,
-    AT_DropIdentity = 65,
-)
+@cenum AlterTableType::UInt32 begin
+    AT_AddColumn = 0
+    AT_AddColumnRecurse = 1
+    AT_AddColumnToView = 2
+    AT_ColumnDefault = 3
+    AT_DropNotNull = 4
+    AT_SetNotNull = 5
+    AT_SetStatistics = 6
+    AT_SetOptions = 7
+    AT_ResetOptions = 8
+    AT_SetStorage = 9
+    AT_DropColumn = 10
+    AT_DropColumnRecurse = 11
+    AT_AddIndex = 12
+    AT_ReAddIndex = 13
+    AT_AddConstraint = 14
+    AT_AddConstraintRecurse = 15
+    AT_ReAddConstraint = 16
+    AT_AlterConstraint = 17
+    AT_ValidateConstraint = 18
+    AT_ValidateConstraintRecurse = 19
+    AT_ProcessedConstraint = 20
+    AT_AddIndexConstraint = 21
+    AT_DropConstraint = 22
+    AT_DropConstraintRecurse = 23
+    AT_ReAddComment = 24
+    AT_AlterColumnType = 25
+    AT_AlterColumnGenericOptions = 26
+    AT_ChangeOwner = 27
+    AT_ClusterOn = 28
+    AT_DropCluster = 29
+    AT_SetLogged = 30
+    AT_SetUnLogged = 31
+    AT_AddOids = 32
+    AT_AddOidsRecurse = 33
+    AT_DropOids = 34
+    AT_SetTableSpace = 35
+    AT_SetRelOptions = 36
+    AT_ResetRelOptions = 37
+    AT_ReplaceRelOptions = 38
+    AT_EnableTrig = 39
+    AT_EnableAlwaysTrig = 40
+    AT_EnableReplicaTrig = 41
+    AT_DisableTrig = 42
+    AT_EnableTrigAll = 43
+    AT_DisableTrigAll = 44
+    AT_EnableTrigUser = 45
+    AT_DisableTrigUser = 46
+    AT_EnableRule = 47
+    AT_EnableAlwaysRule = 48
+    AT_EnableReplicaRule = 49
+    AT_DisableRule = 50
+    AT_AddInherit = 51
+    AT_DropInherit = 52
+    AT_AddOf = 53
+    AT_DropOf = 54
+    AT_ReplicaIdentity = 55
+    AT_EnableRowSecurity = 56
+    AT_DisableRowSecurity = 57
+    AT_ForceRowSecurity = 58
+    AT_NoForceRowSecurity = 59
+    AT_GenericOptions = 60
+    AT_AttachPartition = 61
+    AT_DetachPartition = 62
+    AT_AddIdentity = 63
+    AT_SetIdentity = 64
+    AT_DropIdentity = 65
+end
+
 
 struct ReplicaIdentityStmt
     type::NodeTag
@@ -1587,26 +1685,28 @@ struct AlterDomainStmt
     missing_ok::Cint
 end
 
-@cenum(GrantTargetType,
-    ACL_TARGET_OBJECT = 0,
-    ACL_TARGET_ALL_IN_SCHEMA = 1,
-    ACL_TARGET_DEFAULTS = 2,
-)
-@cenum(GrantObjectType,
-    ACL_OBJECT_COLUMN = 0,
-    ACL_OBJECT_RELATION = 1,
-    ACL_OBJECT_SEQUENCE = 2,
-    ACL_OBJECT_DATABASE = 3,
-    ACL_OBJECT_DOMAIN = 4,
-    ACL_OBJECT_FDW = 5,
-    ACL_OBJECT_FOREIGN_SERVER = 6,
-    ACL_OBJECT_FUNCTION = 7,
-    ACL_OBJECT_LANGUAGE = 8,
-    ACL_OBJECT_LARGEOBJECT = 9,
-    ACL_OBJECT_NAMESPACE = 10,
-    ACL_OBJECT_TABLESPACE = 11,
-    ACL_OBJECT_TYPE = 12,
-)
+@cenum GrantTargetType::UInt32 begin
+    ACL_TARGET_OBJECT = 0
+    ACL_TARGET_ALL_IN_SCHEMA = 1
+    ACL_TARGET_DEFAULTS = 2
+end
+
+@cenum GrantObjectType::UInt32 begin
+    ACL_OBJECT_COLUMN = 0
+    ACL_OBJECT_RELATION = 1
+    ACL_OBJECT_SEQUENCE = 2
+    ACL_OBJECT_DATABASE = 3
+    ACL_OBJECT_DOMAIN = 4
+    ACL_OBJECT_FDW = 5
+    ACL_OBJECT_FOREIGN_SERVER = 6
+    ACL_OBJECT_FUNCTION = 7
+    ACL_OBJECT_LANGUAGE = 8
+    ACL_OBJECT_LARGEOBJECT = 9
+    ACL_OBJECT_NAMESPACE = 10
+    ACL_OBJECT_TABLESPACE = 11
+    ACL_OBJECT_TYPE = 12
+end
+
 
 struct GrantStmt
     type::NodeTag
@@ -1660,14 +1760,15 @@ struct CopyStmt
     options::Ptr{List}
 end
 
-@cenum(VariableSetKind,
-    VAR_SET_VALUE = 0,
-    VAR_SET_DEFAULT = 1,
-    VAR_SET_CURRENT = 2,
-    VAR_SET_MULTI = 3,
-    VAR_RESET = 4,
-    VAR_RESET_ALL = 5,
-)
+@cenum VariableSetKind::UInt32 begin
+    VAR_SET_VALUE = 0
+    VAR_SET_DEFAULT = 1
+    VAR_SET_CURRENT = 2
+    VAR_SET_MULTI = 3
+    VAR_RESET = 4
+    VAR_RESET_ALL = 5
+end
+
 
 struct VariableSetStmt
     type::NodeTag
@@ -1697,21 +1798,22 @@ struct CreateStmt
     if_not_exists::Cint
 end
 
-@cenum(ConstrType,
-    CONSTR_NULL = 0,
-    CONSTR_NOTNULL = 1,
-    CONSTR_DEFAULT = 2,
-    CONSTR_IDENTITY = 3,
-    CONSTR_CHECK = 4,
-    CONSTR_PRIMARY = 5,
-    CONSTR_UNIQUE = 6,
-    CONSTR_EXCLUSION = 7,
-    CONSTR_FOREIGN = 8,
-    CONSTR_ATTR_DEFERRABLE = 9,
-    CONSTR_ATTR_NOT_DEFERRABLE = 10,
-    CONSTR_ATTR_DEFERRED = 11,
-    CONSTR_ATTR_IMMEDIATE = 12,
-)
+@cenum ConstrType::UInt32 begin
+    CONSTR_NULL = 0
+    CONSTR_NOTNULL = 1
+    CONSTR_DEFAULT = 2
+    CONSTR_IDENTITY = 3
+    CONSTR_CHECK = 4
+    CONSTR_PRIMARY = 5
+    CONSTR_UNIQUE = 6
+    CONSTR_EXCLUSION = 7
+    CONSTR_FOREIGN = 8
+    CONSTR_ATTR_DEFERRABLE = 9
+    CONSTR_ATTR_NOT_DEFERRABLE = 10
+    CONSTR_ATTR_DEFERRED = 11
+    CONSTR_ATTR_IMMEDIATE = 12
+end
+
 
 struct Constraint
     type::NodeTag
@@ -1854,11 +1956,12 @@ struct DropUserMappingStmt
     missing_ok::Cint
 end
 
-@cenum(ImportForeignSchemaType,
-    FDW_IMPORT_SCHEMA_ALL = 0,
-    FDW_IMPORT_SCHEMA_LIMIT_TO = 1,
-    FDW_IMPORT_SCHEMA_EXCEPT = 2,
-)
+@cenum ImportForeignSchemaType::UInt32 begin
+    FDW_IMPORT_SCHEMA_ALL = 0
+    FDW_IMPORT_SCHEMA_LIMIT_TO = 1
+    FDW_IMPORT_SCHEMA_EXCEPT = 2
+end
+
 
 struct ImportForeignSchemaStmt
     type::NodeTag
@@ -1939,11 +2042,12 @@ struct CreatePLangStmt
     pltrusted::Cint
 end
 
-@cenum(RoleStmtType,
-    ROLESTMT_ROLE = 0,
-    ROLESTMT_USER = 1,
-    ROLESTMT_GROUP = 2,
-)
+@cenum RoleStmtType::UInt32 begin
+    ROLESTMT_ROLE = 0
+    ROLESTMT_USER = 1
+    ROLESTMT_GROUP = 2
+end
+
 
 struct CreateRoleStmt
     type::NodeTag
@@ -2084,12 +2188,13 @@ struct ClosePortalStmt
     portalname::Cstring
 end
 
-@cenum(FetchDirection,
-    FETCH_FORWARD = 0,
-    FETCH_BACKWARD = 1,
-    FETCH_ABSOLUTE = 2,
-    FETCH_RELATIVE = 3,
-)
+@cenum FetchDirection::UInt32 begin
+    FETCH_FORWARD = 0
+    FETCH_BACKWARD = 1
+    FETCH_ABSOLUTE = 2
+    FETCH_RELATIVE = 3
+end
+
 
 struct FetchStmt
     type::NodeTag
@@ -2141,13 +2246,14 @@ struct CreateFunctionStmt
     withClause::Ptr{List}
 end
 
-@cenum(FunctionParameterMode,
-    FUNC_PARAM_IN = 105,
-    FUNC_PARAM_OUT = 111,
-    FUNC_PARAM_INOUT = 98,
-    FUNC_PARAM_VARIADIC = 118,
-    FUNC_PARAM_TABLE = 116,
-)
+@cenum FunctionParameterMode::UInt32 begin
+    FUNC_PARAM_IN = 105
+    FUNC_PARAM_OUT = 111
+    FUNC_PARAM_INOUT = 98
+    FUNC_PARAM_VARIADIC = 118
+    FUNC_PARAM_TABLE = 116
+end
+
 
 struct FunctionParameter
     type::NodeTag
@@ -2245,18 +2351,19 @@ struct UnlistenStmt
     conditionname::Cstring
 end
 
-@cenum(TransactionStmtKind,
-    TRANS_STMT_BEGIN = 0,
-    TRANS_STMT_START = 1,
-    TRANS_STMT_COMMIT = 2,
-    TRANS_STMT_ROLLBACK = 3,
-    TRANS_STMT_SAVEPOINT = 4,
-    TRANS_STMT_RELEASE = 5,
-    TRANS_STMT_ROLLBACK_TO = 6,
-    TRANS_STMT_PREPARE = 7,
-    TRANS_STMT_COMMIT_PREPARED = 8,
-    TRANS_STMT_ROLLBACK_PREPARED = 9,
-)
+@cenum TransactionStmtKind::UInt32 begin
+    TRANS_STMT_BEGIN = 0
+    TRANS_STMT_START = 1
+    TRANS_STMT_COMMIT = 2
+    TRANS_STMT_ROLLBACK = 3
+    TRANS_STMT_SAVEPOINT = 4
+    TRANS_STMT_RELEASE = 5
+    TRANS_STMT_ROLLBACK_TO = 6
+    TRANS_STMT_PREPARE = 7
+    TRANS_STMT_COMMIT_PREPARED = 8
+    TRANS_STMT_ROLLBACK_PREPARED = 9
+end
+
 
 struct TransactionStmt
     type::NodeTag
@@ -2293,11 +2400,12 @@ struct AlterEnumStmt
     skipIfNewValExists::Cint
 end
 
-@cenum(ViewCheckOption,
-    NO_CHECK_OPTION = 0,
-    LOCAL_CHECK_OPTION = 1,
-    CASCADED_CHECK_OPTION = 2,
-)
+@cenum ViewCheckOption::UInt32 begin
+    NO_CHECK_OPTION = 0
+    LOCAL_CHECK_OPTION = 1
+    CASCADED_CHECK_OPTION = 2
+end
+
 
 struct ViewStmt
     type::NodeTag
@@ -2350,16 +2458,17 @@ struct ClusterStmt
     verbose::Cint
 end
 
-@cenum(VacuumOption,
-    VACOPT_VACUUM = 1,
-    VACOPT_ANALYZE = 2,
-    VACOPT_VERBOSE = 4,
-    VACOPT_FREEZE = 8,
-    VACOPT_FULL = 16,
-    VACOPT_NOWAIT = 32,
-    VACOPT_SKIPTOAST = 64,
-    VACOPT_DISABLE_PAGE_SKIPPING = 128,
-)
+@cenum VacuumOption::UInt32 begin
+    VACOPT_VACUUM = 1
+    VACOPT_ANALYZE = 2
+    VACOPT_VERBOSE = 4
+    VACOPT_FREEZE = 8
+    VACOPT_FULL = 16
+    VACOPT_NOWAIT = 32
+    VACOPT_SKIPTOAST = 64
+    VACOPT_DISABLE_PAGE_SKIPPING = 128
+end
+
 
 struct VacuumStmt
     type::NodeTag
@@ -2394,12 +2503,13 @@ struct CheckPointStmt
     type::NodeTag
 end
 
-@cenum(DiscardMode,
-    DISCARD_ALL = 0,
-    DISCARD_PLANS = 1,
-    DISCARD_SEQUENCES = 2,
-    DISCARD_TEMP = 3,
-)
+@cenum DiscardMode::UInt32 begin
+    DISCARD_ALL = 0
+    DISCARD_PLANS = 1
+    DISCARD_SEQUENCES = 2
+    DISCARD_TEMP = 3
+end
+
 
 struct DiscardStmt
     type::NodeTag
@@ -2419,13 +2529,14 @@ struct ConstraintsSetStmt
     deferred::Cint
 end
 
-@cenum(ReindexObjectType,
-    REINDEX_OBJECT_INDEX = 0,
-    REINDEX_OBJECT_TABLE = 1,
-    REINDEX_OBJECT_SCHEMA = 2,
-    REINDEX_OBJECT_SYSTEM = 3,
-    REINDEX_OBJECT_DATABASE = 4,
-)
+@cenum ReindexObjectType::UInt32 begin
+    REINDEX_OBJECT_INDEX = 0
+    REINDEX_OBJECT_TABLE = 1
+    REINDEX_OBJECT_SCHEMA = 2
+    REINDEX_OBJECT_SYSTEM = 3
+    REINDEX_OBJECT_DATABASE = 4
+end
+
 
 struct ReindexStmt
     type::NodeTag
@@ -2444,11 +2555,12 @@ struct CreateConversionStmt
     def::Cint
 end
 
-@cenum(CoercionContext,
-    COERCION_IMPLICIT = 0,
-    COERCION_ASSIGNMENT = 1,
-    COERCION_EXPLICIT = 2,
-)
+@cenum CoercionContext::UInt32 begin
+    COERCION_IMPLICIT = 0
+    COERCION_ASSIGNMENT = 1
+    COERCION_EXPLICIT = 2
+end
+
 
 struct CreateCastStmt
     type::NodeTag
@@ -2504,13 +2616,14 @@ struct AlterTSDictionaryStmt
     options::Ptr{List}
 end
 
-@cenum(AlterTSConfigType,
-    ALTER_TSCONFIG_ADD_MAPPING = 0,
-    ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN = 1,
-    ALTER_TSCONFIG_REPLACE_DICT = 2,
-    ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN = 3,
-    ALTER_TSCONFIG_DROP_MAPPING = 4,
-)
+@cenum AlterTSConfigType::UInt32 begin
+    ALTER_TSCONFIG_ADD_MAPPING = 0
+    ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN = 1
+    ALTER_TSCONFIG_REPLACE_DICT = 2
+    ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN = 3
+    ALTER_TSCONFIG_DROP_MAPPING = 4
+end
+
 
 struct AlterTSConfigurationStmt
     type::NodeTag
@@ -2548,13 +2661,14 @@ struct CreateSubscriptionStmt
     options::Ptr{List}
 end
 
-@cenum(AlterSubscriptionType,
-    ALTER_SUBSCRIPTION_OPTIONS = 0,
-    ALTER_SUBSCRIPTION_CONNECTION = 1,
-    ALTER_SUBSCRIPTION_PUBLICATION = 2,
-    ALTER_SUBSCRIPTION_REFRESH = 3,
-    ALTER_SUBSCRIPTION_ENABLED = 4,
-)
+@cenum AlterSubscriptionType::UInt32 begin
+    ALTER_SUBSCRIPTION_OPTIONS = 0
+    ALTER_SUBSCRIPTION_CONNECTION = 1
+    ALTER_SUBSCRIPTION_PUBLICATION = 2
+    ALTER_SUBSCRIPTION_REFRESH = 3
+    ALTER_SUBSCRIPTION_ENABLED = 4
+end
+
 
 struct AlterSubscriptionStmt
     type::NodeTag
@@ -2619,6 +2733,11 @@ end
 # Skipping MacroDefinition: for_both_cell ( cell1 , initcell1 , cell2 , initcell2 ) for ( ( cell1 ) = ( initcell1 ) , ( cell2 ) = ( initcell2 ) ; ( cell1 ) != NULL && ( cell2 ) != NULL ; ( cell1 ) = lnext ( cell1 ) , ( cell2 ) = lnext ( cell2 ) )
 # Skipping MacroDefinition: forthree ( cell1 , list1 , cell2 , list2 , cell3 , list3 ) for ( ( cell1 ) = list_head ( list1 ) , ( cell2 ) = list_head ( list2 ) , ( cell3 ) = list_head ( list3 ) ; ( cell1 ) != NULL && ( cell2 ) != NULL && ( cell3 ) != NULL ; ( cell1 ) = lnext ( cell1 ) , ( cell2 ) = lnext ( cell2 ) , ( cell3 ) = lnext ( cell3 ) )
 # Skipping MacroDefinition: list_nth_node ( type , list , n ) castNode ( type , list_nth ( list , n ) )
+
+struct ANONYMOUS2_data
+    ptr_value::Ptr{Cvoid}
+end
+
 # Skipping MacroDefinition: exec_subplan_get_plan ( plannedstmt , subplan ) ( ( Plan * ) list_nth ( ( plannedstmt ) -> subplans , ( subplan ) -> plan_id - 1 ) )
 # Skipping MacroDefinition: innerPlan ( node ) ( ( ( Plan * ) ( node ) ) -> righttree )
 # Skipping MacroDefinition: outerPlan ( node ) ( ( ( Plan * ) ( node ) ) -> lefttree )
@@ -2712,7 +2831,7 @@ struct MergeAppend
     partitioned_rels::Ptr{List}
     mergeplans::Ptr{List}
     numCols::Cint
-    sortColIdx::Ptr{Cint}
+    sortColIdx::Ptr{AttrNumber}
     sortOperators::Ptr{Cint}
     collations::Ptr{Cint}
     nullsFirst::Ptr{Cint}
@@ -2722,7 +2841,7 @@ struct RecursiveUnion
     plan::Plan
     wtParam::Cint
     numCols::Cint
-    dupColIdx::Ptr{Cint}
+    dupColIdx::Ptr{AttrNumber}
     dupOperators::Ptr{Cint}
     numGroups::Clong
 end
@@ -2750,6 +2869,13 @@ struct SampleScan
     tablesample::Ptr{TableSampleClause}
 end
 
+@cenum ScanDirection::Int32 begin
+    BackwardScanDirection = -1
+    NoMovementScanDirection = 0
+    ForwardScanDirection = 1
+end
+
+
 struct IndexScan
     scan::Scan
     indexid::Cint
@@ -2758,7 +2884,7 @@ struct IndexScan
     indexorderby::Ptr{List}
     indexorderbyorig::Ptr{List}
     indexorderbyops::Ptr{List}
-    indexorderdir::Cint
+    indexorderdir::ScanDirection
 end
 
 struct IndexOnlyScan
@@ -2767,7 +2893,7 @@ struct IndexOnlyScan
     indexqual::Ptr{List}
     indexorderby::Ptr{List}
     indextlist::Ptr{List}
-    indexorderdir::Cint
+    indexorderdir::ScanDirection
 end
 
 struct BitmapIndexScan
@@ -2837,8 +2963,6 @@ struct ForeignScan
     fsSystemCol::Cint
 end
 
-const CustomScanMethods = Cvoid
-
 struct CustomScan
     scan::Scan
     flags::Cint
@@ -2865,13 +2989,13 @@ end
 struct Var
     xpr::Expr
     varno::Cint
-    varattno::Cint
+    varattno::AttrNumber
     vartype::Cint
     vartypmod::Cint
     varcollid::Cint
     varlevelsup::Cint
     varnoold::Cint
-    varoattno::Cint
+    varoattno::AttrNumber
     location::Cint
 end
 
@@ -2903,7 +3027,7 @@ end
 struct Sort
     plan::Plan
     numCols::Cint
-    sortColIdx::Ptr{Cint}
+    sortColIdx::Ptr{AttrNumber}
     sortOperators::Ptr{Cint}
     collations::Ptr{Cint}
     nullsFirst::Ptr{Cint}
@@ -2912,7 +3036,7 @@ end
 struct Group
     plan::Plan
     numCols::Cint
-    grpColIdx::Ptr{Cint}
+    grpColIdx::Ptr{AttrNumber}
     grpOperators::Ptr{Cint}
 end
 
@@ -2921,7 +3045,7 @@ struct Agg
     aggstrategy::AggStrategy
     aggsplit::AggSplit
     numCols::Cint
-    grpColIdx::Ptr{Cint}
+    grpColIdx::Ptr{AttrNumber}
     grpOperators::Ptr{Cint}
     numGroups::Clong
     aggParams::Ptr{Bitmapset}
@@ -2933,10 +3057,10 @@ struct WindowAgg
     plan::Plan
     winref::Cint
     partNumCols::Cint
-    partColIdx::Ptr{Cint}
+    partColIdx::Ptr{AttrNumber}
     partOperators::Ptr{Cint}
     ordNumCols::Cint
-    ordColIdx::Ptr{Cint}
+    ordColIdx::Ptr{AttrNumber}
     ordOperators::Ptr{Cint}
     frameOptions::Cint
     startOffset::Ptr{Node}
@@ -2946,7 +3070,7 @@ end
 struct Unique
     plan::Plan
     numCols::Cint
-    uniqColIdx::Ptr{Cint}
+    uniqColIdx::Ptr{AttrNumber}
     uniqOperators::Ptr{Cint}
 end
 
@@ -2963,7 +3087,7 @@ struct GatherMerge
     num_workers::Cint
     rescan_param::Cint
     numCols::Cint
-    sortColIdx::Ptr{Cint}
+    sortColIdx::Ptr{AttrNumber}
     sortOperators::Ptr{Cint}
     collations::Ptr{Cint}
     nullsFirst::Ptr{Cint}
@@ -2972,7 +3096,7 @@ end
 struct Hash
     plan::Plan
     skewTable::Cint
-    skewColumn::Cint
+    skewColumn::AttrNumber
     skewInherit::Cint
 end
 
@@ -2981,9 +3105,9 @@ struct SetOp
     cmd::SetOpCmd
     strategy::SetOpStrategy
     numCols::Cint
-    dupColIdx::Ptr{Cint}
+    dupColIdx::Ptr{AttrNumber}
     dupOperators::Ptr{Cint}
-    flagColIdx::Cint
+    flagColIdx::AttrNumber
     firstFlag::Cint
     numGroups::Clong
 end
@@ -3000,14 +3124,15 @@ struct Limit
     limitCount::Ptr{Node}
 end
 
-@cenum(RowMarkType,
-    ROW_MARK_EXCLUSIVE = 0,
-    ROW_MARK_NOKEYEXCLUSIVE = 1,
-    ROW_MARK_SHARE = 2,
-    ROW_MARK_KEYSHARE = 3,
-    ROW_MARK_REFERENCE = 4,
-    ROW_MARK_COPY = 5,
-)
+@cenum RowMarkType::UInt32 begin
+    ROW_MARK_EXCLUSIVE = 0
+    ROW_MARK_NOKEYEXCLUSIVE = 1
+    ROW_MARK_SHARE = 2
+    ROW_MARK_KEYSHARE = 3
+    ROW_MARK_REFERENCE = 4
+    ROW_MARK_COPY = 5
+end
+
 
 struct PlanRowMark
     type::NodeTag
@@ -3048,12 +3173,13 @@ struct Const
     location::Cint
 end
 
-@cenum(ParamKind,
-    PARAM_EXTERN = 0,
-    PARAM_EXEC = 1,
-    PARAM_SUBLINK = 2,
-    PARAM_MULTIEXPR = 3,
-)
+@cenum ParamKind::UInt32 begin
+    PARAM_EXTERN = 0
+    PARAM_EXEC = 1
+    PARAM_SUBLINK = 2
+    PARAM_MULTIEXPR = 3
+end
+
 
 struct Param
     xpr::Expr
@@ -3121,11 +3247,12 @@ struct ArrayRef
     refassgnexpr::Ptr{Expr}
 end
 
-@cenum(CoercionForm,
-    COERCE_EXPLICIT_CALL = 0,
-    COERCE_EXPLICIT_CAST = 1,
-    COERCE_IMPLICIT_CAST = 2,
-)
+@cenum CoercionForm::UInt32 begin
+    COERCE_EXPLICIT_CALL = 0
+    COERCE_EXPLICIT_CAST = 1
+    COERCE_IMPLICIT_CAST = 2
+end
+
 
 struct FuncExpr
     xpr::Expr
@@ -3173,11 +3300,12 @@ struct ScalarArrayOpExpr
     location::Cint
 end
 
-@cenum(BoolExprType,
-    AND_EXPR = 0,
-    OR_EXPR = 1,
-    NOT_EXPR = 2,
-)
+@cenum BoolExprType::UInt32 begin
+    AND_EXPR = 0
+    OR_EXPR = 1
+    NOT_EXPR = 2
+end
+
 
 struct BoolExpr
     xpr::Expr
@@ -3186,16 +3314,17 @@ struct BoolExpr
     location::Cint
 end
 
-@cenum(SubLinkType,
-    EXISTS_SUBLINK = 0,
-    ALL_SUBLINK = 1,
-    ANY_SUBLINK = 2,
-    ROWCOMPARE_SUBLINK = 3,
-    EXPR_SUBLINK = 4,
-    MULTIEXPR_SUBLINK = 5,
-    ARRAY_SUBLINK = 6,
-    CTE_SUBLINK = 7,
-)
+@cenum SubLinkType::UInt32 begin
+    EXISTS_SUBLINK = 0
+    ALL_SUBLINK = 1
+    ANY_SUBLINK = 2
+    ROWCOMPARE_SUBLINK = 3
+    EXPR_SUBLINK = 4
+    MULTIEXPR_SUBLINK = 5
+    ARRAY_SUBLINK = 6
+    CTE_SUBLINK = 7
+end
+
 
 struct SubLink
     xpr::Expr
@@ -3235,7 +3364,7 @@ end
 struct FieldSelect
     xpr::Expr
     arg::Ptr{Expr}
-    fieldnum::Cint
+    fieldnum::AttrNumber
     resulttype::Cint
     resulttypmod::Cint
     resultcollid::Cint
@@ -3338,14 +3467,15 @@ struct RowExpr
     location::Cint
 end
 
-@cenum(RowCompareType,
-    ROWCOMPARE_LT = 1,
-    ROWCOMPARE_LE = 2,
-    ROWCOMPARE_EQ = 3,
-    ROWCOMPARE_GE = 4,
-    ROWCOMPARE_GT = 5,
-    ROWCOMPARE_NE = 6,
-)
+@cenum RowCompareType::UInt32 begin
+    ROWCOMPARE_LT = 1
+    ROWCOMPARE_LE = 2
+    ROWCOMPARE_EQ = 3
+    ROWCOMPARE_GE = 4
+    ROWCOMPARE_GT = 5
+    ROWCOMPARE_NE = 6
+end
+
 
 struct RowCompareExpr
     xpr::Expr
@@ -3365,10 +3495,11 @@ struct CoalesceExpr
     location::Cint
 end
 
-@cenum(MinMaxOp,
-    IS_GREATEST = 0,
-    IS_LEAST = 1,
-)
+@cenum MinMaxOp::UInt32 begin
+    IS_GREATEST = 0
+    IS_LEAST = 1
+end
+
 
 struct MinMaxExpr
     xpr::Expr
@@ -3380,23 +3511,24 @@ struct MinMaxExpr
     location::Cint
 end
 
-@cenum(SQLValueFunctionOp,
-    SVFOP_CURRENT_DATE = 0,
-    SVFOP_CURRENT_TIME = 1,
-    SVFOP_CURRENT_TIME_N = 2,
-    SVFOP_CURRENT_TIMESTAMP = 3,
-    SVFOP_CURRENT_TIMESTAMP_N = 4,
-    SVFOP_LOCALTIME = 5,
-    SVFOP_LOCALTIME_N = 6,
-    SVFOP_LOCALTIMESTAMP = 7,
-    SVFOP_LOCALTIMESTAMP_N = 8,
-    SVFOP_CURRENT_ROLE = 9,
-    SVFOP_CURRENT_USER = 10,
-    SVFOP_USER = 11,
-    SVFOP_SESSION_USER = 12,
-    SVFOP_CURRENT_CATALOG = 13,
-    SVFOP_CURRENT_SCHEMA = 14,
-)
+@cenum SQLValueFunctionOp::UInt32 begin
+    SVFOP_CURRENT_DATE = 0
+    SVFOP_CURRENT_TIME = 1
+    SVFOP_CURRENT_TIME_N = 2
+    SVFOP_CURRENT_TIMESTAMP = 3
+    SVFOP_CURRENT_TIMESTAMP_N = 4
+    SVFOP_LOCALTIME = 5
+    SVFOP_LOCALTIME_N = 6
+    SVFOP_LOCALTIMESTAMP = 7
+    SVFOP_LOCALTIMESTAMP_N = 8
+    SVFOP_CURRENT_ROLE = 9
+    SVFOP_CURRENT_USER = 10
+    SVFOP_USER = 11
+    SVFOP_SESSION_USER = 12
+    SVFOP_CURRENT_CATALOG = 13
+    SVFOP_CURRENT_SCHEMA = 14
+end
+
 
 struct SQLValueFunction
     xpr::Expr
@@ -3406,16 +3538,17 @@ struct SQLValueFunction
     location::Cint
 end
 
-@cenum(XmlExprOp,
-    IS_XMLCONCAT = 0,
-    IS_XMLELEMENT = 1,
-    IS_XMLFOREST = 2,
-    IS_XMLPARSE = 3,
-    IS_XMLPI = 4,
-    IS_XMLROOT = 5,
-    IS_XMLSERIALIZE = 6,
-    IS_DOCUMENT = 7,
-)
+@cenum XmlExprOp::UInt32 begin
+    IS_XMLCONCAT = 0
+    IS_XMLELEMENT = 1
+    IS_XMLFOREST = 2
+    IS_XMLPARSE = 3
+    IS_XMLPI = 4
+    IS_XMLROOT = 5
+    IS_XMLSERIALIZE = 6
+    IS_DOCUMENT = 7
+end
+
 
 struct XmlExpr
     xpr::Expr
@@ -3430,10 +3563,11 @@ struct XmlExpr
     location::Cint
 end
 
-@cenum(NullTestType,
-    IS_NULL = 0,
-    IS_NOT_NULL = 1,
-)
+@cenum NullTestType::UInt32 begin
+    IS_NULL = 0
+    IS_NOT_NULL = 1
+end
+
 
 struct NullTest
     xpr::Expr
@@ -3443,14 +3577,15 @@ struct NullTest
     location::Cint
 end
 
-@cenum(BoolTestType,
-    IS_TRUE = 0,
-    IS_NOT_TRUE = 1,
-    IS_FALSE = 2,
-    IS_NOT_FALSE = 3,
-    IS_UNKNOWN = 4,
-    IS_NOT_UNKNOWN = 5,
-)
+@cenum BoolTestType::UInt32 begin
+    IS_TRUE = 0
+    IS_NOT_TRUE = 1
+    IS_FALSE = 2
+    IS_NOT_FALSE = 3
+    IS_UNKNOWN = 4
+    IS_NOT_UNKNOWN = 5
+end
+
 
 struct BooleanTest
     xpr::Expr
@@ -3508,11 +3643,11 @@ end
 struct TargetEntry
     xpr::Expr
     expr::Ptr{Expr}
-    resno::Cint
+    resno::AttrNumber
     resname::Cstring
     ressortgroupref::Cint
     resorigtbl::Cint
-    resorigcol::Cint
+    resorigcol::AttrNumber
     resjunk::Cint
 end
 
@@ -3549,10 +3684,11 @@ end
 
 const Relids = Ptr{Bitmapset}
 
-@cenum(CostSelector,
-    STARTUP_COST = 0,
-    TOTAL_COST = 1,
-)
+@cenum CostSelector::UInt32 begin
+    STARTUP_COST = 0
+    TOTAL_COST = 1
+end
+
 
 struct QualCost
     startup::Cost
@@ -3569,14 +3705,15 @@ struct AggClauseCosts
     transitionSpace::Cint
 end
 
-@cenum(UpperRelationKind,
-    UPPERREL_SETOP = 0,
-    UPPERREL_GROUP_AGG = 1,
-    UPPERREL_WINDOW = 2,
-    UPPERREL_DISTINCT = 3,
-    UPPERREL_ORDERED = 4,
-    UPPERREL_FINAL = 5,
-)
+@cenum UpperRelationKind::UInt32 begin
+    UPPERREL_SETOP = 0
+    UPPERREL_GROUP_AGG = 1
+    UPPERREL_WINDOW = 2
+    UPPERREL_DISTINCT = 3
+    UPPERREL_ORDERED = 4
+    UPPERREL_FINAL = 5
+end
+
 
 struct PlannerGlobal
     type::NodeTag
@@ -3602,13 +3739,14 @@ struct PlannerGlobal
     maxParallelHazard::UInt8
 end
 
-@cenum(RelOptKind,
-    RELOPT_BASEREL = 0,
-    RELOPT_JOINREL = 1,
-    RELOPT_OTHER_MEMBER_REL = 2,
-    RELOPT_UPPER_REL = 3,
-    RELOPT_DEADREL = 4,
-)
+@cenum RelOptKind::UInt32 begin
+    RELOPT_BASEREL = 0
+    RELOPT_JOINREL = 1
+    RELOPT_OTHER_MEMBER_REL = 2
+    RELOPT_UPPER_REL = 3
+    RELOPT_DEADREL = 4
+end
+
 
 struct PathTarget
     type::NodeTag
@@ -3625,10 +3763,10 @@ struct ParamPathInfo
     ppi_clauses::Ptr{List}
 end
 
-struct PathGeneric{RI}
+struct Path
     type::NodeTag
     pathtype::NodeTag
-    parent::Ptr{RI}
+    parent::Ptr{RelOptInfo}
     pathtarget::Ptr{PathTarget}
     param_info::Ptr{ParamPathInfo}
     parallel_aware::Cint
@@ -3640,21 +3778,71 @@ struct PathGeneric{RI}
     pathkeys::Ptr{List}
 end
 
-struct PlannerInfoGeneric{RI}
+struct RelOptInfo
+    type::NodeTag
+    reloptkind::RelOptKind
+    relids::Relids
+    rows::Cdouble
+    consider_startup::Cint
+    consider_param_startup::Cint
+    consider_parallel::Cint
+    reltarget::Ptr{PathTarget}
+    pathlist::Ptr{List}
+    ppilist::Ptr{List}
+    partial_pathlist::Ptr{List}
+    cheapest_startup_path::Ptr{Path}
+    cheapest_total_path::Ptr{Path}
+    cheapest_unique_path::Ptr{Path}
+    cheapest_parameterized_paths::Ptr{List}
+    direct_lateral_relids::Relids
+    lateral_relids::Relids
+    relid::Cint
+    reltablespace::Cint
+    rtekind::RTEKind
+    min_attr::AttrNumber
+    max_attr::AttrNumber
+    attr_needed::Ptr{Relids}
+    attr_widths::Ptr{Cint}
+    lateral_vars::Ptr{List}
+    lateral_referencers::Relids
+    indexlist::Ptr{List}
+    statlist::Ptr{List}
+    pages::BlockNumber
+    tuples::Cdouble
+    allvisfrac::Cdouble
+    subroot::Ptr{PlannerInfo}
+    subplan_params::Ptr{List}
+    rel_parallel_workers::Cint
+    serverid::Cint
+    userid::Cint
+    useridiscurrent::Cint
+    fdwroutine::Ptr{FdwRoutine}
+    fdw_private::Ptr{Cvoid}
+    unique_for_rels::Ptr{List}
+    non_unique_for_rels::Ptr{List}
+    baserestrictinfo::Ptr{List}
+    baserestrictcost::QualCost
+    baserestrict_min_security::Cint
+    joininfo::Ptr{List}
+    has_eclass_joins::Cint
+    top_parent_relids::Relids
+end
+
+struct PlannerInfo
     type::NodeTag
     parse::Ptr{Query}
     glob::Ptr{PlannerGlobal}
     query_level::Cint
-    parent_root::Ptr{PlannerInfoGeneric{RI}}
+    parent_root::Ptr{PlannerInfo}
     plan_params::Ptr{List}
     outer_params::Ptr{Bitmapset}
-    simple_rel_array::Ptr{Ptr{RI}}
+    simple_rel_array::Ptr{Ptr{RelOptInfo}}
     simple_rel_array_size::Cint
     simple_rte_array::Ptr{Ptr{RangeTblEntry}}
     all_baserels::Relids
     nullable_baserels::Relids
     join_rel_list::Ptr{List}
-    join_rel_hash::Ptr{Cint} #Ptr{HTAB}
+    join_rel_hash::Ptr{HTAB}
     join_rel_level::Ptr{Ptr{List}}
     join_cur_level::Cint
     init_plans::Ptr{List}
@@ -3680,7 +3868,7 @@ struct PlannerInfoGeneric{RI}
     upper_rels::NTuple{6, Ptr{List}}
     upper_targets::NTuple{6, Ptr{PathTarget}}
     processed_tlist::Ptr{List}
-    grouping_map::Ptr{Cint}
+    grouping_map::Ptr{AttrNumber}
     minmax_aggs::Ptr{List}
     planner_cxt::Cint
     total_table_pages::Cdouble
@@ -3695,71 +3883,18 @@ struct PlannerInfoGeneric{RI}
     hasPseudoConstantQuals::Cint
     hasRecursion::Cint
     wt_param_id::Cint
-    non_recursive_path::Ptr{PathGeneric{RI}}
+    non_recursive_path::Ptr{Path}
     curOuterRels::Relids
     curOuterParams::Ptr{List}
     join_search_private::Ptr{Cvoid}
 end
-
-struct RelOptInfo
-    type::NodeTag
-    reloptkind::RelOptKind
-    relids::Relids
-    rows::Cdouble
-    consider_startup::Cint
-    consider_param_startup::Cint
-    consider_parallel::Cint
-    reltarget::Ptr{PathTarget}
-    pathlist::Ptr{List}
-    ppilist::Ptr{List}
-    partial_pathlist::Ptr{List}
-    cheapest_startup_path::Ptr{PathGeneric{RelOptInfo}}
-    cheapest_total_path::Ptr{PathGeneric{RelOptInfo}}
-    cheapest_unique_path::Ptr{PathGeneric{RelOptInfo}}
-    cheapest_parameterized_paths::Ptr{List}
-    direct_lateral_relids::Relids
-    lateral_relids::Relids
-    relid::Cint
-    reltablespace::Cint
-    rtekind::RTEKind
-    min_attr::Cint
-    max_attr::Cint
-    attr_needed::Ptr{Relids}
-    attr_widths::Ptr{Cint}
-    lateral_vars::Ptr{List}
-    lateral_referencers::Relids
-    indexlist::Ptr{List}
-    statlist::Ptr{List}
-    pages::Cint
-    tuples::Cdouble
-    allvisfrac::Cdouble
-    subroot::Ptr{PlannerInfoGeneric{RelOptInfo}}
-    subplan_params::Ptr{List}
-    rel_parallel_workers::Cint
-    serverid::Cint
-    userid::Cint
-    useridiscurrent::Cint
-    fdwroutine::Ptr{Cvoid} #Ptr{FdwRoutine}
-    fdw_private::Ptr{Cvoid}
-    unique_for_rels::Ptr{List}
-    non_unique_for_rels::Ptr{List}
-    baserestrictinfo::Ptr{List}
-    baserestrictcost::QualCost
-    baserestrict_min_security::Cint
-    joininfo::Ptr{List}
-    has_eclass_joins::Cint
-    top_parent_relids::Relids
-end
-
-const Path = PathGeneric{RelOptInfo}
-const PlannerInfo = PlannerInfoGeneric{RelOptInfo}
 
 struct IndexOptInfo
     type::NodeTag
     indexoid::Cint
     reltablespace::Cint
     rel::Ptr{RelOptInfo}
-    pages::Cint
+    pages::BlockNumber
     tuples::Cdouble
     tree_height::Cint
     ncolumns::Cint
@@ -3813,8 +3948,8 @@ struct ForeignKeyOptInfo
     con_relid::Cint
     ref_relid::Cint
     nkeys::Cint
-    conkey::Cint
-    confkey::Cint
+    conkey::AttrNumber
+    confkey::AttrNumber
     conpfeqop::Cint
     nmatched_ec::Cint
     nmatched_rcols::Cint
@@ -3857,7 +3992,7 @@ struct IndexPath
     indexqualcols::Ptr{List}
     indexorderbys::Ptr{List}
     indexorderbycols::Ptr{List}
-    indexscandir::Cint
+    indexscandir::ScanDirection
     indextotalcost::Cost
     indexselectivity::Selectivity
 end
@@ -3895,8 +4030,6 @@ struct ForeignPath
     fdw_private::Ptr{List}
 end
 
-const CustomPathMethods = Cvoid
-
 struct CustomPath
     path::Path
     flags::Cint
@@ -3928,11 +4061,12 @@ struct MaterialPath
     subpath::Ptr{Path}
 end
 
-@cenum(UniquePathMethod,
-    UNIQUE_PATH_NOOP = 0,
-    UNIQUE_PATH_HASH = 1,
-    UNIQUE_PATH_SORT = 2,
-)
+@cenum UniquePathMethod::UInt32 begin
+    UNIQUE_PATH_NOOP = 0
+    UNIQUE_PATH_HASH = 1
+    UNIQUE_PATH_SORT = 2
+end
+
 
 struct UniquePath
     path::Path
@@ -4063,7 +4197,7 @@ struct SetOpPath
     cmd::SetOpCmd
     strategy::SetOpStrategy
     distinctList::Ptr{List}
-    flagColIdx::Cint
+    flagColIdx::AttrNumber
     firstFlag::Cint
     numGroups::Cdouble
 end
@@ -4249,12 +4383,16 @@ const TBMIterator = Cvoid
 const TBMSharedIterator = Cvoid
 
 struct TBMIterateResult
-    blockno::Cint
+    blockno::BlockNumber
     ntuples::Cint
     recheck::Cint
-    offsets::Cint
+    offsets::OffsetNumber
 end
 
 # Skipping MacroDefinition: intVal ( v ) ( ( ( Value * ) ( v ) ) -> val . ival )
 # Skipping MacroDefinition: floatVal ( v ) atof ( ( ( Value * ) ( v ) ) -> val . str )
 # Skipping MacroDefinition: strVal ( v ) ( ( ( Value * ) ( v ) ) -> val . str )
+# Skipping MacroDefinition: ScanDirectionIsValid ( direction ) ( ( bool ) ( BackwardScanDirection <= ( direction ) && ( direction ) <= ForwardScanDirection ) )
+# Skipping MacroDefinition: ScanDirectionIsBackward ( direction ) ( ( bool ) ( ( direction ) == BackwardScanDirection ) )
+# Skipping MacroDefinition: ScanDirectionIsNoMovement ( direction ) ( ( bool ) ( ( direction ) == NoMovementScanDirection ) )
+# Skipping MacroDefinition: ScanDirectionIsForward ( direction ) ( ( bool ) ( ( direction ) == ForwardScanDirection ) )

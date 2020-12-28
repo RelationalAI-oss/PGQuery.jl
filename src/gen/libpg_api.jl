@@ -1,5 +1,5 @@
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query//pg_query.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: pg_query.h
+# Automatically generated using Clang.jl
 
 
 function pg_query_normalize(input)
@@ -37,15 +37,15 @@ end
 function pg_query_init()
     ccall((:pg_query_init, libpg_query), Cvoid, ())
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/pg_query_fingerprint.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: pg_query_fingerprint.h
+# Automatically generated using Clang.jl
 
 
-function pg_query_fingerprint_with_opts()
-    ccall((:pg_query_fingerprint_with_opts, libpg_query), Cint, ())
+function pg_query_fingerprint_with_opts(input, printTokens)
+    ccall((:pg_query_fingerprint_with_opts, libpg_query), PgQueryFingerprintResult, (Cstring, Bool), input, printTokens)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/pg_query_internal.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: pg_query_internal.h
+# Automatically generated using Clang.jl
 
 
 function pg_query_raw_parse(input)
@@ -53,32 +53,32 @@ function pg_query_raw_parse(input)
 end
 
 function pg_query_free_error(error)
-    ccall((:pg_query_free_error, libpg_query), Cvoid, (Ptr{Cint},), error)
+    ccall((:pg_query_free_error, libpg_query), Cvoid, (Ptr{PgQueryError},), error)
 end
 
 function pg_query_enter_memory_context(ctx_name)
-    ccall((:pg_query_enter_memory_context, libpg_query), Ptr{UInt8}, (Cstring,), ctx_name)
+    ccall((:pg_query_enter_memory_context, libpg_query), MemoryContext, (Cstring,), ctx_name)
 end
 
 function pg_query_exit_memory_context(ctx)
-    ccall((:pg_query_exit_memory_context, libpg_query), Cvoid, (Ptr{UInt8},), ctx)
+    ccall((:pg_query_exit_memory_context, libpg_query), Cvoid, (MemoryContext,), ctx)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/pg_query_json.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: pg_query_json.h
+# Automatically generated using Clang.jl
 
 
 function pg_query_nodes_to_json(obj)
     ccall((:pg_query_nodes_to_json, libpg_query), Cstring, (Ptr{Cvoid},), obj)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/pg_query_json_plpgsql.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: pg_query_json_plpgsql.h
+# Automatically generated using Clang.jl
 
 
 function plpgsqlToJSON(func)
-    ccall((:plpgsqlToJSON, libpg_query), Cstring, (Ptr{Cint},), func)
+    ccall((:plpgsqlToJSON, libpg_query), Cstring, (Ptr{PLpgSQL_function},), func)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/bitmapset.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: bitmapset.h
+# Automatically generated using Clang.jl
 
 
 function bms_copy(a)
@@ -188,11 +188,30 @@ end
 function bms_hash_value()
     ccall((:bms_hash_value, libpg_query), Cint, ())
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/lockoptions.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: extensible.h
+# Automatically generated using Clang.jl
 
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/makefuncs.h
-# Automatically generated using Clang.jl wrap_c
+
+function RegisterExtensibleNodeMethods(method)
+    ccall((:RegisterExtensibleNodeMethods, libpg_query), Cvoid, (Ptr{ExtensibleNodeMethods},), method)
+end
+
+function GetExtensibleNodeMethods(name, missing_ok)
+    ccall((:GetExtensibleNodeMethods, libpg_query), Ptr{ExtensibleNodeMethods}, (Cstring, bool), name, missing_ok)
+end
+
+function RegisterCustomScanMethods(methods)
+    ccall((:RegisterCustomScanMethods, libpg_query), Cvoid, (Ptr{CustomScanMethods},), methods)
+end
+
+function GetCustomScanMethods(CustomName, missing_ok)
+    ccall((:GetCustomScanMethods, libpg_query), Ptr{CustomScanMethods}, (Cstring, bool), CustomName, missing_ok)
+end
+# Julia wrapper for header: lockoptions.h
+# Automatically generated using Clang.jl
+
+# Julia wrapper for header: makefuncs.h
+# Automatically generated using Clang.jl
 
 
 function makeA_Expr(kind, name, lexpr, rexpr, location)
@@ -204,7 +223,7 @@ function makeSimpleA_Expr(kind, name, lexpr, rexpr, location)
 end
 
 function makeVar(varno, varattno, vartype, vartypmod, varcollid, varlevelsup)
-    ccall((:makeVar, libpg_query), Ptr{Var}, (Cint, Cint, Cint, Cint, Cint, Cint), varno, varattno, vartype, vartypmod, varcollid, varlevelsup)
+    ccall((:makeVar, libpg_query), Ptr{Var}, (Cint, AttrNumber, Cint, Cint, Cint, Cint), varno, varattno, vartype, vartypmod, varcollid, varlevelsup)
 end
 
 function makeVarFromTargetEntry(varno, tle)
@@ -216,7 +235,7 @@ function makeWholeRowVar(rte, varno, varlevelsup, allowScalar)
 end
 
 function makeTargetEntry(expr, resno, resname, resjunk)
-    ccall((:makeTargetEntry, libpg_query), Ptr{TargetEntry}, (Ptr{Expr}, Cint, Cstring, Cint), expr, resno, resname, resjunk)
+    ccall((:makeTargetEntry, libpg_query), Ptr{TargetEntry}, (Ptr{Expr}, AttrNumber, Cstring, Cint), expr, resno, resname, resjunk)
 end
 
 function flatCopyTargetEntry(src_tle)
@@ -290,8 +309,11 @@ end
 function makeGroupingSet(kind, content, location)
     ccall((:makeGroupingSet, libpg_query), Ptr{GroupingSet}, (GroupingSetKind, Ptr{List}, Cint), kind, content, location)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/nodeFuncs.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: memnodes.h
+# Automatically generated using Clang.jl
+
+# Julia wrapper for header: nodeFuncs.h
+# Automatically generated using Clang.jl
 
 
 function exprType()
@@ -393,8 +415,8 @@ end
 function planstate_tree_walker()
     ccall((:planstate_tree_walker, libpg_query), Cint, ())
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/nodes.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: nodes.h
+# Automatically generated using Clang.jl
 
 
 function outNode(str, obj)
@@ -456,8 +478,8 @@ end
 function equal()
     ccall((:equal, libpg_query), Cint, ())
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/params.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: params.h
+# Automatically generated using Clang.jl
 
 
 function copyParamList(from)
@@ -475,11 +497,11 @@ end
 function RestoreParamList(start_address)
     ccall((:RestoreParamList, libpg_query), ParamListInfo, (Ptr{Cstring},), start_address)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/parsenodes.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: parsenodes.h
+# Automatically generated using Clang.jl
 
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/pg_list.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: pg_list.h
+# Automatically generated using Clang.jl
 
 
 function list_head(l)
@@ -681,14 +703,14 @@ end
 function list_copy_tail(list, nskip)
     ccall((:list_copy_tail, libpg_query), Ptr{List}, (Ptr{List}, Cint), list, nskip)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/plannodes.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: plannodes.h
+# Automatically generated using Clang.jl
 
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/primnodes.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: primnodes.h
+# Automatically generated using Clang.jl
 
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/print.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: print.h
+# Automatically generated using Clang.jl
 
 
 function print(obj)
@@ -712,33 +734,33 @@ function pretty_format_node_dump(dump)
 end
 
 function print_rt(rtable)
-    ccall((:print_rt, libpg_query), Cvoid, (Ptr{Cint},), rtable)
+    ccall((:print_rt, libpg_query), Cvoid, (Ptr{List},), rtable)
 end
 
 function print_expr(expr, rtable)
-    ccall((:print_expr, libpg_query), Cvoid, (Ptr{Cint}, Ptr{Cint}), expr, rtable)
+    ccall((:print_expr, libpg_query), Cvoid, (Ptr{Node}, Ptr{List}), expr, rtable)
 end
 
 function print_pathkeys(pathkeys, rtable)
-    ccall((:print_pathkeys, libpg_query), Cvoid, (Ptr{Cint}, Ptr{Cint}), pathkeys, rtable)
+    ccall((:print_pathkeys, libpg_query), Cvoid, (Ptr{List}, Ptr{List}), pathkeys, rtable)
 end
 
 function print_tl(tlist, rtable)
-    ccall((:print_tl, libpg_query), Cvoid, (Ptr{Cint}, Ptr{Cint}), tlist, rtable)
+    ccall((:print_tl, libpg_query), Cvoid, (Ptr{List}, Ptr{List}), tlist, rtable)
 end
 
 function print_slot(slot)
-    ccall((:print_slot, libpg_query), Cvoid, (Ptr{Cint},), slot)
+    ccall((:print_slot, libpg_query), Cvoid, (Ptr{TupleTableSlot},), slot)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/relation.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: relation.h
+# Automatically generated using Clang.jl
 
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/tidbitmap.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: tidbitmap.h
+# Automatically generated using Clang.jl
 
 
 function tbm_create(maxbytes, dsa)
-    ccall((:tbm_create, libpg_query), Ptr{TIDBitmap}, (Clong, Ptr{Cint}), maxbytes, dsa)
+    ccall((:tbm_create, libpg_query), Ptr{TIDBitmap}, (Clong, Ptr{dsa_area}), maxbytes, dsa)
 end
 
 function tbm_free(tbm)
@@ -746,15 +768,15 @@ function tbm_free(tbm)
 end
 
 function tbm_free_shared_area(dsa, dp)
-    ccall((:tbm_free_shared_area, libpg_query), Cvoid, (Ptr{Cint}, Cint), dsa, dp)
+    ccall((:tbm_free_shared_area, libpg_query), Cvoid, (Ptr{dsa_area}, dsa_pointer), dsa, dp)
 end
 
 function tbm_add_tuples(tbm, tids, ntids, recheck)
-    ccall((:tbm_add_tuples, libpg_query), Cvoid, (Ptr{TIDBitmap}, Cint, Cint, Cint), tbm, tids, ntids, recheck)
+    ccall((:tbm_add_tuples, libpg_query), Cvoid, (Ptr{TIDBitmap}, ItemPointer, Cint, Cint), tbm, tids, ntids, recheck)
 end
 
 function tbm_add_page(tbm, pageno)
-    ccall((:tbm_add_page, libpg_query), Cvoid, (Ptr{TIDBitmap}, Cint), tbm, pageno)
+    ccall((:tbm_add_page, libpg_query), Cvoid, (Ptr{TIDBitmap}, BlockNumber), tbm, pageno)
 end
 
 function tbm_union(a, b)
@@ -773,8 +795,8 @@ function tbm_begin_iterate(tbm)
     ccall((:tbm_begin_iterate, libpg_query), Ptr{TBMIterator}, (Ptr{TIDBitmap},), tbm)
 end
 
-function tbm_prepare_shared_iterate()
-    ccall((:tbm_prepare_shared_iterate, libpg_query), Cint, ())
+function tbm_prepare_shared_iterate(tbm)
+    ccall((:tbm_prepare_shared_iterate, libpg_query), dsa_pointer, (Ptr{TIDBitmap},), tbm)
 end
 
 function tbm_iterate(iterator)
@@ -794,10 +816,10 @@ function tbm_end_shared_iterate(iterator)
 end
 
 function tbm_attach_shared_iterate(dsa, dp)
-    ccall((:tbm_attach_shared_iterate, libpg_query), Ptr{TBMSharedIterator}, (Ptr{Cint}, Cint), dsa, dp)
+    ccall((:tbm_attach_shared_iterate, libpg_query), Ptr{TBMSharedIterator}, (Ptr{dsa_area}, dsa_pointer), dsa, dp)
 end
-# Julia wrapper for header: /Users/dashti/Dropbox/workspaces/RelationalAI/libpg_query/src/nodes/value.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: value.h
+# Automatically generated using Clang.jl
 
 
 function makeInteger(i)
@@ -815,3 +837,6 @@ end
 function makeBitString(str)
     ccall((:makeBitString, libpg_query), Ptr{Value}, (Cstring,), str)
 end
+# Julia wrapper for header: sdir.h
+# Automatically generated using Clang.jl
+
