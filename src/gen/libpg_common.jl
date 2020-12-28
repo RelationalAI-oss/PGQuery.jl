@@ -3763,10 +3763,10 @@ struct ParamPathInfo
     ppi_clauses::Ptr{List}
 end
 
-struct Path
+struct PathGeneric{REL_OPT_INFO}
     type::NodeTag
     pathtype::NodeTag
-    parent::Ptr{RelOptInfo}
+    parent::Ptr{REL_OPT_INFO}
     pathtarget::Ptr{PathTarget}
     param_info::Ptr{ParamPathInfo}
     parallel_aware::Cint
@@ -3778,7 +3778,7 @@ struct Path
     pathkeys::Ptr{List}
 end
 
-struct RelOptInfo
+struct RelOptInfoGeneric{PLANNER_INFO}
     type::NodeTag
     reloptkind::RelOptKind
     relids::Relids
@@ -3790,9 +3790,9 @@ struct RelOptInfo
     pathlist::Ptr{List}
     ppilist::Ptr{List}
     partial_pathlist::Ptr{List}
-    cheapest_startup_path::Ptr{Path}
-    cheapest_total_path::Ptr{Path}
-    cheapest_unique_path::Ptr{Path}
+    cheapest_startup_path::Ptr{PathGeneric{RelOptInfoGeneric{PLANNER_INFO}}}
+    cheapest_total_path::Ptr{PathGeneric{RelOptInfoGeneric{PLANNER_INFO}}}
+    cheapest_unique_path::Ptr{PathGeneric{RelOptInfoGeneric{PLANNER_INFO}}}
     cheapest_parameterized_paths::Ptr{List}
     direct_lateral_relids::Relids
     lateral_relids::Relids
@@ -3810,7 +3810,7 @@ struct RelOptInfo
     pages::BlockNumber
     tuples::Cdouble
     allvisfrac::Cdouble
-    subroot::Ptr{PlannerInfo}
+    subroot::Ptr{PLANNER_INFO}
     subplan_params::Ptr{List}
     rel_parallel_workers::Cint
     serverid::Cint
@@ -3836,7 +3836,7 @@ struct PlannerInfo
     parent_root::Ptr{PlannerInfo}
     plan_params::Ptr{List}
     outer_params::Ptr{Bitmapset}
-    simple_rel_array::Ptr{Ptr{RelOptInfo}}
+    simple_rel_array::Ptr{Ptr{RelOptInfoGeneric{PlannerInfo}}}
     simple_rel_array_size::Cint
     simple_rte_array::Ptr{Ptr{RangeTblEntry}}
     all_baserels::Relids
@@ -3883,11 +3883,14 @@ struct PlannerInfo
     hasPseudoConstantQuals::Cint
     hasRecursion::Cint
     wt_param_id::Cint
-    non_recursive_path::Ptr{Path}
+    non_recursive_path::Ptr{PathGeneric{RelOptInfoGeneric{PlannerInfo}}}
     curOuterRels::Relids
     curOuterParams::Ptr{List}
     join_search_private::Ptr{Cvoid}
 end
+
+const RelOptInfo = RelOptInfoGeneric{PlannerInfo}
+const Path = PathGeneric{RelOptInfo}
 
 struct IndexOptInfo
     type::NodeTag
