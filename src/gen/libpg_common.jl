@@ -36,6 +36,44 @@ struct PgQueryNormalizeResult
     error::Ptr{PgQueryError}
 end
 
+# Skipping MacroDefinition: ScanDirectionIsValid ( direction ) ( ( bool ) ( BackwardScanDirection <= ( direction ) && ( direction ) <= ForwardScanDirection ) )
+# Skipping MacroDefinition: ScanDirectionIsBackward ( direction ) ( ( bool ) ( ( direction ) == BackwardScanDirection ) )
+# Skipping MacroDefinition: ScanDirectionIsNoMovement ( direction ) ( ( bool ) ( ( direction ) == NoMovementScanDirection ) )
+# Skipping MacroDefinition: ScanDirectionIsForward ( direction ) ( ( bool ) ( ( direction ) == ForwardScanDirection ) )
+
+@cenum ScanDirection::Int32 begin
+    BackwardScanDirection = -1
+    NoMovementScanDirection = 0
+    ForwardScanDirection = 1
+end
+
+
+# Skipping MacroDefinition: InvalidOid ( ( Oid ) 0 )
+
+const OID_MAX = UINT_MAX
+
+# Skipping MacroDefinition: atooid ( x ) ( ( Oid ) strtoul ( ( x ) , NULL , 10 ) )
+
+const PG_DIAG_SEVERITY = 'S'
+const PG_DIAG_SEVERITY_NONLOCALIZED = 'V'
+const PG_DIAG_SQLSTATE = 'C'
+const PG_DIAG_MESSAGE_PRIMARY = 'M'
+const PG_DIAG_MESSAGE_DETAIL = 'D'
+const PG_DIAG_MESSAGE_HINT = 'H'
+const PG_DIAG_STATEMENT_POSITION = 'P'
+const PG_DIAG_INTERNAL_POSITION = 'p'
+const PG_DIAG_INTERNAL_QUERY = 'q'
+const PG_DIAG_CONTEXT = 'W'
+const PG_DIAG_SCHEMA_NAME = 's'
+const PG_DIAG_TABLE_NAME = 't'
+const PG_DIAG_COLUMN_NAME = 'c'
+const PG_DIAG_DATATYPE_NAME = 'd'
+const PG_DIAG_CONSTRAINT_NAME = 'n'
+const PG_DIAG_SOURCE_FILE = 'F'
+const PG_DIAG_SOURCE_LINE = 'L'
+const PG_DIAG_SOURCE_FUNCTION = 'R'
+const Oid = UInt32
+const pg_int64 = Clong
 const STDERR_BUFFER_LEN = 4096
 
 @cenum NodeTag::UInt32 begin
@@ -467,12 +505,12 @@ struct PgQueryInternalParsetreeAndError
 end
 
 const BITS_PER_BITMAPWORD = 32
-const bitmapword = Cint
-const signedbitmapword = Cint
+const bitmapword = uint32
+const signedbitmapword = int32
 
 struct Bitmapset
     nwords::Cint
-    words::bitmapword
+    words::Ptr{bitmapword}
 end
 
 @cenum BMS_Comparison::UInt32 begin
@@ -500,7 +538,7 @@ end
 
 struct ExtensibleNodeMethods
     extnodename::Cstring
-    node_size::Cint
+    node_size::Size
     nodeCopy::Ptr{Cvoid}
     nodeEqual::Ptr{Cvoid}
     nodeOut::Ptr{Cvoid}
@@ -525,7 +563,7 @@ struct CustomExecMethods
     ReScanCustomScan::Ptr{Cvoid}
     MarkPosCustomScan::Ptr{Cvoid}
     RestrPosCustomScan::Ptr{Cvoid}
-    Size::Cvoid
+    EstimateDSMCustomScan::Ptr{Cvoid}
     InitializeDSMCustomScan::Ptr{Cvoid}
     ReInitializeDSMCustomScan::Ptr{Cvoid}
     InitializeWorkerCustomScan::Ptr{Cvoid}
@@ -551,10 +589,10 @@ end
 # Skipping MacroDefinition: MemoryContextIsValid ( context ) ( ( context ) != NULL && ( IsA ( ( context ) , AllocSetContext ) || IsA ( ( context ) , SlabContext ) ) )
 
 struct MemoryContextCounters
-    nblocks::Cint
-    freechunks::Cint
-    totalspace::Cint
-    freespace::Cint
+    nblocks::Size
+    freechunks::Size
+    totalspace::Size
+    freespace::Size
 end
 
 struct MemoryContextMethods
@@ -564,8 +602,8 @@ struct MemoryContextMethods
     init::Ptr{Cvoid}
     reset::Ptr{Cvoid}
     delete_context::Ptr{Cvoid}
-    Size::Cvoid
-    bool::Cvoid
+    get_chunk_space::Ptr{Cvoid}
+    is_empty::Ptr{Cvoid}
     stats::Ptr{Cvoid}
 end
 
@@ -574,10 +612,10 @@ struct MemoryContextData
     isReset::bool
     allowInCritSection::bool
     methods::Ptr{MemoryContextMethods}
-    parent::MemoryContext
-    firstchild::MemoryContext
-    prevchild::MemoryContext
-    nextchild::MemoryContext
+    parent::Cint
+    firstchild::Cint
+    prevchild::Cint
+    nextchild::Cint
     name::Cstring
     reset_cbs::Ptr{Cint}
 end
@@ -590,9 +628,7 @@ const QTW_IGNORE_RANGE_TABLE = 0x08
 const QTW_EXAMINE_RTES = 0x10
 const QTW_DONT_COPY_QUERY = 0x20
 const QTW_EXAMINE_SORTGROUP = 0x80
-
-# Skipping Typedef: CXType_FunctionProto bool
-
+const check_function_callback = Ptr{Cvoid}
 const PlanState = Cvoid
 
 # Skipping MacroDefinition: nodeTag ( nodeptr ) ( ( ( const Node * ) ( nodeptr ) ) -> type )
@@ -603,7 +639,7 @@ const PlanState = Cvoid
 # Skipping MacroDefinition: NodeSetTag ( nodeptr , t ) ( ( ( Node * ) ( nodeptr ) ) -> type = ( t ) )
 # Skipping MacroDefinition: IsA ( nodeptr , _type_ ) ( nodeTag ( nodeptr ) == T_ ## _type_ )
 # Skipping MacroDefinition: castNode ( _type_ , nodeptr ) ( ( _type_ * ) ( nodeptr ) )
-# Skipping MacroDefinition: copyObject ( obj ) copyObjectImpl ( obj )
+# Skipping MacroDefinition: copyObject ( obj ) ( ( typeof ( obj ) ) copyObjectImpl ( obj ) )
 # Skipping MacroDefinition: IS_OUTER_JOIN ( jointype ) ( ( ( 1 << ( jointype ) ) & ( ( 1 << JOIN_LEFT ) | ( 1 << JOIN_FULL ) | ( 1 << JOIN_RIGHT ) | ( 1 << JOIN_ANTI ) ) ) != 0 )
 
 const AGGSPLITOP_COMBINE = 0x01
@@ -681,10 +717,10 @@ const PARAM_FLAG_CONST = 0x0001
 const ParseState = Cvoid
 
 struct ParamExternData
-    value::Cint
+    value::Datum
     isnull::bool
-    pflags::Cint
-    ptype::Cint
+    pflags::uint16
+    ptype::Oid
 end
 
 const ParamFetchHook = Ptr{Cvoid}
@@ -697,14 +733,14 @@ struct ParamListInfoData
     parserSetupArg::Ptr{Cvoid}
     numParams::Cint
     paramMask::Ptr{Bitmapset}
-    params::ParamExternData
+    params::Ptr{ParamExternData}
 end
 
 const ParamListInfo = Ptr{ParamListInfoData}
 
 struct ParamExecData
     execPlan::Ptr{Cvoid}
-    value::Cint
+    value::Datum
     isnull::bool
 end
 
@@ -796,7 +832,7 @@ end
 end
 
 
-const AclMode = Cint
+const AclMode = uint32
 
 struct FromExpr
     type::NodeTag
@@ -809,7 +845,7 @@ struct OnConflictExpr
     action::OnConflictAction
     arbiterElems::Ptr{List}
     arbiterWhere::Ptr{Node}
-    constraint::Cint
+    constraint::Oid
     onConflictSet::Ptr{List}
     onConflictWhere::Ptr{Node}
     exclRelIndex::Cint
@@ -820,7 +856,7 @@ struct Query
     type::NodeTag
     commandType::CmdType
     querySource::QuerySource
-    queryId::Cint
+    queryId::uint32
     canSetTag::bool
     utilityStmt::Ptr{Node}
     resultRelation::Cint
@@ -859,11 +895,11 @@ end
 struct TypeName
     type::NodeTag
     names::Ptr{List}
-    typeOid::Cint
+    typeOid::Oid
     setof::bool
     pct_type::bool
     typmods::Ptr{List}
-    typemod::Cint
+    typemod::int32
     arrayBounds::Ptr{List}
     location::Cint
 end
@@ -1102,7 +1138,7 @@ struct ColumnDef
     identity::UInt8
     identitySequence::Ptr{RangeVar}
     collClause::Ptr{CollateClause}
-    collOid::Cint
+    collOid::Oid
     constraints::Ptr{List}
     fdwoptions::Ptr{List}
     location::Cint
@@ -1111,7 +1147,7 @@ end
 struct TableLikeClause
     type::NodeTag
     relation::Ptr{RangeVar}
-    options::Cint
+    options::bits32
 end
 
 @cenum TableLikeOption::UInt32 begin
@@ -1122,7 +1158,7 @@ end
     CREATE_TABLE_LIKE_STORAGE = 16
     CREATE_TABLE_LIKE_COMMENTS = 32
     CREATE_TABLE_LIKE_STATISTICS = 64
-    CREATE_TABLE_LIKE_ALL = 65
+    CREATE_TABLE_LIKE_ALL = 2147483647
 end
 
 
@@ -1238,7 +1274,7 @@ end
 
 struct TableSampleClause
     type::NodeTag
-    tsmhandler::Cint
+    tsmhandler::Oid
     args::Ptr{List}
     repeatable::Ptr{Expr}
 end
@@ -1263,7 +1299,7 @@ end
 struct RangeTblEntry
     type::NodeTag
     rtekind::RTEKind
-    relid::Cint
+    relid::Oid
     relkind::UInt8
     tablesample::Ptr{TableSampleClause}
     subquery::Ptr{Query}
@@ -1275,7 +1311,7 @@ struct RangeTblEntry
     tablefunc::Ptr{TableFunc}
     values_lists::Ptr{List}
     ctename::Cstring
-    ctelevelsup::Cint
+    ctelevelsup::Index
     self_reference::bool
     coltypes::Ptr{List}
     coltypmods::Ptr{List}
@@ -1288,7 +1324,7 @@ struct RangeTblEntry
     inh::bool
     inFromCl::bool
     requiredPerms::AclMode
-    checkAsUser::Cint
+    checkAsUser::Oid
     selectedCols::Ptr{Bitmapset}
     insertedCols::Ptr{Bitmapset}
     updatedCols::Ptr{Bitmapset}
@@ -1325,9 +1361,9 @@ end
 
 struct SortGroupClause
     type::NodeTag
-    tleSortGroupRef::Cint
-    eqop::Cint
-    sortop::Cint
+    tleSortGroupRef::Index
+    eqop::Oid
+    sortop::Oid
     nulls_first::bool
     hashable::bool
 end
@@ -1357,13 +1393,13 @@ struct WindowClause
     frameOptions::Cint
     startOffset::Ptr{Node}
     endOffset::Ptr{Node}
-    winref::Cint
+    winref::Index
     copiedOrder::bool
 end
 
 struct RowMarkClause
     type::NodeTag
-    rti::Cint
+    rti::Index
     strength::LockClauseStrength
     waitPolicy::LockWaitPolicy
     pushedDown::bool
@@ -1841,7 +1877,7 @@ struct Constraint
     fk_upd_action::UInt8
     fk_del_action::UInt8
     old_conpfeqop::Ptr{List}
-    old_pktable_oid::Cint
+    old_pktable_oid::Oid
     skip_validation::bool
     initially_valid::bool
 end
@@ -2008,8 +2044,8 @@ struct CreateTrigStmt
     funcname::Ptr{List}
     args::Ptr{List}
     row::bool
-    timing::Cint
-    events::Cint
+    timing::int16
+    events::int16
     columns::Ptr{List}
     whenClause::Ptr{Node}
     isconstraint::bool
@@ -2081,7 +2117,7 @@ struct CreateSeqStmt
     type::NodeTag
     sequence::Ptr{RangeVar}
     options::Ptr{List}
-    ownerId::Cint
+    ownerId::Oid
     for_identity::bool
     if_not_exists::bool
 end
@@ -2097,7 +2133,7 @@ end
 struct DefineStmt
     type::NodeTag
     kind::ObjectType
-    oldstyle::Cint
+    oldstyle::bool
     defnames::Ptr{List}
     args::Ptr{List}
     definition::Ptr{List}
@@ -2216,8 +2252,8 @@ struct IndexStmt
     whereClause::Ptr{Node}
     excludeOpNames::Ptr{List}
     idxcomment::Cstring
-    indexOid::Cint
-    oldNode::Cint
+    indexOid::Oid
+    oldNode::Oid
     unique::bool
     primary::bool
     isconstraint::bool
@@ -2278,7 +2314,7 @@ end
 struct InlineCodeBlock
     type::NodeTag
     source_text::Cstring
-    langOid::Cint
+    langOid::Oid
     langIsTrusted::bool
 end
 
@@ -2765,7 +2801,7 @@ end
 struct PlannedStmt
     type::NodeTag
     commandType::CmdType
-    queryId::Cint
+    queryId::uint32
     hasReturning::bool
     hasModifyingCTE::bool
     canSetTag::bool
@@ -2801,7 +2837,7 @@ struct ModifyTable
     plan::Plan
     operation::CmdType
     canSetTag::bool
-    nominalRelation::Cint
+    nominalRelation::Index
     partitioned_rels::Ptr{List}
     resultRelations::Ptr{List}
     resultRelIndex::Cint
@@ -2817,7 +2853,7 @@ struct ModifyTable
     arbiterIndexes::Ptr{List}
     onConflictSet::Ptr{List}
     onConflictWhere::Ptr{Node}
-    exclRelRTI::Cint
+    exclRelRTI::Index
     exclRelTlist::Ptr{List}
 end
 
@@ -2833,8 +2869,8 @@ struct MergeAppend
     mergeplans::Ptr{List}
     numCols::Cint
     sortColIdx::Ptr{AttrNumber}
-    sortOperators::Ptr{Cint}
-    collations::Ptr{Cint}
+    sortOperators::Ptr{Oid}
+    collations::Ptr{Oid}
     nullsFirst::Ptr{bool}
 end
 
@@ -2843,7 +2879,7 @@ struct RecursiveUnion
     wtParam::Cint
     numCols::Cint
     dupColIdx::Ptr{AttrNumber}
-    dupOperators::Ptr{Cint}
+    dupOperators::Ptr{Oid}
     numGroups::Clong
 end
 
@@ -2860,7 +2896,7 @@ end
 
 struct Scan
     plan::Plan
-    scanrelid::Cint
+    scanrelid::Index
 end
 
 const SeqScan = Scan
@@ -2870,16 +2906,9 @@ struct SampleScan
     tablesample::Ptr{TableSampleClause}
 end
 
-@cenum ScanDirection::Int32 begin
-    BackwardScanDirection = -1
-    NoMovementScanDirection = 0
-    ForwardScanDirection = 1
-end
-
-
 struct IndexScan
     scan::Scan
-    indexid::Cint
+    indexid::Oid
     indexqual::Ptr{List}
     indexqualorig::Ptr{List}
     indexorderby::Ptr{List}
@@ -2890,7 +2919,7 @@ end
 
 struct IndexOnlyScan
     scan::Scan
-    indexid::Cint
+    indexid::Oid
     indexqual::Ptr{List}
     indexorderby::Ptr{List}
     indextlist::Ptr{List}
@@ -2899,7 +2928,7 @@ end
 
 struct BitmapIndexScan
     scan::Scan
-    indexid::Cint
+    indexid::Oid
     isshared::bool
     indexqual::Ptr{List}
     indexqualorig::Ptr{List}
@@ -2955,7 +2984,7 @@ end
 struct ForeignScan
     scan::Scan
     operation::CmdType
-    fs_server::Cint
+    fs_server::Oid
     fdw_exprs::Ptr{List}
     fdw_private::Ptr{List}
     fdw_scan_tlist::Ptr{List}
@@ -2966,7 +2995,7 @@ end
 
 struct CustomScan
     scan::Scan
-    flags::Cint
+    flags::uint32
     custom_plans::Ptr{List}
     custom_exprs::Ptr{List}
     custom_private::Ptr{List}
@@ -2989,13 +3018,13 @@ end
 
 struct Var
     xpr::Expr
-    varno::Cint
+    varno::Index
     varattno::AttrNumber
-    vartype::Cint
-    vartypmod::Cint
-    varcollid::Cint
-    varlevelsup::Cint
-    varnoold::Cint
+    vartype::Oid
+    vartypmod::int32
+    varcollid::Oid
+    varlevelsup::Index
+    varnoold::Index
     varoattno::AttrNumber
     location::Cint
 end
@@ -3010,8 +3039,8 @@ struct MergeJoin
     join::Join
     skip_mark_restore::bool
     mergeclauses::Ptr{List}
-    mergeFamilies::Ptr{Cint}
-    mergeCollations::Ptr{Cint}
+    mergeFamilies::Ptr{Oid}
+    mergeCollations::Ptr{Oid}
     mergeStrategies::Ptr{Cint}
     mergeNullsFirst::Ptr{bool}
 end
@@ -3029,8 +3058,8 @@ struct Sort
     plan::Plan
     numCols::Cint
     sortColIdx::Ptr{AttrNumber}
-    sortOperators::Ptr{Cint}
-    collations::Ptr{Cint}
+    sortOperators::Ptr{Oid}
+    collations::Ptr{Oid}
     nullsFirst::Ptr{bool}
 end
 
@@ -3038,7 +3067,7 @@ struct Group
     plan::Plan
     numCols::Cint
     grpColIdx::Ptr{AttrNumber}
-    grpOperators::Ptr{Cint}
+    grpOperators::Ptr{Oid}
 end
 
 struct Agg
@@ -3047,7 +3076,7 @@ struct Agg
     aggsplit::AggSplit
     numCols::Cint
     grpColIdx::Ptr{AttrNumber}
-    grpOperators::Ptr{Cint}
+    grpOperators::Ptr{Oid}
     numGroups::Clong
     aggParams::Ptr{Bitmapset}
     groupingSets::Ptr{List}
@@ -3056,13 +3085,13 @@ end
 
 struct WindowAgg
     plan::Plan
-    winref::Cint
+    winref::Index
     partNumCols::Cint
     partColIdx::Ptr{AttrNumber}
-    partOperators::Ptr{Cint}
+    partOperators::Ptr{Oid}
     ordNumCols::Cint
     ordColIdx::Ptr{AttrNumber}
-    ordOperators::Ptr{Cint}
+    ordOperators::Ptr{Oid}
     frameOptions::Cint
     startOffset::Ptr{Node}
     endOffset::Ptr{Node}
@@ -3072,7 +3101,7 @@ struct Unique
     plan::Plan
     numCols::Cint
     uniqColIdx::Ptr{AttrNumber}
-    uniqOperators::Ptr{Cint}
+    uniqOperators::Ptr{Oid}
 end
 
 struct Gather
@@ -3089,14 +3118,14 @@ struct GatherMerge
     rescan_param::Cint
     numCols::Cint
     sortColIdx::Ptr{AttrNumber}
-    sortOperators::Ptr{Cint}
-    collations::Ptr{Cint}
+    sortOperators::Ptr{Oid}
+    collations::Ptr{Oid}
     nullsFirst::Ptr{bool}
 end
 
 struct Hash
     plan::Plan
-    skewTable::Cint
+    skewTable::Oid
     skewColumn::AttrNumber
     skewInherit::bool
 end
@@ -3107,7 +3136,7 @@ struct SetOp
     strategy::SetOpStrategy
     numCols::Cint
     dupColIdx::Ptr{AttrNumber}
-    dupOperators::Ptr{Cint}
+    dupOperators::Ptr{Oid}
     flagColIdx::AttrNumber
     firstFlag::Cint
     numGroups::Clong
@@ -3137,9 +3166,9 @@ end
 
 struct PlanRowMark
     type::NodeTag
-    rti::Cint
-    prti::Cint
-    rowmarkId::Cint
+    rti::Index
+    prti::Index
+    rowmarkId::Index
     markType::RowMarkType
     allMarkTypes::Cint
     strength::LockClauseStrength
@@ -3150,7 +3179,7 @@ end
 struct PlanInvalItem
     type::NodeTag
     cacheId::Cint
-    hashValue::Cint
+    hashValue::uint32
 end
 
 const INNER_VAR = 65000
@@ -3164,9 +3193,9 @@ const PRS2_NEW_VARNO = 2
 
 struct Const
     xpr::Expr
-    consttype::Cint
-    consttypmod::Cint
-    constcollid::Cint
+    consttype::Oid
+    consttypmod::int32
+    constcollid::Oid
     constlen::Cint
     constvalue::Cint
     constisnull::bool
@@ -3186,19 +3215,19 @@ struct Param
     xpr::Expr
     paramkind::ParamKind
     paramid::Cint
-    paramtype::Cint
-    paramtypmod::Cint
-    paramcollid::Cint
+    paramtype::Oid
+    paramtypmod::int32
+    paramcollid::Oid
     location::Cint
 end
 
 struct Aggref
     xpr::Expr
-    aggfnoid::Cint
-    aggtype::Cint
-    aggcollid::Cint
-    inputcollid::Cint
-    aggtranstype::Cint
+    aggfnoid::Oid
+    aggtype::Oid
+    aggcollid::Oid
+    inputcollid::Oid
+    aggtranstype::Oid
     aggargtypes::Ptr{List}
     aggdirectargs::Ptr{List}
     args::Ptr{List}
@@ -3208,7 +3237,7 @@ struct Aggref
     aggstar::bool
     aggvariadic::bool
     aggkind::UInt8
-    agglevelsup::Cint
+    agglevelsup::Index
     aggsplit::AggSplit
     location::Cint
 end
@@ -3218,30 +3247,30 @@ struct GroupingFunc
     args::Ptr{List}
     refs::Ptr{List}
     cols::Ptr{List}
-    agglevelsup::Cint
+    agglevelsup::Index
     location::Cint
 end
 
 struct WindowFunc
     xpr::Expr
-    winfnoid::Cint
-    wintype::Cint
-    wincollid::Cint
-    inputcollid::Cint
+    winfnoid::Oid
+    wintype::Oid
+    wincollid::Oid
+    inputcollid::Oid
     args::Ptr{List}
     aggfilter::Ptr{Expr}
-    winref::bool
+    winref::Index
     winstar::bool
-    winagg::Cint
+    winagg::bool
     location::Cint
 end
 
 struct ArrayRef
     xpr::Expr
-    refarraytype::Cint
-    refelemtype::Cint
-    reftypmod::Cint
-    refcollid::Cint
+    refarraytype::Oid
+    refelemtype::Oid
+    reftypmod::int32
+    refcollid::Oid
     refupperindexpr::Ptr{List}
     reflowerindexpr::Ptr{List}
     refexpr::Ptr{Expr}
@@ -3257,13 +3286,13 @@ end
 
 struct FuncExpr
     xpr::Expr
-    funcid::Cint
-    funcresulttype::Cint
+    funcid::Oid
+    funcresulttype::Oid
     funcretset::bool
     funcvariadic::bool
     funcformat::CoercionForm
-    funccollid::Cint
-    inputcollid::Cint
+    funccollid::Oid
+    inputcollid::Oid
     args::Ptr{List}
     location::Cint
 end
@@ -3278,12 +3307,12 @@ end
 
 struct OpExpr
     xpr::Expr
-    opno::Cint
-    opfuncid::Cint
-    opresulttype::Cint
+    opno::Oid
+    opfuncid::Oid
+    opresulttype::Oid
     opretset::bool
-    opcollid::Cint
-    inputcollid::Cint
+    opcollid::Oid
+    inputcollid::Oid
     args::Ptr{List}
     location::Cint
 end
@@ -3293,10 +3322,10 @@ const NullIfExpr = OpExpr
 
 struct ScalarArrayOpExpr
     xpr::Expr
-    opno::Cint
-    opfuncid::Cint
+    opno::Oid
+    opfuncid::Oid
     useOr::bool
-    inputcollid::Cint
+    inputcollid::Oid
     args::Ptr{List}
     location::Cint
 end
@@ -3344,9 +3373,9 @@ struct SubPlan
     paramIds::Ptr{List}
     plan_id::Cint
     plan_name::Cstring
-    firstColType::Cint
-    firstColTypmod::Cint
-    firstColCollation::Cint
+    firstColType::Oid
+    firstColTypmod::int32
+    firstColCollation::Oid
     useHashTable::bool
     unknownEqFalse::bool
     parallel_safe::bool
@@ -3366,9 +3395,9 @@ struct FieldSelect
     xpr::Expr
     arg::Ptr{Expr}
     fieldnum::AttrNumber
-    resulttype::Cint
-    resulttypmod::Cint
-    resultcollid::Cint
+    resulttype::Oid
+    resulttypmod::int32
+    resultcollid::Oid
 end
 
 struct FieldStore
@@ -3376,15 +3405,15 @@ struct FieldStore
     arg::Ptr{Expr}
     newvals::Ptr{List}
     fieldnums::Ptr{List}
-    resulttype::Cint
+    resulttype::Oid
 end
 
 struct RelabelType
     xpr::Expr
     arg::Ptr{Expr}
-    resulttype::Cint
-    resulttypmod::Cint
-    resultcollid::Cint
+    resulttype::Oid
+    resulttypmod::int32
+    resultcollid::Oid
     relabelformat::CoercionForm
     location::Cint
 end
@@ -3392,8 +3421,8 @@ end
 struct CoerceViaIO
     xpr::Expr
     arg::Ptr{Expr}
-    resulttype::Cint
-    resultcollid::Cint
+    resulttype::Oid
+    resultcollid::Oid
     coerceformat::CoercionForm
     location::Cint
 end
@@ -3401,10 +3430,10 @@ end
 struct ArrayCoerceExpr
     xpr::Expr
     arg::Ptr{Expr}
-    elemfuncid::Cint
-    resulttype::Cint
-    resulttypmod::Cint
-    resultcollid::Cint
+    elemfuncid::Oid
+    resulttype::Oid
+    resulttypmod::int32
+    resultcollid::Oid
     isExplicit::bool
     coerceformat::CoercionForm
     location::Cint
@@ -3413,7 +3442,7 @@ end
 struct ConvertRowtypeExpr
     xpr::Expr
     arg::Ptr{Expr}
-    resulttype::Cint
+    resulttype::Oid
     convertformat::CoercionForm
     location::Cint
 end
@@ -3421,14 +3450,14 @@ end
 struct CollateExpr
     xpr::Expr
     arg::Ptr{Expr}
-    collOid::Cint
+    collOid::Oid
     location::Cint
 end
 
 struct CaseExpr
     xpr::Expr
-    casetype::Cint
-    casecollid::Cint
+    casetype::Oid
+    casecollid::Oid
     arg::Ptr{Expr}
     args::Ptr{List}
     defresult::Ptr{Expr}
@@ -3444,16 +3473,16 @@ end
 
 struct CaseTestExpr
     xpr::Expr
-    typeId::Cint
-    typeMod::Cint
-    collation::Cint
+    typeId::Oid
+    typeMod::int32
+    collation::Oid
 end
 
 struct ArrayExpr
     xpr::Expr
-    array_typeid::Cint
-    array_collid::Cint
-    element_typeid::Cint
+    array_typeid::Oid
+    array_collid::Oid
+    element_typeid::Oid
     elements::Ptr{List}
     multidims::bool
     location::Cint
@@ -3462,7 +3491,7 @@ end
 struct RowExpr
     xpr::Expr
     args::Ptr{List}
-    row_typeid::Cint
+    row_typeid::Oid
     row_format::CoercionForm
     colnames::Ptr{List}
     location::Cint
@@ -3490,8 +3519,8 @@ end
 
 struct CoalesceExpr
     xpr::Expr
-    coalescetype::Cint
-    coalescecollid::Cint
+    coalescetype::Oid
+    coalescecollid::Oid
     args::Ptr{List}
     location::Cint
 end
@@ -3504,9 +3533,9 @@ end
 
 struct MinMaxExpr
     xpr::Expr
-    minmaxtype::Cint
-    minmaxcollid::Cint
-    inputcollid::Cint
+    minmaxtype::Oid
+    minmaxcollid::Oid
+    inputcollid::Oid
     op::MinMaxOp
     args::Ptr{List}
     location::Cint
@@ -3534,8 +3563,8 @@ end
 struct SQLValueFunction
     xpr::Expr
     op::SQLValueFunctionOp
-    type::Cint
-    typmod::Cint
+    type::Oid
+    typmod::int32
     location::Cint
 end
 
@@ -3559,8 +3588,8 @@ struct XmlExpr
     arg_names::Ptr{List}
     args::Ptr{List}
     xmloption::XmlOptionType
-    type::Cint
-    typmod::Cint
+    type::Oid
+    typmod::int32
     location::Cint
 end
 
@@ -3598,47 +3627,47 @@ end
 struct CoerceToDomain
     xpr::Expr
     arg::Ptr{Expr}
-    resulttype::Cint
-    resulttypmod::Cint
-    resultcollid::Cint
+    resulttype::Oid
+    resulttypmod::int32
+    resultcollid::Oid
     coercionformat::CoercionForm
     location::Cint
 end
 
 struct CoerceToDomainValue
     xpr::Expr
-    typeId::Cint
-    typeMod::Cint
-    collation::Cint
+    typeId::Oid
+    typeMod::int32
+    collation::Oid
     location::Cint
 end
 
 struct SetToDefault
     xpr::Expr
-    typeId::Cint
-    typeMod::Cint
-    collation::Cint
+    typeId::Oid
+    typeMod::int32
+    collation::Oid
     location::Cint
 end
 
 struct CurrentOfExpr
     xpr::Expr
-    cvarno::Cint
+    cvarno::Index
     cursor_name::Cstring
     cursor_param::Cint
 end
 
 struct NextValueExpr
     xpr::Expr
-    seqid::Cint
-    typeId::Cint
+    seqid::Oid
+    typeId::Oid
 end
 
 struct InferenceElem
     xpr::Expr
     expr::Ptr{Node}
-    infercollid::Cint
-    inferopclass::Cint
+    infercollid::Oid
+    inferopclass::Oid
 end
 
 struct TargetEntry
@@ -3646,8 +3675,8 @@ struct TargetEntry
     expr::Ptr{Expr}
     resno::AttrNumber
     resname::Cstring
-    ressortgroupref::Cint
-    resorigtbl::Cint
+    ressortgroupref::Index
+    resorigtbl::Oid
     resorigcol::AttrNumber
     resjunk::bool
 end
@@ -3703,7 +3732,7 @@ struct AggClauseCosts
     hasNonSerial::bool
     transCost::QualCost
     finalCost::Cost
-    transitionSpace::Cint
+    transitionSpace::Size
 end
 
 @cenum UpperRelationKind::UInt32 begin
@@ -3730,8 +3759,8 @@ struct PlannerGlobal
     relationOids::Ptr{List}
     invalItems::Ptr{List}
     nParamExec::Cint
-    lastPHId::Cint
-    lastRowMarkId::Cint
+    lastPHId::Index
+    lastRowMarkId::Index
     lastPlanNodeId::Cint
     transientPlan::bool
     dependsOnRole::bool
@@ -3752,7 +3781,7 @@ end
 struct PathTarget
     type::NodeTag
     exprs::Ptr{List}
-    sortgrouprefs::Ptr{Cint}
+    sortgrouprefs::Ptr{Index}
     cost::QualCost
     width::Cint
 end
@@ -3797,13 +3826,13 @@ struct RelOptInfoGeneric{PLANNER_INFO}
     cheapest_parameterized_paths::Ptr{List}
     direct_lateral_relids::Relids
     lateral_relids::Relids
-    relid::Cint
-    reltablespace::Cint
+    relid::Index
+    reltablespace::Oid
     rtekind::RTEKind
     min_attr::AttrNumber
     max_attr::AttrNumber
     attr_needed::Ptr{Relids}
-    attr_widths::Ptr{Cint}
+    attr_widths::Ptr{int32}
     lateral_vars::Ptr{List}
     lateral_referencers::Relids
     indexlist::Ptr{List}
@@ -3814,8 +3843,8 @@ struct RelOptInfoGeneric{PLANNER_INFO}
     subroot::Ptr{PLANNER_INFO}
     subplan_params::Ptr{List}
     rel_parallel_workers::Cint
-    serverid::Cint
-    userid::Cint
+    serverid::Oid
+    userid::Oid
     useridiscurrent::bool
     fdwroutine::Ptr{FdwRoutine}
     fdw_private::Ptr{Cvoid}
@@ -3823,7 +3852,7 @@ struct RelOptInfoGeneric{PLANNER_INFO}
     non_unique_for_rels::Ptr{List}
     baserestrictinfo::Ptr{List}
     baserestrictcost::QualCost
-    baserestrict_min_security::Cint
+    baserestrict_min_security::Index
     joininfo::Ptr{List}
     has_eclass_joins::bool
     top_parent_relids::Relids
@@ -3833,7 +3862,7 @@ struct PlannerInfo
     type::NodeTag
     parse::Ptr{Query}
     glob::Ptr{PlannerGlobal}
-    query_level::Cint
+    query_level::Index
     parent_root::Ptr{PlannerInfo}
     plan_params::Ptr{List}
     outer_params::Ptr{Bitmapset}
@@ -3871,11 +3900,11 @@ struct PlannerInfo
     processed_tlist::Ptr{List}
     grouping_map::Ptr{AttrNumber}
     minmax_aggs::Ptr{List}
-    planner_cxt::Cint
+    planner_cxt::MemoryContext
     total_table_pages::Cdouble
     tuple_fraction::Cdouble
     limit_tuples::Cdouble
-    qual_security_level::Cint
+    qual_security_level::Index
     hasInheritedTarget::bool
     hasJoinRTEs::bool
     hasLateralRTEs::bool
@@ -3895,22 +3924,22 @@ const Path = PathGeneric{RelOptInfo}
 
 struct IndexOptInfo
     type::NodeTag
-    indexoid::Cint
-    reltablespace::Cint
+    indexoid::Oid
+    reltablespace::Oid
     rel::Ptr{RelOptInfo}
     pages::BlockNumber
     tuples::Cdouble
     tree_height::Cint
     ncolumns::Cint
     indexkeys::Ptr{Cint}
-    indexcollations::Ptr{Cint}
-    opfamily::Ptr{Cint}
-    opcintype::Ptr{Cint}
-    sortopfamily::Ptr{Cint}
+    indexcollations::Ptr{Oid}
+    opfamily::Ptr{Oid}
+    opcintype::Ptr{Oid}
+    sortopfamily::Ptr{Oid}
     reverse_sort::Ptr{bool}
     nulls_first::Ptr{bool}
     canreturn::Ptr{bool}
-    relam::Cint
+    relam::Oid
     indexprs::Ptr{List}
     indpred::Ptr{List}
     indextlist::Ptr{List}
@@ -3932,7 +3961,7 @@ end
 struct EquivalenceClass
     type::NodeTag
     ec_opfamilies::Ptr{List}
-    ec_collation::Cint
+    ec_collation::Oid
     ec_members::Ptr{List}
     ec_sources::Ptr{List}
     ec_derives::Ptr{List}
@@ -3941,30 +3970,30 @@ struct EquivalenceClass
     ec_has_volatile::bool
     ec_below_outer_join::bool
     ec_broken::bool
-    ec_sortref::Cint
-    ec_min_security::Cint
-    ec_max_security::Cint
+    ec_sortref::Index
+    ec_min_security::Index
+    ec_max_security::Index
     ec_merged::Ptr{EquivalenceClass}
 end
 
 struct ForeignKeyOptInfo
     type::NodeTag
-    con_relid::Cint
-    ref_relid::Cint
+    con_relid::Index
+    ref_relid::Index
     nkeys::Cint
-    conkey::AttrNumber
-    confkey::AttrNumber
-    conpfeqop::Cint
+    conkey::NTuple{32, AttrNumber}
+    confkey::NTuple{32, AttrNumber}
+    conpfeqop::NTuple{32, Oid}
     nmatched_ec::Cint
     nmatched_rcols::Cint
     nmatched_ri::Cint
-    eclass::Ptr{EquivalenceClass}
-    rinfos::Ptr{List}
+    eclass::NTuple{32, Ptr{EquivalenceClass}}
+    rinfos::NTuple{32, Ptr{List}}
 end
 
 struct StatisticExtInfo
     type::NodeTag
-    statOid::Cint
+    statOid::Oid
     rel::Ptr{RelOptInfo}
     kind::UInt8
     keys::Ptr{Bitmapset}
@@ -3977,13 +4006,13 @@ struct EquivalenceMember
     em_nullable_relids::Relids
     em_is_const::bool
     em_is_child::bool
-    em_datatype::Cint
+    em_datatype::Oid
 end
 
 struct PathKey
     type::NodeTag
     pk_eclass::Ptr{EquivalenceClass}
-    pk_opfamily::Cint
+    pk_opfamily::Oid
     pk_strategy::Cint
     pk_nulls_first::bool
 end
@@ -4036,7 +4065,7 @@ end
 
 struct CustomPath
     path::Path
-    flags::Cint
+    flags::uint32
     custom_paths::Ptr{List}
     custom_private::Ptr{List}
     methods::Ptr{CustomPathMethods}
@@ -4226,7 +4255,7 @@ struct ModifyTablePath
     path::Path
     operation::CmdType
     canSetTag::bool
-    nominalRelation::Cint
+    nominalRelation::Index
     partitioned_rels::Ptr{List}
     resultRelations::Ptr{List}
     subpaths::Ptr{List}
@@ -4253,7 +4282,7 @@ struct RestrictInfo
     can_join::bool
     pseudoconstant::bool
     leakproof::bool
-    security_level::Cint
+    security_level::Index
     clause_relids::Relids
     required_relids::Relids
     outer_relids::Relids
@@ -4272,14 +4301,14 @@ struct RestrictInfo
     right_em::Ptr{EquivalenceMember}
     scansel_cache::Ptr{List}
     outer_is_left::bool
-    hashjoinoperator::Cint
+    hashjoinoperator::Oid
     left_bucketsize::Selectivity
     right_bucketsize::Selectivity
 end
 
 struct MergeScanSelCache
-    opfamily::Cint
-    collation::Cint
+    opfamily::Oid
+    collation::Oid
     strategy::Cint
     nulls_first::bool
     leftstartsel::Selectivity
@@ -4292,8 +4321,8 @@ struct PlaceHolderVar
     xpr::Expr
     phexpr::Ptr{Expr}
     phrels::Relids
-    phid::Cint
-    phlevelsup::Cint
+    phid::Index
+    phlevelsup::Index
 end
 
 struct SpecialJoinInfo
@@ -4313,34 +4342,34 @@ end
 
 struct AppendRelInfo
     type::NodeTag
-    parent_relid::Cint
-    child_relid::Cint
-    parent_reltype::Cint
-    child_reltype::Cint
+    parent_relid::Index
+    child_relid::Index
+    parent_reltype::Oid
+    child_reltype::Oid
     translated_vars::Ptr{List}
-    parent_reloid::Cint
+    parent_reloid::Oid
 end
 
 struct PartitionedChildRelInfo
     type::NodeTag
-    parent_relid::Cint
+    parent_relid::Index
     child_rels::Ptr{List}
 end
 
 struct PlaceHolderInfo
     type::NodeTag
-    phid::Cint
+    phid::Index
     ph_var::Ptr{PlaceHolderVar}
     ph_eval_at::Relids
     ph_lateral::Relids
     ph_needed::Relids
-    ph_width::Cint
+    ph_width::int32
 end
 
 struct MinMaxAggInfo
     type::NodeTag
-    aggfnoid::Cint
-    aggsortop::Cint
+    aggfnoid::Oid
+    aggsortop::Oid
     target::Ptr{Expr}
     subroot::Ptr{PlannerInfo}
     path::Ptr{Path}
@@ -4390,13 +4419,9 @@ struct TBMIterateResult
     blockno::BlockNumber
     ntuples::Cint
     recheck::bool
-    offsets::OffsetNumber
+    offsets::Ptr{OffsetNumber}
 end
 
 # Skipping MacroDefinition: intVal ( v ) ( ( ( Value * ) ( v ) ) -> val . ival )
 # Skipping MacroDefinition: floatVal ( v ) atof ( ( ( Value * ) ( v ) ) -> val . str )
 # Skipping MacroDefinition: strVal ( v ) ( ( ( Value * ) ( v ) ) -> val . str )
-# Skipping MacroDefinition: ScanDirectionIsValid ( direction ) ( ( bool ) ( BackwardScanDirection <= ( direction ) && ( direction ) <= ForwardScanDirection ) )
-# Skipping MacroDefinition: ScanDirectionIsBackward ( direction ) ( ( bool ) ( ( direction ) == BackwardScanDirection ) )
-# Skipping MacroDefinition: ScanDirectionIsNoMovement ( direction ) ( ( bool ) ( ( direction ) == NoMovementScanDirection ) )
-# Skipping MacroDefinition: ScanDirectionIsForward ( direction ) ( ( bool ) ( ( direction ) == ForwardScanDirection ) )

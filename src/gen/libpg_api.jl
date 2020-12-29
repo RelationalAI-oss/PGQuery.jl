@@ -37,12 +37,18 @@ end
 function pg_query_init()
     ccall((:pg_query_init, libpg_query), Cvoid, ())
 end
+# Julia wrapper for header: sdir.h
+# Automatically generated using Clang.jl
+
+# Julia wrapper for header: postgres_ext.h
+# Automatically generated using Clang.jl
+
 # Julia wrapper for header: pg_query_fingerprint.h
 # Automatically generated using Clang.jl
 
 
-function pg_query_fingerprint_with_opts()
-    ccall((:pg_query_fingerprint_with_opts, libpg_query), Cint, ())
+function pg_query_fingerprint_with_opts(input, printTokens)
+    ccall((:pg_query_fingerprint_with_opts, libpg_query), PgQueryFingerprintResult, (Cstring, bool), input, printTokens)
 end
 # Julia wrapper for header: pg_query_internal.h
 # Automatically generated using Clang.jl
@@ -85,8 +91,8 @@ function bms_copy(a)
     ccall((:bms_copy, libpg_query), Ptr{Bitmapset}, (Ptr{Bitmapset},), a)
 end
 
-function bms_equal()
-    ccall((:bms_equal, libpg_query), Cint, ())
+function bms_equal(a, b)
+    ccall((:bms_equal, libpg_query), bool, (Ptr{Bitmapset}, Ptr{Bitmapset}), a, b)
 end
 
 function bms_make_singleton(x)
@@ -109,36 +115,36 @@ function bms_difference(a, b)
     ccall((:bms_difference, libpg_query), Ptr{Bitmapset}, (Ptr{Bitmapset}, Ptr{Bitmapset}), a, b)
 end
 
-function bms_is_subset()
-    ccall((:bms_is_subset, libpg_query), Cint, ())
+function bms_is_subset(a, b)
+    ccall((:bms_is_subset, libpg_query), bool, (Ptr{Bitmapset}, Ptr{Bitmapset}), a, b)
 end
 
 function bms_subset_compare(a, b)
     ccall((:bms_subset_compare, libpg_query), BMS_Comparison, (Ptr{Bitmapset}, Ptr{Bitmapset}), a, b)
 end
 
-function bms_is_member()
-    ccall((:bms_is_member, libpg_query), Cint, ())
+function bms_is_member(x, a)
+    ccall((:bms_is_member, libpg_query), bool, (Cint, Ptr{Bitmapset}), x, a)
 end
 
-function bms_overlap()
-    ccall((:bms_overlap, libpg_query), Cint, ())
+function bms_overlap(a, b)
+    ccall((:bms_overlap, libpg_query), bool, (Ptr{Bitmapset}, Ptr{Bitmapset}), a, b)
 end
 
-function bms_overlap_list()
-    ccall((:bms_overlap_list, libpg_query), Cint, ())
+function bms_overlap_list(a, b)
+    ccall((:bms_overlap_list, libpg_query), bool, (Ptr{Bitmapset}, Ptr{List}), a, b)
 end
 
-function bms_nonempty_difference()
-    ccall((:bms_nonempty_difference, libpg_query), Cint, ())
+function bms_nonempty_difference(a, b)
+    ccall((:bms_nonempty_difference, libpg_query), bool, (Ptr{Bitmapset}, Ptr{Bitmapset}), a, b)
 end
 
 function bms_singleton_member(a)
     ccall((:bms_singleton_member, libpg_query), Cint, (Ptr{Bitmapset},), a)
 end
 
-function bms_get_singleton_member()
-    ccall((:bms_get_singleton_member, libpg_query), Cint, ())
+function bms_get_singleton_member(a, member)
+    ccall((:bms_get_singleton_member, libpg_query), bool, (Ptr{Bitmapset}, Ptr{Cint}), a, member)
 end
 
 function bms_num_members(a)
@@ -149,8 +155,8 @@ function bms_membership(a)
     ccall((:bms_membership, libpg_query), BMS_Membership, (Ptr{Bitmapset},), a)
 end
 
-function bms_is_empty()
-    ccall((:bms_is_empty, libpg_query), Cint, ())
+function bms_is_empty(a)
+    ccall((:bms_is_empty, libpg_query), bool, (Ptr{Bitmapset},), a)
 end
 
 function bms_add_member(a, x)
@@ -185,8 +191,8 @@ function bms_next_member(a, prevbit)
     ccall((:bms_next_member, libpg_query), Cint, (Ptr{Bitmapset}, Cint), a, prevbit)
 end
 
-function bms_hash_value()
-    ccall((:bms_hash_value, libpg_query), Cint, ())
+function bms_hash_value(a)
+    ccall((:bms_hash_value, libpg_query), uint32, (Ptr{Bitmapset},), a)
 end
 # Julia wrapper for header: extensible.h
 # Automatically generated using Clang.jl
@@ -223,19 +229,19 @@ function makeSimpleA_Expr(kind, name, lexpr, rexpr, location)
 end
 
 function makeVar(varno, varattno, vartype, vartypmod, varcollid, varlevelsup)
-    ccall((:makeVar, libpg_query), Ptr{Var}, (Cint, AttrNumber, Cint, Cint, Cint, Cint), varno, varattno, vartype, vartypmod, varcollid, varlevelsup)
+    ccall((:makeVar, libpg_query), Ptr{Var}, (Index, AttrNumber, Oid, int32, Oid, Index), varno, varattno, vartype, vartypmod, varcollid, varlevelsup)
 end
 
 function makeVarFromTargetEntry(varno, tle)
-    ccall((:makeVarFromTargetEntry, libpg_query), Ptr{Var}, (Cint, Ptr{TargetEntry}), varno, tle)
+    ccall((:makeVarFromTargetEntry, libpg_query), Ptr{Var}, (Index, Ptr{TargetEntry}), varno, tle)
 end
 
 function makeWholeRowVar(rte, varno, varlevelsup, allowScalar)
-    ccall((:makeWholeRowVar, libpg_query), Ptr{Var}, (Ptr{RangeTblEntry}, Cint, Cint, Cint), rte, varno, varlevelsup, allowScalar)
+    ccall((:makeWholeRowVar, libpg_query), Ptr{Var}, (Ptr{RangeTblEntry}, Index, Index, bool), rte, varno, varlevelsup, allowScalar)
 end
 
 function makeTargetEntry(expr, resno, resname, resjunk)
-    ccall((:makeTargetEntry, libpg_query), Ptr{TargetEntry}, (Ptr{Expr}, AttrNumber, Cstring, Cint), expr, resno, resname, resjunk)
+    ccall((:makeTargetEntry, libpg_query), Ptr{TargetEntry}, (Ptr{Expr}, AttrNumber, Cstring, bool), expr, resno, resname, resjunk)
 end
 
 function flatCopyTargetEntry(src_tle)
@@ -247,15 +253,15 @@ function makeFromExpr(fromlist, quals)
 end
 
 function makeConst(consttype, consttypmod, constcollid, constlen, constvalue, constisnull, constbyval)
-    ccall((:makeConst, libpg_query), Ptr{Const}, (Cint, Cint, Cint, Cint, Cint, Cint, Cint), consttype, consttypmod, constcollid, constlen, constvalue, constisnull, constbyval)
+    ccall((:makeConst, libpg_query), Ptr{Const}, (Oid, int32, Oid, Cint, Cint, bool, bool), consttype, consttypmod, constcollid, constlen, constvalue, constisnull, constbyval)
 end
 
 function makeNullConst(consttype, consttypmod, constcollid)
-    ccall((:makeNullConst, libpg_query), Ptr{Const}, (Cint, Cint, Cint), consttype, consttypmod, constcollid)
+    ccall((:makeNullConst, libpg_query), Ptr{Const}, (Oid, int32, Oid), consttype, consttypmod, constcollid)
 end
 
 function makeBoolConst(value, isnull)
-    ccall((:makeBoolConst, libpg_query), Ptr{Node}, (Cint, Cint), value, isnull)
+    ccall((:makeBoolConst, libpg_query), Ptr{Node}, (bool, bool), value, isnull)
 end
 
 function makeBoolExpr(boolop, args, location)
@@ -267,7 +273,7 @@ function makeAlias(aliasname, colnames)
 end
 
 function makeRelabelType(arg, rtype, rtypmod, rcollid, rformat)
-    ccall((:makeRelabelType, libpg_query), Ptr{RelabelType}, (Ptr{Expr}, Cint, Cint, Cint, CoercionForm), arg, rtype, rtypmod, rcollid, rformat)
+    ccall((:makeRelabelType, libpg_query), Ptr{RelabelType}, (Ptr{Expr}, Oid, int32, Oid, CoercionForm), arg, rtype, rtypmod, rcollid, rformat)
 end
 
 function makeRangeVar(schemaname, relname, location)
@@ -283,15 +289,15 @@ function makeTypeNameFromNameList(names)
 end
 
 function makeTypeNameFromOid(typeOid, typmod)
-    ccall((:makeTypeNameFromOid, libpg_query), Ptr{TypeName}, (Cint, Cint), typeOid, typmod)
+    ccall((:makeTypeNameFromOid, libpg_query), Ptr{TypeName}, (Oid, int32), typeOid, typmod)
 end
 
 function makeColumnDef(colname, typeOid, typmod, collOid)
-    ccall((:makeColumnDef, libpg_query), Ptr{ColumnDef}, (Cstring, Cint, Cint, Cint), colname, typeOid, typmod, collOid)
+    ccall((:makeColumnDef, libpg_query), Ptr{ColumnDef}, (Cstring, Oid, int32, Oid), colname, typeOid, typmod, collOid)
 end
 
 function makeFuncExpr(funcid, rettype, args, funccollid, inputcollid, fformat)
-    ccall((:makeFuncExpr, libpg_query), Ptr{FuncExpr}, (Cint, Cint, Ptr{List}, Cint, Cint, CoercionForm), funcid, rettype, args, funccollid, inputcollid, fformat)
+    ccall((:makeFuncExpr, libpg_query), Ptr{FuncExpr}, (Oid, Oid, Ptr{List}, Oid, Oid, CoercionForm), funcid, rettype, args, funccollid, inputcollid, fformat)
 end
 
 function makeFuncCall(name, args, location)
@@ -316,44 +322,44 @@ end
 # Automatically generated using Clang.jl
 
 
-function exprType()
-    ccall((:exprType, libpg_query), Cint, ())
+function exprType(expr)
+    ccall((:exprType, libpg_query), Oid, (Ptr{Node},), expr)
 end
 
-function exprTypmod()
-    ccall((:exprTypmod, libpg_query), Cint, ())
+function exprTypmod(expr)
+    ccall((:exprTypmod, libpg_query), int32, (Ptr{Node},), expr)
 end
 
-function exprIsLengthCoercion()
-    ccall((:exprIsLengthCoercion, libpg_query), Cint, ())
+function exprIsLengthCoercion(expr, coercedTypmod)
+    ccall((:exprIsLengthCoercion, libpg_query), bool, (Ptr{Node}, Ptr{int32}), expr, coercedTypmod)
 end
 
 function relabel_to_typmod(expr, typmod)
-    ccall((:relabel_to_typmod, libpg_query), Ptr{Node}, (Ptr{Node}, Cint), expr, typmod)
+    ccall((:relabel_to_typmod, libpg_query), Ptr{Node}, (Ptr{Node}, int32), expr, typmod)
 end
 
 function strip_implicit_coercions(node)
     ccall((:strip_implicit_coercions, libpg_query), Ptr{Node}, (Ptr{Node},), node)
 end
 
-function expression_returns_set()
-    ccall((:expression_returns_set, libpg_query), Cint, ())
+function expression_returns_set(clause)
+    ccall((:expression_returns_set, libpg_query), bool, (Ptr{Node},), clause)
 end
 
-function exprCollation()
-    ccall((:exprCollation, libpg_query), Cint, ())
+function exprCollation(expr)
+    ccall((:exprCollation, libpg_query), Oid, (Ptr{Node},), expr)
 end
 
-function exprInputCollation()
-    ccall((:exprInputCollation, libpg_query), Cint, ())
+function exprInputCollation(expr)
+    ccall((:exprInputCollation, libpg_query), Oid, (Ptr{Node},), expr)
 end
 
 function exprSetCollation(expr, collation)
-    ccall((:exprSetCollation, libpg_query), Cvoid, (Ptr{Node}, Cint), expr, collation)
+    ccall((:exprSetCollation, libpg_query), Cvoid, (Ptr{Node}, Oid), expr, collation)
 end
 
 function exprSetInputCollation(expr, inputcollation)
-    ccall((:exprSetInputCollation, libpg_query), Cvoid, (Ptr{Node}, Cint), expr, inputcollation)
+    ccall((:exprSetInputCollation, libpg_query), Cvoid, (Ptr{Node}, Oid), expr, inputcollation)
 end
 
 function exprLocation(expr)
@@ -372,48 +378,48 @@ function set_sa_opfuncid(opexpr)
     ccall((:set_sa_opfuncid, libpg_query), Cvoid, (Ptr{ScalarArrayOpExpr},), opexpr)
 end
 
-function check_functions_in_node()
-    ccall((:check_functions_in_node, libpg_query), Cint, ())
+function check_functions_in_node(node, checker, context)
+    ccall((:check_functions_in_node, libpg_query), bool, (Ptr{Node}, check_function_callback, Ptr{Cvoid}), node, checker, context)
 end
 
-function expression_tree_walker()
-    ccall((:expression_tree_walker, libpg_query), Cint, ())
+function expression_tree_walker(node, walker, context)
+    ccall((:expression_tree_walker, libpg_query), bool, (Ptr{Node}, Ptr{Cvoid}, Ptr{Cvoid}), node, walker, context)
 end
 
 function expression_tree_mutator(node, mutator, context)
     ccall((:expression_tree_mutator, libpg_query), Ptr{Node}, (Ptr{Node}, Ptr{Cvoid}, Ptr{Cvoid}), node, mutator, context)
 end
 
-function query_tree_walker()
-    ccall((:query_tree_walker, libpg_query), Cint, ())
+function query_tree_walker(query, walker, context, flags)
+    ccall((:query_tree_walker, libpg_query), bool, (Ptr{Query}, Ptr{Cvoid}, Ptr{Cvoid}, Cint), query, walker, context, flags)
 end
 
 function query_tree_mutator(query, mutator, context, flags)
     ccall((:query_tree_mutator, libpg_query), Ptr{Query}, (Ptr{Query}, Ptr{Cvoid}, Ptr{Cvoid}, Cint), query, mutator, context, flags)
 end
 
-function range_table_walker()
-    ccall((:range_table_walker, libpg_query), Cint, ())
+function range_table_walker(rtable, walker, context, flags)
+    ccall((:range_table_walker, libpg_query), bool, (Ptr{List}, Ptr{Cvoid}, Ptr{Cvoid}, Cint), rtable, walker, context, flags)
 end
 
 function range_table_mutator(rtable, mutator, context, flags)
     ccall((:range_table_mutator, libpg_query), Ptr{List}, (Ptr{List}, Ptr{Cvoid}, Ptr{Cvoid}, Cint), rtable, mutator, context, flags)
 end
 
-function query_or_expression_tree_walker()
-    ccall((:query_or_expression_tree_walker, libpg_query), Cint, ())
+function query_or_expression_tree_walker(node, walker, context, flags)
+    ccall((:query_or_expression_tree_walker, libpg_query), bool, (Ptr{Node}, Ptr{Cvoid}, Ptr{Cvoid}, Cint), node, walker, context, flags)
 end
 
 function query_or_expression_tree_mutator(node, mutator, context, flags)
     ccall((:query_or_expression_tree_mutator, libpg_query), Ptr{Node}, (Ptr{Node}, Ptr{Cvoid}, Ptr{Cvoid}, Cint), node, mutator, context, flags)
 end
 
-function raw_expression_tree_walker()
-    ccall((:raw_expression_tree_walker, libpg_query), Cint, ())
+function raw_expression_tree_walker(node, walker, context)
+    ccall((:raw_expression_tree_walker, libpg_query), bool, (Ptr{Node}, Ptr{Cvoid}, Ptr{Cvoid}), node, walker, context)
 end
 
-function planstate_tree_walker()
-    ccall((:planstate_tree_walker, libpg_query), Cint, ())
+function planstate_tree_walker(planstate, walker, context)
+    ccall((:planstate_tree_walker, libpg_query), bool, (Ptr{PlanState}, Ptr{Cvoid}, Ptr{Cvoid}), planstate, walker, context)
 end
 # Julia wrapper for header: nodes.h
 # Automatically generated using Clang.jl
@@ -432,7 +438,7 @@ function outBitmapset(str, bms)
 end
 
 function outDatum(str, value, typlen, typbyval)
-    ccall((:outDatum, libpg_query), Cvoid, (Ptr{StringInfoData}, Cint, Cint, Cint), str, value, typlen, typbyval)
+    ccall((:outDatum, libpg_query), Cvoid, (Ptr{StringInfoData}, Csize_t, Cint, bool), str, value, typlen, typbyval)
 end
 
 function nodeToString(obj)
@@ -451,32 +457,32 @@ function readBitmapset()
     ccall((:readBitmapset, libpg_query), Ptr{Bitmapset}, ())
 end
 
-function readDatum()
-    ccall((:readDatum, libpg_query), Cint, ())
+function readDatum(typbyval)
+    ccall((:readDatum, libpg_query), Csize_t, (bool,), typbyval)
 end
 
-function readBoolCols()
-    ccall((:readBoolCols, libpg_query), Ptr{Cint}, ())
+function readBoolCols(numCols)
+    ccall((:readBoolCols, libpg_query), Ptr{bool}, (Cint,), numCols)
 end
 
 function readIntCols(numCols)
     ccall((:readIntCols, libpg_query), Ptr{Cint}, (Cint,), numCols)
 end
 
-function readOidCols()
-    ccall((:readOidCols, libpg_query), Ptr{Cint}, ())
+function readOidCols(numCols)
+    ccall((:readOidCols, libpg_query), Ptr{Oid}, (Cint,), numCols)
 end
 
-function readAttrNumberCols()
-    ccall((:readAttrNumberCols, libpg_query), Ptr{Cint}, ())
+function readAttrNumberCols(numCols)
+    ccall((:readAttrNumberCols, libpg_query), Ptr{int16}, (Cint,), numCols)
 end
 
 function copyObjectImpl(obj)
     ccall((:copyObjectImpl, libpg_query), Ptr{Cvoid}, (Ptr{Cvoid},), obj)
 end
 
-function equal()
-    ccall((:equal, libpg_query), Cint, ())
+function equal(a, b)
+    ccall((:equal, libpg_query), bool, (Ptr{Cvoid}, Ptr{Cvoid}), a, b)
 end
 # Julia wrapper for header: params.h
 # Automatically generated using Clang.jl
@@ -486,8 +492,8 @@ function copyParamList(from)
     ccall((:copyParamList, libpg_query), ParamListInfo, (ParamListInfo,), from)
 end
 
-function EstimateParamListSpace()
-    ccall((:EstimateParamListSpace, libpg_query), Cint, ())
+function EstimateParamListSpace(paramLI)
+    ccall((:EstimateParamListSpace, libpg_query), Size, (ParamListInfo,), paramLI)
 end
 
 function SerializeParamList(paramLI, start_address)
@@ -525,7 +531,7 @@ function lappend_int(list, datum)
 end
 
 function lappend_oid(list, datum)
-    ccall((:lappend_oid, libpg_query), Ptr{List}, (Ptr{List}, Cint), list, datum)
+    ccall((:lappend_oid, libpg_query), Ptr{List}, (Ptr{List}, Oid), list, datum)
 end
 
 function lappend_cell(list, prev, datum)
@@ -537,7 +543,7 @@ function lappend_cell_int(list, prev, datum)
 end
 
 function lappend_cell_oid(list, prev, datum)
-    ccall((:lappend_cell_oid, libpg_query), Ptr{ListCell}, (Ptr{List}, Ptr{ListCell}, Cint), list, prev, datum)
+    ccall((:lappend_cell_oid, libpg_query), Ptr{ListCell}, (Ptr{List}, Ptr{ListCell}, Oid), list, prev, datum)
 end
 
 function lcons(datum, list)
@@ -549,7 +555,7 @@ function lcons_int(datum, list)
 end
 
 function lcons_oid(datum, list)
-    ccall((:lcons_oid, libpg_query), Ptr{List}, (Cint, Ptr{List}), datum, list)
+    ccall((:lcons_oid, libpg_query), Ptr{List}, (Oid, Ptr{List}), datum, list)
 end
 
 function list_concat(list1, list2)
@@ -572,24 +578,24 @@ function list_nth_int(list, n)
     ccall((:list_nth_int, libpg_query), Cint, (Ptr{List}, Cint), list, n)
 end
 
-function list_nth_oid()
-    ccall((:list_nth_oid, libpg_query), Cint, ())
+function list_nth_oid(list, n)
+    ccall((:list_nth_oid, libpg_query), Oid, (Ptr{List}, Cint), list, n)
 end
 
-function list_member()
-    ccall((:list_member, libpg_query), Cint, ())
+function list_member(list, datum)
+    ccall((:list_member, libpg_query), bool, (Ptr{List}, Ptr{Cvoid}), list, datum)
 end
 
-function list_member_ptr()
-    ccall((:list_member_ptr, libpg_query), Cint, ())
+function list_member_ptr(list, datum)
+    ccall((:list_member_ptr, libpg_query), bool, (Ptr{List}, Ptr{Cvoid}), list, datum)
 end
 
-function list_member_int()
-    ccall((:list_member_int, libpg_query), Cint, ())
+function list_member_int(list, datum)
+    ccall((:list_member_int, libpg_query), bool, (Ptr{List}, Cint), list, datum)
 end
 
-function list_member_oid()
-    ccall((:list_member_oid, libpg_query), Cint, ())
+function list_member_oid(list, datum)
+    ccall((:list_member_oid, libpg_query), bool, (Ptr{List}, Oid), list, datum)
 end
 
 function list_delete(list, datum)
@@ -605,7 +611,7 @@ function list_delete_int(list, datum)
 end
 
 function list_delete_oid(list, datum)
-    ccall((:list_delete_oid, libpg_query), Ptr{List}, (Ptr{List}, Cint), list, datum)
+    ccall((:list_delete_oid, libpg_query), Ptr{List}, (Ptr{List}, Oid), list, datum)
 end
 
 function list_delete_first(list)
@@ -669,7 +675,7 @@ function list_append_unique_int(list, datum)
 end
 
 function list_append_unique_oid(list, datum)
-    ccall((:list_append_unique_oid, libpg_query), Ptr{List}, (Ptr{List}, Cint), list, datum)
+    ccall((:list_append_unique_oid, libpg_query), Ptr{List}, (Ptr{List}, Oid), list, datum)
 end
 
 function list_concat_unique(list1, list2)
@@ -722,7 +728,7 @@ function pprint(obj)
 end
 
 function elog_node_display(lev, title, obj, pretty)
-    ccall((:elog_node_display, libpg_query), Cvoid, (Cint, Cstring, Ptr{Cvoid}, Cint), lev, title, obj, pretty)
+    ccall((:elog_node_display, libpg_query), Cvoid, (Cint, Cstring, Ptr{Cvoid}, bool), lev, title, obj, pretty)
 end
 
 function format_node_dump(dump)
@@ -756,8 +762,8 @@ end
 # Automatically generated using Clang.jl
 
 
-function is_dummy_rel()
-    ccall((:is_dummy_rel, libpg_query), bool, ())
+function is_dummy_rel(rel)
+    ccall((:is_dummy_rel, libpg_query), bool, (Ptr{RelOptInfo},), rel)
 end
 # Julia wrapper for header: tidbitmap.h
 # Automatically generated using Clang.jl
@@ -776,7 +782,7 @@ function tbm_free_shared_area(dsa, dp)
 end
 
 function tbm_add_tuples(tbm, tids, ntids, recheck)
-    ccall((:tbm_add_tuples, libpg_query), Cvoid, (Ptr{TIDBitmap}, ItemPointer, Cint, Cint), tbm, tids, ntids, recheck)
+    ccall((:tbm_add_tuples, libpg_query), Cvoid, (Ptr{TIDBitmap}, ItemPointer, Cint, bool), tbm, tids, ntids, recheck)
 end
 
 function tbm_add_page(tbm, pageno)
@@ -791,8 +797,8 @@ function tbm_intersect(a, b)
     ccall((:tbm_intersect, libpg_query), Cvoid, (Ptr{TIDBitmap}, Ptr{TIDBitmap}), a, b)
 end
 
-function tbm_is_empty()
-    ccall((:tbm_is_empty, libpg_query), Cint, ())
+function tbm_is_empty(tbm)
+    ccall((:tbm_is_empty, libpg_query), bool, (Ptr{TIDBitmap},), tbm)
 end
 
 function tbm_begin_iterate(tbm)
@@ -841,5 +847,3 @@ end
 function makeBitString(str)
     ccall((:makeBitString, libpg_query), Ptr{Value}, (Cstring,), str)
 end
-# Julia wrapper for header: sdir.h
-# Automatically generated using Clang.jl
