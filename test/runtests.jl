@@ -19,13 +19,20 @@ function try_query(qry)
     println("-----------------------------------------------")
 end
 
+function sql_files(dir)
+    [file for file in readdir(dir) if endswith(file, ".sql")]
+end
+
 @testset "simple SQL parsing" begin
     try_query("SELECT 1")
     try_query("SELECT 'abc'")
     try_query("SELECT 3.14")
     try_query("SELECT a from tbl")
-    for imdb_qry in readdir(joinpath(@__DIR__, "imdb_job"))
-        try_query(read(joinpath(@__DIR__, "imdb_job", imdb_qry), String))
+    for imdb_job_qry in sql_files(joinpath(@__DIR__, "imdb_job"))
+        try_query(read(joinpath(@__DIR__, "imdb_job", imdb_job_qry), String))
+    end
+    for tpch_qry in sql_files(joinpath(@__DIR__, "tpch"))
+        try_query(read(joinpath(@__DIR__, "tpch", tpch_qry), String))
     end
     @test_throws SQLParserException parse_query("INSERT FROM DOES NOT WORK")
 end
