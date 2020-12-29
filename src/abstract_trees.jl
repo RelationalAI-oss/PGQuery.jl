@@ -8,8 +8,21 @@ function convert_to_proper_node_type(node)
     end
 end
 
+const SIMPLE_TYPES = [
+    Cint,
+    Cstring,
+    Cvoid,
+    Int8,
+    UInt8,
+    Int16,
+    UInt16,
+    Int32,
+    UInt32,
+    bool,
+]
+
 function _is_simple_type(fld_tp)
-    return fld_tp in [Cint, Cstring, Cvoid]
+    return fld_tp in SIMPLE_TYPES
 end
 
 function _is_simple_type(fld_tp::Type{Ptr{T}}) where T
