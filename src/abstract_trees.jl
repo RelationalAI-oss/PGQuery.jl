@@ -149,6 +149,7 @@ function AbstractTrees.children(x::List)
     children = []
     currentNode = x.head
     for i in 1:x.length
+        i == x.length && @assert currentNode == x.tail "The last item should be equal to tail"
         currentListCell = unsafe_load(currentNode)
         push!(children, convert_to_proper_node_type(currentListCell.data.ptr_value))
         currentNode = currentListCell.next
