@@ -1,17 +1,26 @@
-From f07b4adf1258d6e49428322986efd5a337e00664 Mon Sep 17 00:00:00 2001
+From b7bf2e94056bcc53180250ac895955bbf371518a Mon Sep 17 00:00:00 2001
 From: Mohammad Dashti <mdashti@gmail.com>
-Date: Tue, 29 Dec 2020 00:14:53 -0800
+Date: Tue, 29 Dec 2020 00:47:10 -0800
 Subject: [PATCH] Revert "Generated code"
 
-This reverts commit c7d68adcf2ecea6bd6881b27c6e0f1bb472ddae3.
+This reverts commit 5edbbe6069ad16828305d44b0242a4a16bf086bb.
 ---
- src/gen/libpg_common.jl | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ src/gen/libpg_common.jl | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/src/gen/libpg_common.jl b/src/gen/libpg_common.jl
-index facd0d9..613177a 100644
+index facd0d9..3ab610e 100644
 --- a/src/gen/libpg_common.jl
 +++ b/src/gen/libpg_common.jl
+@@ -491,7 +491,7 @@ struct ListCell
+     next::Ptr{ListCell}
+ end
+ 
+-struct List
++struct List <: AbstractVector{Any}
+     type::NodeTag
+     length::Cint
+     head::Ptr{ListCell}
 @@ -3793,10 +3793,10 @@ struct ParamPathInfo
      ppi_clauses::Ptr{List}
  end

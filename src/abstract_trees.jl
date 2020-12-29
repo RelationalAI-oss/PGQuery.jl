@@ -1,54 +1,3 @@
-function convert_to_proper_node_type(node)
-    node_type_enum = unsafe_load(convert(Ptr{Node}, node)).type
-    if node_type_enum in [T_Integer, T_Float, T_String, T_BitString, T_Null]
-        unsafe_load(convert(Ptr{Value}, node))
-    else
-        node_type = convert_to_node_type(Val(node_type_enum))
-        unsafe_load(convert(Ptr{node_type}, node))
-    end
-end
-
-const SIMPLE_TYPES = [
-    Cint,
-    Cstring,
-    Cvoid,
-    Int8,
-    UInt8,
-    Int16,
-    UInt16,
-    Int32,
-    UInt32,
-    bool,
-]
-
-function _is_simple_type(fld_tp)
-    return fld_tp in SIMPLE_TYPES
-end
-
-function _is_simple_type(fld_tp::Type{Ptr{T}}) where T
-    return _is_simple_type(T)
-end
-
-function simple_type_value(fld)
-    return fld
-end
-
-function simple_type_value(fld::Ptr{Cvoid})
-    return fld
-end
-
-function simple_type_value(fld::Cstring)
-    return string("\"", fld == C_NULL ? "" : convert_cstring_to_str(fld), "\"")
-end
-
-function simple_type_value(fld::Ptr{Node})
-    return fld == C_NULL ? fld : convert_to_proper_node_type(fld)
-end
-
-function simple_type_value(fld::Ptr{T}) where T
-    return fld == C_NULL ? fld : simple_type_value(unsafe_load(fld))
-end
-
 struct FieldNameAndValuePair
     name::String
     value
@@ -148,26 +97,13 @@ function convert_to_node_type(::Val{T}) where T
     return eval(Meta.parse("PGQuery.$type_name"))
 end
 
-function AbstractTrees.printnode(io::IO, x::List)
-    @assert x.type == T_List
-    Base.print(io, string("List(length=",x.length,")"))
-end
-
 function convert_to_node_type(::Val{T_List})
     return List
 end
 
-function AbstractTrees.children(x::List)
+function AbstractTrees.printnode(io::IO, x::List)
     @assert x.type == T_List
-    children = []
-    currentNode = x.head
-    for i in 1:x.length
-        i == x.length && @assert currentNode == x.tail "The last item should be equal to tail"
-        currentListCell = unsafe_load(currentNode)
-        push!(children, convert_to_proper_node_type(currentListCell.data.ptr_value))
-        currentNode = currentListCell.next
-    end
-    return children
+    Base.print(io, string("List(length=",x.length,")"))
 end
 
 function AbstractTrees.children(x::Ptr)

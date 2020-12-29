@@ -491,7 +491,7 @@ struct ListCell
     next::Ptr{ListCell}
 end
 
-struct List
+struct List <: AbstractVector{Any}
     type::NodeTag
     length::Cint
     head::Ptr{ListCell}
