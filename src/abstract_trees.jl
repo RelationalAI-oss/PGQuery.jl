@@ -147,9 +147,11 @@ end
 function AbstractTrees.children(x::List)
     @assert x.type == T_List
     children = []
+    currentNode = x.head
     for i in 1:x.length
-        listCell = unsafe_load(x.head, 1)
-        push!(children, convert_to_proper_node_type(listCell.data.ptr_value))
+        currentListCell = unsafe_load(currentNode)
+        push!(children, convert_to_proper_node_type(currentListCell.data.ptr_value))
+        currentNode = currentListCell.next
     end
     return children
 end
