@@ -30,8 +30,10 @@ end
 @testset "simple SQL parsing" begin
     try_query("SELECT 1")
     try_query("SELECT 'abc'")
+    try_query("SELECT B'101010111'")
     try_query("SELECT 3.14")
-    try_query("SELECT a from tbl")
+    try_query("SELECT NULL")
+    try_query("SELECT a, t.b from tbl t")
     for imdb_job_qry in sql_files(joinpath(@__DIR__, "imdb_job"))
         println("query name: $imdb_job_qry")
         try_query(read(joinpath(@__DIR__, "imdb_job", imdb_job_qry), String))
