@@ -51,17 +51,19 @@ for enum_name in target_node_tag_enum_names
             hasfield($tp, :type) && $(enum_name != :T_Expr) && @assert x.type == $enum_name "x.type is $(x.type), but expected to be $($enum_name)"
             children = []
         end
+        is_first_simple_field = true
         for (i, (fld, fld_tp)) in enumerate(zip(fieldnames(tp), tp.types))
             fld == :type && continue
             fld_name = string(fld)
-            if _is_simple_type(fld_tp)
+            if is_simple_type(fld_tp)
                 printnode_body = quote
                     $printnode_body
+                    $(!is_first_simple_field) && Base.print(io, ", ")
                     Base.print(io, $fld_name)
                     Base.print(io, "=")
                     Base.print(io, simple_type_value(x.$fld))
-                    $(i < length(fieldnames(tp))) && Base.print(io, ", ")
                 end
+                is_first_simple_field = false
             else
                 children_body = quote
                     $children_body
@@ -111,20 +113,10 @@ function AbstractTrees.children(x::Ptr)
 end
 
 function AbstractTrees.printnode(io::IO, x::Value)
-    if x.type == T_Integer
-        Base.print(io, convert(Int64, x.val))
-    elseif x.type == T_Float || x.type == T_String || x.type == T_BitString
-        val = simple_type_value(convert(Cstring, x.val))
-        if x.type == T_Float
-            Base.print(io, Base.parse(Float64, val[2:end-1]))
-        elseif x.type == T_String
-            Base.print(io, val)
-        elseif x.type == T_BitString
-            Base.print(io, string("bitstring(",val,")"))
-        end
-    elseif x.type == T_Null
+    actual_value = convert_to_actual_value(x)
+    if actual_value === nothing
         Base.print(io, "null")
     else
-        throw("not implemented")
+        AbstractTrees.printnode(io, actual_value === nothing ? C_NULL : actual_value)
     end
 end
